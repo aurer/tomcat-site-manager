@@ -12,14 +12,17 @@ class Site extends React.Component {
 	render() {
 		return (
 			<tr className="Site">
-				<td>
+				<td className="Site-name">
 					{this.state.name}
 				</td>
-				<td>
+				<td className="Site-aliases">
 					{this.state.aliases}
 				</td>
-				<td>
-					{Settings.root}/{this.state.root}
+				<td className="Site-root">
+					<span>{Settings.root}/</span>{this.state.root}
+				</td>
+				<td className="Site-actions">
+					<button>x</button>
 				</td>
 			</tr>
 		)

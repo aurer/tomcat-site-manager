@@ -28291,20 +28291,33 @@ var Site = function (_React$Component) {
 				{ className: 'Site' },
 				_react2.default.createElement(
 					'td',
-					null,
+					{ className: 'Site-name' },
 					this.state.name
 				),
 				_react2.default.createElement(
 					'td',
-					null,
+					{ className: 'Site-aliases' },
 					this.state.aliases
 				),
 				_react2.default.createElement(
 					'td',
-					null,
-					Settings.root,
-					'/',
+					{ className: 'Site-root' },
+					_react2.default.createElement(
+						'span',
+						null,
+						Settings.root,
+						'/'
+					),
 					this.state.root
+				),
+				_react2.default.createElement(
+					'td',
+					{ className: 'Site-actions' },
+					_react2.default.createElement(
+						'button',
+						null,
+						'x'
+					)
 				)
 			);
 		}
@@ -28364,7 +28377,7 @@ var Sites = function (_React$Component) {
 			var sites = this.state.sites;
 			return _react2.default.createElement(
 				'section',
-				{ className: 'Sites' },
+				{ className: 'Section Section--sites' },
 				_react2.default.createElement(
 					'a',
 					{ className: 'Button Button' },
@@ -28433,7 +28446,7 @@ var Sites = function (_React$Component) {
 				),
 				_react2.default.createElement(
 					'table',
-					null,
+					{ className: 'Sites' },
 					_react2.default.createElement(
 						'thead',
 						null,
@@ -28441,19 +28454,19 @@ var Sites = function (_React$Component) {
 							'tr',
 							null,
 							_react2.default.createElement(
-								'td',
-								null,
+								'th',
+								{ className: 'Site-name' },
 								'Name'
 							),
 							_react2.default.createElement(
-								'td',
-								null,
+								'th',
+								{ className: 'Site-aliases' },
 								'Aliases'
 							),
 							_react2.default.createElement(
-								'td',
-								null,
-								'Path'
+								'th',
+								{ className: 'Site-root', colSpan: '2' },
+								'Root'
 							)
 						)
 					),

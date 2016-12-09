@@ -1,0 +1,52 @@
+.Form {
+	display: block;
+	max-width: 45em;
+	margin: auto;
+	overflow: hidden;
+	padding: 1em;
+	background-color: @color-neutral-darkest;
+	border: 1px solid @color-neutral-darker;
+	border-radius: 3px;
+	box-shadow: 0 2px 20px fade(#000, 30%);
+
+	.Form-field {
+		margin: .5em 0;
+
+		label {
+			float: left;
+			width: 15em;
+			text-align: right;
+			padding: .5em;
+		}
+
+		.Form-inputs {
+			margin-left: 17em;
+
+			input {
+				display: block;
+				width: 100%;
+				max-width: 30em;
+				box-sizing: border-box;
+				margin-bottom: .5em;
+				padding: .5em;
+				background-color: fade(#000, 15%);
+				box-shadow: inset 0 2px 3px fade(#000, 15%);
+				border: 1px solid fade(#fff, 8%);
+				border-bottom-color: fade(#fff, 15%);
+				border-radius: 3px;
+				color: inherit;
+				font-size: inherit;
+				outline: none;
+
+				&:focus {
+					border-color: @color-secondary;
+				}
+			}
+		}
+	}
+
+	input[type=submit] {
+		&:extend(.Button);
+		float: right;
+	}
+}

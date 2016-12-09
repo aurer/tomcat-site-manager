@@ -11,7 +11,7 @@ class Sites extends React.Component {
 	render() {
 		let sites = this.state.sites;
 		return (
-			<section className="Sites">
+			<section className="Section Section--sites">
 				<a className="Button Button">Add site</a>
 				<a disabled className="Button Button--secondary">Import sites</a>
 				<a disabled className="Button Button--secondary">Export sites</a>
@@ -39,12 +39,12 @@ class Sites extends React.Component {
 					</div>
 				</form>
 
-				<table>
+				<table className="Sites">
 					<thead>
 						<tr>
-							<td>Name</td>
-							<td>Aliases</td>
-							<td>Path</td>
+							<th className="Site-name">Name</th>
+							<th className="Site-aliases">Aliases</th>
+							<th className="Site-root" colSpan="2">Root</th>
 						</tr>
 					</thead>
 					<tbody>

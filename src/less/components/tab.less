@@ -1,18 +1,19 @@
 .Tabs {
 	display: flex;
 	margin-bottom: 1em;
-	
+
 	.Tab {
 		flex: 1;
 		text-align: center;
 		padding: 1em;
 		background-color: @color-primary;
 		box-sizing: border-box;
-		border-bottom: 5px solid @color-primary;
+		border-bottom: 3px solid @color-primary;
 		cursor: pointer;
 		text-transform: uppercase;
 		color: @color-primary-darker;
 		transition: all .2s;
+		text-decoration: none;
 
 		&.is-active {
 			border-bottom: 3px solid @color-secondary;

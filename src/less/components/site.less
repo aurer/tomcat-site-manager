@@ -1,0 +1,43 @@
+.Sites {
+	width: 100%;
+	border-collapse: collapse;
+	background-color: @color-neutral-darker;
+	color: @color-neutral-lightest;
+
+	th, td {
+		padding: .8em .8em;
+		border-bottom: 1px solid @color-neutral-dark;
+	}
+
+	th {
+		text-align: left;
+		color: @color-neutral;
+	}
+
+	tr:nth-child(2n+1) td {
+		background-color: fade(@color-neutral-darkest, 40%);
+	}
+}
+
+.Site {
+
+	&-name {
+		width: 20%;
+	}
+
+	&-aliases {
+		width: 30%;
+	}
+
+	&-root {
+		width: auto;
+		span {
+			opacity: .5;
+		}
+	}
+
+	&-actions {
+		width: 2em;
+		text-align: right;
+	}
+}
