@@ -30,8 +30,10 @@ class Vhosts extends React.Component {
 
 		return (
 			<section className={sectionClassName}>
-				<a className="Button Button--block" onClick={this.openManager}>Tomcat manager</a>
-				<a className="Button Button--block" onClick={this.openOptions}>Settings</a>
+				<div className="ButtonGroup">
+					<a className="Button" onClick={this.openManager}>Tomcat manager</a>
+					<a className="Button" onClick={this.openOptions}>Settings</a>
+				</div>
 				{this.state.sites.map((site, i) => <p key={i}>{site.name}</p> )}
 			</section>
 		)

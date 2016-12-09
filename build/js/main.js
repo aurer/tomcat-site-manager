@@ -29470,14 +29470,18 @@ var Vhosts = function (_React$Component) {
 				'section',
 				{ className: sectionClassName },
 				_react2.default.createElement(
-					'a',
-					{ className: 'Button Button--block', onClick: this.openManager },
-					'Tomcat manager'
-				),
-				_react2.default.createElement(
-					'a',
-					{ className: 'Button Button--block', onClick: this.openOptions },
-					'Settings'
+					'div',
+					{ className: 'ButtonGroup' },
+					_react2.default.createElement(
+						'a',
+						{ className: 'Button', onClick: this.openManager },
+						'Tomcat manager'
+					),
+					_react2.default.createElement(
+						'a',
+						{ className: 'Button', onClick: this.openOptions },
+						'Settings'
+					)
 				),
 				this.state.sites.map(function (site, i) {
 					return _react2.default.createElement(

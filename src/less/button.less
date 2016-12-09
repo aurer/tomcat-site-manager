@@ -37,3 +37,16 @@
 		}
 	}
 }
+
+.ButtonGroup {
+	display: flex;
+
+	.Button {
+		flex: 1;
+		margin: 0;
+
+		+ .Button {
+			margin-left: .5em;
+		}
+	}
+}
