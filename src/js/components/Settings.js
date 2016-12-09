@@ -1,7 +1,7 @@
 import React from 'react';
 import * as Store from '../store';
 
-class SettingsForm extends React.Component {
+class Settings extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = Store.load('settings');
@@ -62,4 +62,4 @@ class SettingsForm extends React.Component {
 	}
 }
 
-export default SettingsForm
+export default Settings

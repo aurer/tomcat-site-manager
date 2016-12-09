@@ -2,7 +2,7 @@ import React from 'react';
 import * as Store from '../store';
 import Site from './Site';
 
-class SitesList extends React.Component {
+class Sites extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {sites: Store.load('sites')};
@@ -76,4 +76,4 @@ class SitesList extends React.Component {
 	}
 }
 
-export default SitesList
+export default Sites

@@ -5,6 +5,9 @@
   "main": "popup.html",
   "author": "Phil Maurer",
   "license": "MIT",
+  "jshintConfig": {
+    "esversion": 6
+  },
   "scripts": {
     "build": "echo 'I will build'",
     "less": "lessc --clean-css src/less/main.less build/css/main.css"

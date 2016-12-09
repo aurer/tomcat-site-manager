@@ -31,8 +31,9 @@ class Vhosts extends React.Component {
 		return (
 			<section className={sectionClassName}>
 				<div className="ButtonGroup">
-					<a className="Button" onClick={this.openManager}>Tomcat manager</a>
-					<a className="Button" onClick={this.openOptions}>Settings</a>
+					<a className="Button" onClick={this.openSettings}>Settings</a>
+					<a className="Button" onClick={this.openSites}>Sites</a>
+					<a className="Button" onClick={this.openManager}>Manager</a>
 				</div>
 				{this.state.sites.map((site, i) => <p key={i}>{site.name}</p> )}
 			</section>
@@ -72,8 +73,13 @@ class Vhosts extends React.Component {
 		chrome.tabs.create({url:'http://localhost:8080/host-manager/html/'});
 	}
 
-	openOptions() {
-		let settings = chrome.extension.getURL("options.html");
+	openSettings() {
+		let settings = chrome.extension.getURL("settings.html");
+		chrome.tabs.create( { url:settings } );
+	}
+
+	openSites() {
+		let settings = chrome.extension.getURL("sites.html");
 		chrome.tabs.create( { url:settings } );
 	}
 }
