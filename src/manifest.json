@@ -1,0 +1,24 @@
+{
+	"manifest_version": 2,
+
+	"name": "Tomcat site manager",
+	"description": "Save and setup local sites on tomcat",
+	"version": "3.0",
+
+	"browser_action": {
+		"default_title": "Manage virtual hosts",
+		"default_popup": "vhosts.html"
+	},
+
+	"icons": {
+    "16": "img/icon16.png",
+    "48": "img/icon48.png",
+    "128": "img/icon128.png"
+  },
+
+	"options_page":"options.html",
+	"permissions": [
+    "http://localhost/",
+    "http://*.netxtra.local/"
+  ]
+}

@@ -1,0 +1,35 @@
+.ReactTabs {
+	&__TabList {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		display: flex;
+	}
+
+	&__Tab {
+		flex: 1;
+		text-align: center;
+		padding: 1em;
+		background-color: @color-primary;
+		box-sizing: border-box;
+		border-bottom: 5px solid @color-primary;
+		cursor: pointer;
+		text-transform: uppercase;
+		color: @color-primary-darker;
+		transition: all .2s;
+
+		&--selected {
+			border-bottom: 3px solid @color-secondary;
+			color: @color-neutral-darker;
+		}
+	}
+
+
+	&__TabPanel {
+		margin-top: 1em;
+
+		&--selected {
+
+		}
+	}
+}
