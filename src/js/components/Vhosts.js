@@ -1,5 +1,6 @@
 import React from 'react';
 import qwest from 'qwest';
+import { Link, Redirect } from 'react-router';
 import * as Store from '../store';
 
 var HTMLParser = require('fast-html-parser');
@@ -9,7 +10,7 @@ class Vhosts extends React.Component {
 		super(props)
 
 		this.state = {
-			loggedIn: false,
+			loggedIn: true,
 			loading: false,
 			sites: []
 		}
@@ -17,6 +18,8 @@ class Vhosts extends React.Component {
 
 	componentWillMount() {
 		this.loginToHostManager();
+		let sites = Store.load('sites');
+		this.setState({sites});
 	}
 
 	render() {
@@ -35,7 +38,12 @@ class Vhosts extends React.Component {
 					<a className="Button" onClick={this.openSites}>Sites</a>
 					<a className="Button" onClick={this.openManager}>Manager</a>
 				</div>
-				{this.state.sites.map((site, i) => <p key={i}>{site.name}</p> )}
+				<div className="Vhosts">
+					{this.state.sites.map((site, i) => <div className="Vhost" key={i}>{site.name}</div> )}
+				</div>
+				<div className="Nav Nav--bottom">
+					<button className="Button">Add site</button>
+				</div>
 			</section>
 		)
 	}
@@ -43,6 +51,7 @@ class Vhosts extends React.Component {
 	loginToHostManager() {
 		let url = `http://localhost:8080/host-manager/html/`;
 		let settings = Store.load('settings');
+
 		qwest.get(url, null, {
 			user: settings.manager_username,
 			password: settings.manager_password
@@ -51,16 +60,17 @@ class Vhosts extends React.Component {
 			let el = document.createElement('html');
 			el.innerHTML = res;
 			let siteLinks = el.querySelectorAll('td.row-left small a');
-			var sites = [];
+			var managerSites = [];
 			siteLinks.forEach(link => {
-				sites.push({
+				managerSites.push({
 					link: link.href,
 					name: link.outerText
 				})
-			})
+			});
+
 			this.setState({
-				loggedIn:true,
-				sites: sites
+				// loggedIn:true,
+				sites: managerSites
 			})
 		})
 		.catch((error, xhr) => {

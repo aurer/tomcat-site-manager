@@ -6,15 +6,22 @@ class Sites extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {sites: Store.load('sites')};
+		console.log('Wating for window event');
+		window.addEventListener('storage', (e) => {
+			console.log('Storage', e);
+		})
 	}
 
 	render() {
 		let sites = this.state.sites;
+
 		return (
 			<section className="Section Section--sites">
+				{/*
 				<a className="Button Button">Add site</a>
 				<a disabled className="Button Button--secondary">Import sites</a>
 				<a disabled className="Button Button--secondary">Export sites</a>
+				*/}
 				<form className="Form" onSubmit={this.handleAddSiteSubmit.bind(this)}>
 					<div className="Form-field">
 						<label>Site name</label>
@@ -35,7 +42,7 @@ class Sites extends React.Component {
 						</div>
 					</div>
 					<div className="Form-field">
-						<input type="submit" className="Button"/>
+						<input type="submit" className="Button" value="Add site"/>
 					</div>
 				</form>
 
@@ -48,7 +55,7 @@ class Sites extends React.Component {
 						</tr>
 					</thead>
 					<tbody>
-						{sites.map((site, i) => <Site key={i} site={site} />)}
+						{sites.map((site, i) => <Site key={site.id} site={site} index={i} onChange={this.handleRemoveSite.bind(this)} />)}
 					</tbody>
 				</table>
 
@@ -61,6 +68,7 @@ class Sites extends React.Component {
 		let sites = this.state.sites;
 		let form = e.target;
 		let newSite = {
+			id: +new Date,
 			name:  	form.name.value,
 			aliases: form.aliases.value,
 			root: 	form.root.value
@@ -73,6 +81,14 @@ class Sites extends React.Component {
 		form.name.value = '';
 		form.aliases.value = '';
 		form.root.value = '';
+	}
+
+	handleRemoveSite(action) {
+		let newSites = this.state.sites.filter((_, i) => i != action.index);
+		Store.save('sites', newSites);
+		this.setState({
+			sites: newSites
+		});
 	}
 }
 

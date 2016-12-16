@@ -22,10 +22,17 @@ class Site extends React.Component {
 					<span>{Settings.root}/</span>{this.state.root}
 				</td>
 				<td className="Site-actions">
-					<button>x</button>
+					<button onClick={this.handleRemoveSite.bind(this)}>x</button>
 				</td>
 			</tr>
 		)
+	}
+
+	handleRemoveSite(e) {
+		this.props.onChange({
+			action: 'remove',
+			index: this.props.index
+		});
 	}
 }
 

@@ -28315,11 +28315,19 @@ var Site = function (_React$Component) {
 					{ className: 'Site-actions' },
 					_react2.default.createElement(
 						'button',
-						null,
+						{ onClick: this.handleRemoveSite.bind(this) },
 						'x'
 					)
 				)
 			);
+		}
+	}, {
+		key: 'handleRemoveSite',
+		value: function handleRemoveSite(e) {
+			this.props.onChange({
+				action: 'remove',
+				index: this.props.index
+			});
 		}
 	}]);
 
@@ -28368,31 +28376,23 @@ var Sites = function (_React$Component) {
 		var _this = _possibleConstructorReturn(this, (Sites.__proto__ || Object.getPrototypeOf(Sites)).call(this, props));
 
 		_this.state = { sites: Store.load('sites') };
+		console.log('Wating for window event');
+		window.addEventListener('storage', function (e) {
+			console.log('Storage', e);
+		});
 		return _this;
 	}
 
 	_createClass(Sites, [{
 		key: 'render',
 		value: function render() {
+			var _this2 = this;
+
 			var sites = this.state.sites;
+
 			return _react2.default.createElement(
 				'section',
 				{ className: 'Section Section--sites' },
-				_react2.default.createElement(
-					'a',
-					{ className: 'Button Button' },
-					'Add site'
-				),
-				_react2.default.createElement(
-					'a',
-					{ disabled: true, className: 'Button Button--secondary' },
-					'Import sites'
-				),
-				_react2.default.createElement(
-					'a',
-					{ disabled: true, className: 'Button Button--secondary' },
-					'Export sites'
-				),
 				_react2.default.createElement(
 					'form',
 					{ className: 'Form', onSubmit: this.handleAddSiteSubmit.bind(this) },
@@ -28441,7 +28441,7 @@ var Sites = function (_React$Component) {
 					_react2.default.createElement(
 						'div',
 						{ className: 'Form-field' },
-						_react2.default.createElement('input', { type: 'submit', className: 'Button' })
+						_react2.default.createElement('input', { type: 'submit', className: 'Button', value: 'Add site' })
 					)
 				),
 				_react2.default.createElement(
@@ -28474,7 +28474,7 @@ var Sites = function (_React$Component) {
 						'tbody',
 						null,
 						sites.map(function (site, i) {
-							return _react2.default.createElement(_Site2.default, { key: i, site: site });
+							return _react2.default.createElement(_Site2.default, { key: site.id, site: site, index: i, onChange: _this2.handleRemoveSite.bind(_this2) });
 						})
 					)
 				)
@@ -28487,6 +28487,7 @@ var Sites = function (_React$Component) {
 			var sites = this.state.sites;
 			var form = e.target;
 			var newSite = {
+				id: +new Date(),
 				name: form.name.value,
 				aliases: form.aliases.value,
 				root: form.root.value
@@ -28499,6 +28500,17 @@ var Sites = function (_React$Component) {
 			form.name.value = '';
 			form.aliases.value = '';
 			form.root.value = '';
+		}
+	}, {
+		key: 'handleRemoveSite',
+		value: function handleRemoveSite(action) {
+			var newSites = this.state.sites.filter(function (_, i) {
+				return i != action.index;
+			});
+			Store.save('sites', newSites);
+			this.setState({
+				sites: newSites
+			});
 		}
 	}]);
 
@@ -28523,6 +28535,8 @@ var _react2 = _interopRequireDefault(_react);
 var _qwest = require('qwest');
 
 var _qwest2 = _interopRequireDefault(_qwest);
+
+var _reactRouter = require('react-router');
 
 var _store = require('../store');
 
@@ -28549,7 +28563,7 @@ var Vhosts = function (_React$Component) {
 		var _this = _possibleConstructorReturn(this, (Vhosts.__proto__ || Object.getPrototypeOf(Vhosts)).call(this, props));
 
 		_this.state = {
-			loggedIn: false,
+			loggedIn: true,
 			loading: false,
 			sites: []
 		};
@@ -28560,6 +28574,8 @@ var Vhosts = function (_React$Component) {
 		key: 'componentWillMount',
 		value: function componentWillMount() {
 			this.loginToHostManager();
+			var sites = Store.load('sites');
+			this.setState({ sites: sites });
 		}
 	}, {
 		key: 'render',
@@ -28600,13 +28616,26 @@ var Vhosts = function (_React$Component) {
 						'Manager'
 					)
 				),
-				this.state.sites.map(function (site, i) {
-					return _react2.default.createElement(
-						'p',
-						{ key: i },
-						site.name
-					);
-				})
+				_react2.default.createElement(
+					'div',
+					{ className: 'Vhosts' },
+					this.state.sites.map(function (site, i) {
+						return _react2.default.createElement(
+							'div',
+							{ className: 'Vhost', key: i },
+							site.name
+						);
+					})
+				),
+				_react2.default.createElement(
+					'div',
+					{ className: 'Nav Nav--bottom' },
+					_react2.default.createElement(
+						'button',
+						{ className: 'Button' },
+						'Add site'
+					)
+				)
 			);
 		}
 	}, {
@@ -28616,6 +28645,7 @@ var Vhosts = function (_React$Component) {
 
 			var url = 'http://localhost:8080/host-manager/html/';
 			var settings = Store.load('settings');
+
 			_qwest2.default.get(url, null, {
 				user: settings.manager_username,
 				password: settings.manager_password
@@ -28623,16 +28653,17 @@ var Vhosts = function (_React$Component) {
 				var el = document.createElement('html');
 				el.innerHTML = res;
 				var siteLinks = el.querySelectorAll('td.row-left small a');
-				var sites = [];
+				var managerSites = [];
 				siteLinks.forEach(function (link) {
-					sites.push({
+					managerSites.push({
 						link: link.href,
 						name: link.outerText
 					});
 				});
+
 				_this2.setState({
-					loggedIn: true,
-					sites: sites
+					// loggedIn:true,
+					sites: managerSites
 				});
 			}).catch(function (error, xhr) {
 				console.error(error);
@@ -28663,7 +28694,7 @@ var Vhosts = function (_React$Component) {
 
 exports.default = Vhosts;
 
-},{"../store":256,"fast-html-parser":11,"qwest":59,"react":244}],255:[function(require,module,exports){
+},{"../store":256,"fast-html-parser":11,"qwest":59,"react":244,"react-router":213}],255:[function(require,module,exports){
 'use strict';
 
 var _react = require('react');
@@ -28697,12 +28728,12 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 _reactDom2.default.render(_react2.default.createElement(
 	_reactRouter.Router,
 	{ history: _reactRouter.browserHistory },
-	_react2.default.createElement(_reactRouter.Route, { path: '/vhosts.html', component: _Vhosts2.default }),
+	_react2.default.createElement(_reactRouter.Route, { path: '(*/)vhosts.html', component: _Vhosts2.default }),
 	_react2.default.createElement(
 		_reactRouter.Route,
 		{ component: _Options2.default },
-		_react2.default.createElement(_reactRouter.Route, { path: '/settings.html', component: _Settings2.default }),
-		_react2.default.createElement(_reactRouter.Route, { path: '/sites.html', component: _Sites2.default })
+		_react2.default.createElement(_reactRouter.Route, { path: '(*/)settings.html', component: _Settings2.default }),
+		_react2.default.createElement(_reactRouter.Route, { path: '(*/)sites.html', component: _Sites2.default })
 	)
 ), document.querySelector('main'));
 
