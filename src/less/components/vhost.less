@@ -5,5 +5,80 @@
 }
 
 .Vhost {
+	display: flex;
+	align-items: center;
 	padding: .5em 0;
+
+	&-name {
+		flex: 1;
+		padding: .2em 1em;
+	}
+
+	&-indicator {
+		display: inline-block;
+		width: 8px;
+		height: 8px;
+		border-radius: 4px;
+		background-color: @color-neutral-dark;
+		transition: transform .2s;
+	}
+
+	&-actions {
+		position: relative;
+
+		button {
+			background-color: transparent;
+			border: none;
+			outline: none;
+			background-repeat: no-repeat;
+			background-position: center;
+			font-size: 0;
+			width: 20px;
+			height: 20px;
+			margin-left: 5px;
+		}
+
+		&-start {
+			background-image: url(/img/power.svg);
+
+			.is-starting & {
+				animation: pulseFade infinite .4s;
+			}
+		}
+
+		&-restart {
+			background-image: url(/img/loop.svg);
+
+			.is-restarting & {
+				animation: spin linear infinite .5s;
+			}
+		}
+
+		&-stop {
+			background-image: url(/img/stop.svg);
+
+			.is-stopping & {
+				animation: pulseFade infinite .4s;
+			}
+		}
+	}
+
+	&.is-fetching {
+		.Vhost-actions {
+			button {
+				pointer-events: none;
+			}
+		}
+
+		.Vhost-indicator {
+			animation: blink infinite .2s;
+		}
+	}
+
+	&.is-active {
+		.Vhost-indicator {
+			background-color: @color-primary-light;
+			border-color: @color-primary-light;
+		}
+	}
 }

@@ -28054,6 +28054,16 @@ var _react2 = _interopRequireDefault(_react);
 
 var _reactRouter = require('react-router');
 
+var _store = require('../store');
+
+var Store = _interopRequireWildcard(_store);
+
+var _Vhosts = require('./Vhosts');
+
+var _Vhosts2 = _interopRequireDefault(_Vhosts);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -28062,40 +28072,38 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var HTMLParser = require('fast-html-parser');
+var Popup = function (_React$Component) {
+	_inherits(Popup, _React$Component);
 
-var Options = function (_React$Component) {
-	_inherits(Options, _React$Component);
+	function Popup(props) {
+		_classCallCheck(this, Popup);
 
-	function Options(props) {
-		_classCallCheck(this, Options);
-
-		return _possibleConstructorReturn(this, (Options.__proto__ || Object.getPrototypeOf(Options)).call(this, props));
+		return _possibleConstructorReturn(this, (Popup.__proto__ || Object.getPrototypeOf(Popup)).call(this, props));
 	}
 
-	_createClass(Options, [{
+	_createClass(Popup, [{
 		key: 'render',
 		value: function render() {
 			return _react2.default.createElement(
 				'section',
-				{ className: 'Section Section--options' },
+				{ className: 'Section Section--popup' },
 				_react2.default.createElement(
-					'h1',
-					null,
-					'Tomcat Virtual Host Manager'
-				),
-				_react2.default.createElement(
-					'div',
-					{ className: 'Tabs' },
+					'nav',
+					{ className: 'Nav' },
 					_react2.default.createElement(
 						_reactRouter.Link,
-						{ className: 'Tab', activeClassName: 'is-active', to: 'settings.html' },
-						'Settings'
+						{ activeClassName: 'is-active', className: 'Nav-item', to: 'vhosts.html' },
+						'Vhosts'
 					),
 					_react2.default.createElement(
 						_reactRouter.Link,
-						{ className: 'Tab', activeClassName: 'is-active', to: 'sites.html' },
+						{ activeClassName: 'is-active', className: 'Nav-item', to: 'sites.html' },
 						'Sites'
+					),
+					_react2.default.createElement(
+						_reactRouter.Link,
+						{ activeClassName: 'is-active', className: 'Nav-item', to: 'settings.html' },
+						'Settings'
 					)
 				),
 				this.props.children
@@ -28103,12 +28111,12 @@ var Options = function (_React$Component) {
 		}
 	}]);
 
-	return Options;
+	return Popup;
 }(_react2.default.Component);
 
-exports.default = Options;
+exports.default = Popup;
 
-},{"fast-html-parser":11,"react":244,"react-router":213}],251:[function(require,module,exports){
+},{"../store":257,"./Vhosts":255,"react":244,"react-router":213}],251:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -28242,7 +28250,7 @@ var Settings = function (_React$Component) {
 
 exports.default = Settings;
 
-},{"../store":256,"react":244}],252:[function(require,module,exports){
+},{"../store":257,"react":244}],252:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -28336,7 +28344,7 @@ var Site = function (_React$Component) {
 
 exports.default = Site;
 
-},{"../store":256,"react":244}],253:[function(require,module,exports){
+},{"../store":257,"react":244}],253:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -28519,7 +28527,145 @@ var Sites = function (_React$Component) {
 
 exports.default = Sites;
 
-},{"../store":256,"./Site":252,"react":244}],254:[function(require,module,exports){
+},{"../store":257,"./Site":252,"react":244}],254:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Vhost = function (_React$Component) {
+	_inherits(Vhost, _React$Component);
+
+	function Vhost(props) {
+		_classCallCheck(this, Vhost);
+
+		var _this = _possibleConstructorReturn(this, (Vhost.__proto__ || Object.getPrototypeOf(Vhost)).call(this, props));
+
+		_this.state = {
+			active: false,
+			fetching: false,
+			action: null
+		};
+		return _this;
+	}
+
+	_createClass(Vhost, [{
+		key: 'render',
+		value: function render() {
+			var site = this.props.site;
+			var index = this.props.index;
+			var className = "Vhost";
+			className += this.state.fetching ? ' is-fetching' : this.state.active ? ' is-active' : '';
+
+			switch (this.state.action) {
+				case 'start':
+					className += ' is-starting';
+					break;
+				case 'restart':
+					className += ' is-restarting';
+					break;
+				case 'stop':
+					className += ' is-stopping';
+					break;
+			}
+
+			return _react2.default.createElement(
+				'div',
+				{ className: className },
+				_react2.default.createElement('i', { className: 'Vhost-indicator' }),
+				_react2.default.createElement(
+					'span',
+					{ className: 'Vhost-name' },
+					site.name
+				),
+				_react2.default.createElement(
+					'span',
+					{ className: 'Vhost-actions' },
+					this.state.active || _react2.default.createElement(
+						'button',
+						{ className: 'Vhost-actions-start', onClick: this.handleStart.bind(this) },
+						'Start'
+					),
+					this.state.active && _react2.default.createElement(
+						'button',
+						{ className: 'Vhost-actions-restart', onClick: this.handleRestart.bind(this) },
+						'Restart'
+					),
+					this.state.active && _react2.default.createElement(
+						'button',
+						{ className: 'Vhost-actions-stop', onClick: this.handleStop.bind(this) },
+						'Stop'
+					)
+				)
+			);
+		}
+	}, {
+		key: 'handleStart',
+		value: function handleStart() {
+			var self = this;
+			this.setState({ fetching: true, action: 'start' });
+			setTimeout(function () {
+				self.setState({ fetching: false, action: null });
+				self.setState({ active: true });
+				var action = {
+					type: 'start',
+					data: self.state
+				};
+				self.props.onChange(action);
+			}, 2000);
+		}
+	}, {
+		key: 'handleRestart',
+		value: function handleRestart() {
+			var self = this;
+			this.setState({ fetching: true, action: 'restart' });
+			setTimeout(function () {
+				self.setState({ fetching: false, action: null });
+				var action = {
+					type: 'restart',
+					data: self.state
+				};
+				self.props.onChange(action);
+			}, 2000);
+		}
+	}, {
+		key: 'handleStop',
+		value: function handleStop() {
+			var self = this;
+			this.setState({ fetching: true, action: 'stop' });
+			setTimeout(function () {
+				self.setState({ fetching: false, action: null });
+				self.setState({ active: false });
+				var action = {
+					type: 'stop',
+					data: self.state
+				};
+				self.props.onChange(action);
+			}, 2000);
+		}
+	}]);
+
+	return Vhost;
+}(_react2.default.Component);
+
+exports.default = Vhost;
+
+},{"react":244}],255:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -28541,6 +28687,10 @@ var _reactRouter = require('react-router');
 var _store = require('../store');
 
 var Store = _interopRequireWildcard(_store);
+
+var _Vhost = require('./Vhost');
+
+var _Vhost2 = _interopRequireDefault(_Vhost);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -28580,68 +28730,33 @@ var Vhosts = function (_React$Component) {
 	}, {
 		key: 'render',
 		value: function render() {
-			var sectionClassName = "Section Section--vhosts";
+			var _this2 = this;
 
 			if (!this.state.loggedIn) {
 				return _react2.default.createElement(
-					'section',
-					{ className: sectionClassName },
-					_react2.default.createElement(
-						'p',
-						{ className: 'Message Message--negative' },
-						'Failed to reach Tomcat manager - please ensure it is running'
-					)
+					'p',
+					{ className: 'Message Message--negative' },
+					'Failed to reach Tomcat manager - please ensure it is running'
 				);
 			}
 
 			return _react2.default.createElement(
-				'section',
-				{ className: sectionClassName },
-				_react2.default.createElement(
-					'div',
-					{ className: 'ButtonGroup' },
-					_react2.default.createElement(
-						'a',
-						{ className: 'Button', onClick: this.openSettings },
-						'Settings'
-					),
-					_react2.default.createElement(
-						'a',
-						{ className: 'Button', onClick: this.openSites },
-						'Sites'
-					),
-					_react2.default.createElement(
-						'a',
-						{ className: 'Button', onClick: this.openManager },
-						'Manager'
-					)
-				),
-				_react2.default.createElement(
-					'div',
-					{ className: 'Vhosts' },
-					this.state.sites.map(function (site, i) {
-						return _react2.default.createElement(
-							'div',
-							{ className: 'Vhost', key: i },
-							site.name
-						);
-					})
-				),
-				_react2.default.createElement(
-					'div',
-					{ className: 'Nav Nav--bottom' },
-					_react2.default.createElement(
-						'button',
-						{ className: 'Button' },
-						'Add site'
-					)
-				)
+				'div',
+				{ className: 'Vhosts' },
+				this.state.sites.map(function (site, i) {
+					return _react2.default.createElement(_Vhost2.default, { key: site.id, site: site, index: i, onChange: _this2.handleVhostChange.bind(_this2) });
+				})
 			);
+		}
+	}, {
+		key: 'handleVhostChange',
+		value: function handleVhostChange(action) {
+			console.log('Host manager changed', action);
 		}
 	}, {
 		key: 'loginToHostManager',
 		value: function loginToHostManager() {
-			var _this2 = this;
+			var _this3 = this;
 
 			var url = 'http://localhost:8080/host-manager/html/';
 			var settings = Store.load('settings');
@@ -28661,7 +28776,7 @@ var Vhosts = function (_React$Component) {
 					});
 				});
 
-				_this2.setState({
+				_this3.setState({
 					// loggedIn:true,
 					sites: managerSites
 				});
@@ -28694,7 +28809,7 @@ var Vhosts = function (_React$Component) {
 
 exports.default = Vhosts;
 
-},{"../store":256,"fast-html-parser":11,"qwest":59,"react":244,"react-router":213}],255:[function(require,module,exports){
+},{"../store":257,"./Vhost":254,"fast-html-parser":11,"qwest":59,"react":244,"react-router":213}],256:[function(require,module,exports){
 'use strict';
 
 var _react = require('react');
@@ -28707,13 +28822,13 @@ var _reactDom2 = _interopRequireDefault(_reactDom);
 
 var _reactRouter = require('react-router');
 
+var _Popup = require('./components/Popup');
+
+var _Popup2 = _interopRequireDefault(_Popup);
+
 var _Vhosts = require('./components/Vhosts');
 
 var _Vhosts2 = _interopRequireDefault(_Vhosts);
-
-var _Options = require('./components/Options');
-
-var _Options2 = _interopRequireDefault(_Options);
 
 var _Sites = require('./components/Sites');
 
@@ -28728,16 +28843,16 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 _reactDom2.default.render(_react2.default.createElement(
 	_reactRouter.Router,
 	{ history: _reactRouter.browserHistory },
-	_react2.default.createElement(_reactRouter.Route, { path: '(*/)vhosts.html', component: _Vhosts2.default }),
 	_react2.default.createElement(
 		_reactRouter.Route,
-		{ component: _Options2.default },
+		{ component: _Popup2.default },
+		_react2.default.createElement(_reactRouter.Route, { path: '(*/)vhosts.html', component: _Vhosts2.default }),
 		_react2.default.createElement(_reactRouter.Route, { path: '(*/)settings.html', component: _Settings2.default }),
 		_react2.default.createElement(_reactRouter.Route, { path: '(*/)sites.html', component: _Sites2.default })
 	)
 ), document.querySelector('main'));
 
-},{"./components/Options":250,"./components/Settings":251,"./components/Sites":253,"./components/Vhosts":254,"react":244,"react-dom":60,"react-router":213}],256:[function(require,module,exports){
+},{"./components/Popup":250,"./components/Settings":251,"./components/Sites":253,"./components/Vhosts":255,"react":244,"react-dom":60,"react-router":213}],257:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -28771,4 +28886,4 @@ if (localStorage.length == 0) {
 	localStorage.setItem('sites', JSON.stringify(defaultValues.sites));
 };
 
-},{}]},{},[255])
+},{}]},{},[256])

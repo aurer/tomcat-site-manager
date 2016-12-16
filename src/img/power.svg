@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="14px" height="16px" viewBox="0 0 14 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 41.2 (35397) - http://www.bohemiancoding.com/sketch -->
+    <title>power</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <path d="M9,2.2905 L9,4.415 C9.5655,4.662 10.086,5.015 10.5355,5.4645 C11.48,6.409 12,7.6645 12,9 C12,10.3355 11.48,11.591 10.5355,12.5355 C9.591,13.48 8.3355,14 7,14 C5.6645,14 4.409,13.48 3.4645,12.5355 C2.52,11.591 2,10.3355 2,9 C2,7.6645 2.52,6.409 3.4645,5.4645 C3.914,5.015 4.4345,4.6615 5,4.415 L5,2.2905 C2.1085,3.151 0,5.829 0,9 C0,12.866 3.134,16 7,16 C10.866,16 14,12.866 14,9 C14,5.829 11.8915,3.151 9,2.2905 L9,2.2905 Z M6,0 L8,0 L8,8 L6,8 L6,0 Z" id="power" fill="#00B0C5"></path>
+    </g>
+</svg>

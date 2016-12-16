@@ -2,6 +2,7 @@ import React from 'react';
 import qwest from 'qwest';
 import { Link, Redirect } from 'react-router';
 import * as Store from '../store';
+import Vhost from './Vhost';
 
 var HTMLParser = require('fast-html-parser');
 
@@ -23,29 +24,22 @@ class Vhosts extends React.Component {
 	}
 
 	render() {
-		var sectionClassName = "Section Section--vhosts";
 
 		if (!this.state.loggedIn) {
-			return (<section className={sectionClassName}>
+			return (
 				<p className="Message Message--negative">Failed to reach Tomcat manager - please ensure it is running</p>
-			</section>)
+			)
 		}
 
 		return (
-			<section className={sectionClassName}>
-				<div className="ButtonGroup">
-					<a className="Button" onClick={this.openSettings}>Settings</a>
-					<a className="Button" onClick={this.openSites}>Sites</a>
-					<a className="Button" onClick={this.openManager}>Manager</a>
-				</div>
-				<div className="Vhosts">
-					{this.state.sites.map((site, i) => <div className="Vhost" key={i}>{site.name}</div> )}
-				</div>
-				<div className="Nav Nav--bottom">
-					<button className="Button">Add site</button>
-				</div>
-			</section>
+			<div className="Vhosts">
+				{this.state.sites.map((site, i) => <Vhost key={site.id} site={site} index={i} onChange={this.handleVhostChange.bind(this)} /> )}
+			</div>
 		)
+	}
+
+	handleVhostChange(action) {
+		console.log('Host manager changed', action);
 	}
 
 	loginToHostManager() {
