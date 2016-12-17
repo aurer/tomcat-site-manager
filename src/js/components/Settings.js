@@ -59,6 +59,7 @@ class Settings extends React.Component {
 
 		Store.save('settings', newState);
 		this.setState(newState);
+		this.props.showMessage(`Settings updated`, 'positive');
 	}
 }
 

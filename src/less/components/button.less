@@ -16,6 +16,10 @@
 	outline: none;
 	cursor: pointer;
 
+	&:hover {
+		background-color: @color-primary-light;
+	}
+
 	&--block {
 		display: block;
 		margin: .5em 0;
@@ -40,6 +44,7 @@
 
 .ButtonGroup {
 	display: flex;
+	margin-bottom: .5em;
 
 	.Button {
 		flex: 1;
@@ -49,4 +54,17 @@
 			margin-left: .5em;
 		}
 	}
+}
+
+.IconButton {
+	display: inline-block;
+	width: 20px;
+	height: 20px;
+	border: none;
+	background-color: transparent;
+	background-repeat: no-repeat;
+	background-position: center;
+	font-size: 0;
+	outline: none;
+	cursor: pointer;
 }

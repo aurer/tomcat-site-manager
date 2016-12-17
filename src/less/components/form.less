@@ -1,11 +1,10 @@
 .Form {
 	display: block;
 	max-width: 45em;
-	margin: auto;
+	margin: .5em auto;
 	overflow: hidden;
 	padding: 1em;
-	background-color: @color-neutral-darkest;
-	border: 1px solid @color-neutral-darker;
+	background-color: @color-neutral-darker;
 	border-radius: 3px;
 	box-shadow: 0 2px 20px fade(#000, 30%);
 
@@ -14,13 +13,14 @@
 
 		label {
 			float: left;
-			width: 15em;
+			width: 8em;
 			text-align: right;
 			padding: .5em;
 		}
 
 		.Form-inputs {
-			margin-left: 17em;
+			margin-left: 10em;
+			margin-bottom: 1.5em;
 
 			input {
 				display: block;
@@ -39,9 +39,21 @@
 				outline: none;
 
 				&:focus {
-					border-color: @color-secondary;
+					border-color: @color-primary-darker;
 				}
 			}
+		}
+	}
+
+	.Form-helper {
+		font-size: .9em;
+		letter-spacing: .05em;
+		margin: 1em 0;
+		div {
+		
+		}
+		span {
+			color: @color-neutral;
 		}
 	}
 

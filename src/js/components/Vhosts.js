@@ -8,13 +8,13 @@ var HTMLParser = require('fast-html-parser');
 
 class Vhosts extends React.Component {
 	constructor(props) {
-		super(props)
+		super(props);
 
 		this.state = {
-			loggedIn: true,
+			canSeeTomcatManager: true,
 			loading: false,
 			sites: []
-		}
+		};
 	}
 
 	componentWillMount() {
@@ -24,8 +24,7 @@ class Vhosts extends React.Component {
 	}
 
 	render() {
-
-		if (!this.state.loggedIn) {
+		if (!this.state.canSeeTomcatManager) {
 			return (
 				<p className="Message Message--negative">Failed to reach Tomcat manager - please ensure it is running</p>
 			)
@@ -39,7 +38,19 @@ class Vhosts extends React.Component {
 	}
 
 	handleVhostChange(action) {
-		console.log('Host manager changed', action);
+		let message = '';
+		switch (action.type) {
+			case 'start':
+				message = `Started ${action.data.site.name}`;
+			break;
+			case 'restart':
+				message = `Restarted ${action.data.site.name}`;
+			break;
+			case 'stop':
+				message = `Stopped ${action.data.site.name}`;
+			break;
+		}
+		this.props.showMessage(message, 'positive');
 	}
 
 	loginToHostManager() {
@@ -63,13 +74,12 @@ class Vhosts extends React.Component {
 			});
 
 			this.setState({
-				// loggedIn:true,
+				canSeeTomcatManager:true,
 				sites: managerSites
 			})
 		})
 		.catch((error, xhr) => {
-			console.error(error);
-			console.log(xhr);
+			console.error(error, xhr);
 		})
 	}
 

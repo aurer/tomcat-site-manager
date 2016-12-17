@@ -6,6 +6,10 @@ import Vhosts from './Vhosts';
 class Popup extends React.Component {
 	constructor(props) {
 		super(props);
+		this.state = {
+			message: null,
+			type: null
+		}
 	}
 
 	render() {
@@ -16,9 +20,17 @@ class Popup extends React.Component {
 					<Link activeClassName="is-active" className="Nav-item" to="sites.html">Sites</Link>
 					<Link activeClassName="is-active" className="Nav-item" to="settings.html">Settings</Link>
 				</nav>
-				{this.props.children}
+				{this.state.message && <div className="Message Message--positive">{this.state.message}</div>}
+				{React.cloneElement(this.props.children, { showMessage: this.handleShowMessage.bind(this) })}
 			</section>
 		)
+	}
+
+	handleShowMessage(message, type) {
+		this.setState({ message, type	});
+		setTimeout(() => {
+			this.setState({message: null, type: null});
+		}, 3000);
 	}
 }
 

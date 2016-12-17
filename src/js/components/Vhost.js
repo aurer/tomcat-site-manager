@@ -7,7 +7,7 @@ class Vhost extends React.Component {
 		this.state = {
 			active: false,
 			fetching: false,
-			action: null
+			site: this.props.site
 		};
 	}
 
@@ -34,9 +34,9 @@ class Vhost extends React.Component {
 				<i className="Vhost-indicator"></i>
 				<span className="Vhost-name">{site.name}</span>
 				<span className="Vhost-actions">
-					{this.state.active || <button className="Vhost-actions-start" onClick={this.handleStart.bind(this)}>Start</button> }
-					{this.state.active && <button className="Vhost-actions-restart" onClick={this.handleRestart.bind(this)}>Restart</button> }
-					{this.state.active && <button className="Vhost-actions-stop" onClick={this.handleStop.bind(this)}>Stop</button> }
+					{this.state.active || <button className="IconButton Vhost-actions-start" onClick={this.handleStart.bind(this)}>Start</button> }
+					{this.state.active && <button className="IconButton Vhost-actions-restart" onClick={this.handleRestart.bind(this)}>Restart</button> }
+					{this.state.active && <button className="IconButton Vhost-actions-stop" onClick={this.handleStop.bind(this)}>Stop</button> }
 				</span>
 			</div>
 		)
@@ -46,8 +46,7 @@ class Vhost extends React.Component {
 		let self = this;
 		this.setState({fetching: true, action: 'start'})
 		setTimeout(function() {
-			self.setState({fetching: false, action: null})
-			self.setState({active: true})
+			self.setState({fetching: false, active: true, action: null});
 			let action = {
 				type: 'start',
 				data: self.state
@@ -60,7 +59,7 @@ class Vhost extends React.Component {
 		let self = this;
 		this.setState({fetching: true, action: 'restart'})
 		setTimeout(function() {
-			self.setState({fetching: false, action: null})
+			self.setState({fetching: false, action: null});
 			let action = {
 				type: 'restart',
 				data: self.state
@@ -73,8 +72,7 @@ class Vhost extends React.Component {
 		let self = this;
 		this.setState({fetching: true, action: 'stop'})
 		setTimeout(function() {
-			self.setState({fetching: false, action: null})
-			self.setState({active: false})
+			self.setState({fetching: false, active: false, action: null});
 			let action = {
 				type: 'stop',
 				data: self.state

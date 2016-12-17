@@ -28078,7 +28078,13 @@ var Popup = function (_React$Component) {
 	function Popup(props) {
 		_classCallCheck(this, Popup);
 
-		return _possibleConstructorReturn(this, (Popup.__proto__ || Object.getPrototypeOf(Popup)).call(this, props));
+		var _this = _possibleConstructorReturn(this, (Popup.__proto__ || Object.getPrototypeOf(Popup)).call(this, props));
+
+		_this.state = {
+			message: null,
+			type: null
+		};
+		return _this;
 	}
 
 	_createClass(Popup, [{
@@ -28106,8 +28112,23 @@ var Popup = function (_React$Component) {
 						'Settings'
 					)
 				),
-				this.props.children
+				this.state.message && _react2.default.createElement(
+					'div',
+					{ className: 'Message Message--positive' },
+					this.state.message
+				),
+				_react2.default.cloneElement(this.props.children, { showMessage: this.handleShowMessage.bind(this) })
 			);
+		}
+	}, {
+		key: 'handleShowMessage',
+		value: function handleShowMessage(message, type) {
+			var _this2 = this;
+
+			this.setState({ message: message, type: type });
+			setTimeout(function () {
+				_this2.setState({ message: null, type: null });
+			}, 3000);
 		}
 	}]);
 
@@ -28116,7 +28137,7 @@ var Popup = function (_React$Component) {
 
 exports.default = Popup;
 
-},{"../store":257,"./Vhosts":255,"react":244,"react-router":213}],251:[function(require,module,exports){
+},{"../store":258,"./Vhosts":256,"react":244,"react-router":213}],251:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -28242,6 +28263,7 @@ var Settings = function (_React$Component) {
 
 			Store.save('settings', newState);
 			this.setState(newState);
+			this.props.showMessage('Settings updated', 'positive');
 		}
 	}]);
 
@@ -28250,7 +28272,7 @@ var Settings = function (_React$Component) {
 
 exports.default = Settings;
 
-},{"../store":257,"react":244}],252:[function(require,module,exports){
+},{"../store":258,"react":244}],252:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -28323,11 +28345,24 @@ var Site = function (_React$Component) {
 					{ className: 'Site-actions' },
 					_react2.default.createElement(
 						'button',
-						{ onClick: this.handleRemoveSite.bind(this) },
-						'x'
+						{ className: 'IconButton Site-actions-edit', onClick: this.handleEditSite.bind(this) },
+						'edit'
+					),
+					_react2.default.createElement(
+						'button',
+						{ className: 'IconButton Site-actions-remove', onClick: this.handleRemoveSite.bind(this) },
+						'remove'
 					)
 				)
 			);
+		}
+	}, {
+		key: 'handleEditSite',
+		value: function handleEditSite(e) {
+			this.props.onChange({
+				action: 'edit',
+				index: this.props.index
+			});
 		}
 	}, {
 		key: 'handleRemoveSite',
@@ -28344,7 +28379,7 @@ var Site = function (_React$Component) {
 
 exports.default = Site;
 
-},{"../store":257,"react":244}],253:[function(require,module,exports){
+},{"../store":258,"react":244}],253:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -28375,6 +28410,273 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+var settings = Store.load('settings');
+
+var SiteForm = function (_React$Component) {
+	_inherits(SiteForm, _React$Component);
+
+	function SiteForm(props) {
+		_classCallCheck(this, SiteForm);
+
+		var _this = _possibleConstructorReturn(this, (SiteForm.__proto__ || Object.getPrototypeOf(SiteForm)).call(this, props));
+
+		_this.state = {
+			nameValue: '',
+			aliasesValue: '',
+			rootValue: '',
+			nameHelper: '',
+			aliasesHelper: '',
+			rootHelper: '',
+			siteId: null
+		};
+		return _this;
+	}
+
+	_createClass(SiteForm, [{
+		key: 'componentDidMount',
+		value: function componentDidMount() {
+			this.handleUpdateInputs(this.props);
+		}
+	}, {
+		key: 'componentWillReceiveProps',
+		value: function componentWillReceiveProps(nextProps) {
+			this.handleUpdateInputs(nextProps);
+		}
+	}, {
+		key: 'render',
+		value: function render() {
+			return _react2.default.createElement(
+				'form',
+				{ className: 'Form', onSubmit: this.handleSubmit.bind(this) },
+				_react2.default.createElement(
+					'div',
+					{ className: 'Form-field' },
+					_react2.default.createElement(
+						'label',
+						null,
+						'Site name'
+					),
+					_react2.default.createElement(
+						'div',
+						{ className: 'Form-inputs' },
+						_react2.default.createElement('input', { type: 'text', name: 'name', autoComplete: 'off', onChange: this.handleNameValue.bind(this), value: this.state.nameValue, autoFocus: true }),
+						this.state.nameHelper
+					)
+				),
+				_react2.default.createElement(
+					'div',
+					{ className: 'Form-field' },
+					_react2.default.createElement(
+						'label',
+						null,
+						'Site aliases'
+					),
+					_react2.default.createElement(
+						'div',
+						{ className: 'Form-inputs' },
+						_react2.default.createElement('input', { type: 'text', name: 'aliases', autoComplete: 'off', onChange: this.handleAliasesValue.bind(this), value: this.state.aliasesValue }),
+						this.state.aliasesHelper
+					)
+				),
+				_react2.default.createElement(
+					'div',
+					{ className: 'Form-field' },
+					_react2.default.createElement(
+						'label',
+						null,
+						'Site root'
+					),
+					_react2.default.createElement(
+						'div',
+						{ className: 'Form-inputs' },
+						_react2.default.createElement('input', { type: 'text', name: 'root', onChange: this.handleRootValue.bind(this), value: this.state.rootValue }),
+						this.state.rootHelper
+					)
+				),
+				_react2.default.createElement(
+					'div',
+					{ className: 'Form-field' },
+					this.state.siteId && _react2.default.createElement('input', { type: 'hidden', name: 'siteId', value: this.state.siteId }),
+					_react2.default.createElement('input', { type: 'submit', className: 'Button', value: 'Save' })
+				)
+			);
+		}
+	}, {
+		key: 'handleUpdateInputs',
+		value: function handleUpdateInputs(props) {
+			if (props.site) {
+				var site = props.site.front;
+				this.setState({
+					nameValue: site.name,
+					aliasesValue: site.aliases,
+					rootValue: site.root,
+					nameHelper: this.buildNameHelper(site.name),
+					aliasesHelper: this.buildAliasesHelper(site.aliases, site.name),
+					rootHelper: this.buildRootHelper(site.root),
+					siteId: site.id
+				});
+			}
+		}
+	}, {
+		key: 'handleNameValue',
+		value: function handleNameValue(e) {
+			var input = e.target;
+			var nameValue = this.sanitise(input.value);
+			var nameHelper = this.buildNameHelper(nameValue);
+			var rootHelper = this.buildRootHelper(nameValue);
+			this.setState({
+				rootValue: nameValue,
+				nameValue: nameValue,
+				nameHelper: nameHelper,
+				rootHelper: rootHelper
+			});
+		}
+	}, {
+		key: 'handleAliasesValue',
+		value: function handleAliasesValue(e) {
+			var input = e.target;
+			var aliasesValue = input.value;
+			var aliasesHelper = this.buildAliasesHelper(aliasesValue);
+			this.setState({
+				aliasesValue: aliasesValue,
+				aliasesHelper: aliasesHelper
+			});
+		}
+	}, {
+		key: 'handleRootValue',
+		value: function handleRootValue(e) {
+			var input = e.target;
+			var rootValue = input.value;
+			var helper = this.buildRootHelper(rootValue);
+			this.setState({
+				rootValue: rootValue,
+				rootHelper: helper
+			});
+		}
+	}, {
+		key: 'buildNameHelper',
+		value: function buildNameHelper(value) {
+			var helper = '';
+			if (value.length) {
+				helper = _react2.default.createElement(
+					'div',
+					{ className: 'Form-helper Form-helper--name' },
+					value,
+					_react2.default.createElement(
+						'span',
+						null,
+						'.',
+						settings.domain
+					)
+				);
+			}
+			return helper;
+		}
+	}, {
+		key: 'buildAliasesHelper',
+		value: function buildAliasesHelper(value, siteName) {
+			var helper = '';
+			var name = siteName || this.state.nameValue;
+			var domain = settings.domain;
+			if (value.length) {
+				var helperSpans = value.split(',').map(function (part) {
+					return part.replace(' ', '');
+				});
+				helper = _react2.default.createElement(
+					'div',
+					{ className: 'Form-helper Form-helper--alias' },
+					helperSpans.map(function (alias, i) {
+						return _react2.default.createElement(
+							'div',
+							{ key: i },
+							alias,
+							_react2.default.createElement(
+								'span',
+								null,
+								'.',
+								name,
+								'.',
+								domain
+							),
+							' '
+						);
+					})
+				);
+			}
+			return helper;
+		}
+	}, {
+		key: 'buildRootHelper',
+		value: function buildRootHelper(value) {
+			var helper = '';
+			if (value.length) {
+				helper = _react2.default.createElement(
+					'div',
+					{ className: 'Form-helper Form-helper--root' },
+					_react2.default.createElement(
+						'span',
+						null,
+						settings.root,
+						'/'
+					),
+					value
+				);
+			}
+			return helper;
+		}
+	}, {
+		key: 'sanitise',
+		value: function sanitise(value) {
+			return value.toLowerCase().replace('.', '').replace(/[\s]+/g, '-');
+		}
+	}, {
+		key: 'handleSubmit',
+		value: function handleSubmit(e) {
+			this.props.onSubmit(e);
+			e.preventDefault();
+		}
+	}]);
+
+	return SiteForm;
+}(_react2.default.Component);
+
+exports.default = SiteForm;
+
+},{"../store":258,"./Site":252,"react":244}],254:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _store = require('../store');
+
+var Store = _interopRequireWildcard(_store);
+
+var _Site = require('./Site');
+
+var _Site2 = _interopRequireDefault(_Site);
+
+var _SiteForm = require('./SiteForm');
+
+var _SiteForm2 = _interopRequireDefault(_SiteForm);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
 var Sites = function (_React$Component) {
 	_inherits(Sites, _React$Component);
 
@@ -28383,11 +28685,11 @@ var Sites = function (_React$Component) {
 
 		var _this = _possibleConstructorReturn(this, (Sites.__proto__ || Object.getPrototypeOf(Sites)).call(this, props));
 
-		_this.state = { sites: Store.load('sites') };
-		console.log('Wating for window event');
-		window.addEventListener('storage', function (e) {
-			console.log('Storage', e);
-		});
+		_this.state = {
+			sites: Store.load('sites'),
+			activeSite: null,
+			showForm: false
+		};
 		return _this;
 	}
 
@@ -28402,56 +28704,25 @@ var Sites = function (_React$Component) {
 				'section',
 				{ className: 'Section Section--sites' },
 				_react2.default.createElement(
-					'form',
-					{ className: 'Form', onSubmit: this.handleAddSiteSubmit.bind(this) },
+					'div',
+					{ className: 'ButtonGroup' },
 					_react2.default.createElement(
-						'div',
-						{ className: 'Form-field' },
-						_react2.default.createElement(
-							'label',
-							null,
-							'Site name'
-						),
-						_react2.default.createElement(
-							'div',
-							{ className: 'Form-inputs' },
-							_react2.default.createElement('input', { type: 'text', name: 'name' })
-						)
+						'a',
+						{ className: 'Button Button', onClick: this.toggleForm.bind(this) },
+						'Add site'
 					),
 					_react2.default.createElement(
-						'div',
-						{ className: 'Form-field' },
-						_react2.default.createElement(
-							'label',
-							null,
-							'Site aliases'
-						),
-						_react2.default.createElement(
-							'div',
-							{ className: 'Form-inputs' },
-							_react2.default.createElement('input', { type: 'text', name: 'aliases' })
-						)
+						'a',
+						{ disabled: true, className: 'Button Button--secondary', onClick: this.handleImportSites.bind(this) },
+						'Import sites'
 					),
 					_react2.default.createElement(
-						'div',
-						{ className: 'Form-field' },
-						_react2.default.createElement(
-							'label',
-							null,
-							'Site root'
-						),
-						_react2.default.createElement(
-							'div',
-							{ className: 'Form-inputs' },
-							_react2.default.createElement('input', { type: 'text', name: 'root' })
-						)
-					),
-					_react2.default.createElement(
-						'div',
-						{ className: 'Form-field' },
-						_react2.default.createElement('input', { type: 'submit', className: 'Button', value: 'Add site' })
+						'a',
+						{ disabled: true, className: 'Button Button--secondary', onClick: this.handleExportSites.bind(this) },
+						'Export sites'
 					)
 				),
+				this.state.showForm && _react2.default.createElement(_SiteForm2.default, { site: this.state.activeSite, onSubmit: this.handleSubmit.bind(this) }),
 				_react2.default.createElement(
 					'table',
 					{ className: 'Sites' },
@@ -28482,43 +28753,94 @@ var Sites = function (_React$Component) {
 						'tbody',
 						null,
 						sites.map(function (site, i) {
-							return _react2.default.createElement(_Site2.default, { key: site.id, site: site, index: i, onChange: _this2.handleRemoveSite.bind(_this2) });
+							return _react2.default.createElement(_Site2.default, { key: site.id, site: site, index: i, onChange: _this2.handleChangeSite.bind(_this2) });
 						})
 					)
 				)
 			);
 		}
 	}, {
-		key: 'handleAddSiteSubmit',
-		value: function handleAddSiteSubmit(e) {
+		key: 'toggleForm',
+		value: function toggleForm() {
+			this.setState({ showForm: !this.state.showForm });
+		}
+	}, {
+		key: 'handleSubmit',
+		value: function handleSubmit(e) {
 			e.preventDefault();
-			var sites = this.state.sites;
 			var form = e.target;
-			var newSite = {
-				id: +new Date(),
+			var sites = this.state.sites;
+
+			var siteData = {
 				name: form.name.value,
 				aliases: form.aliases.value,
 				root: form.root.value
 			};
-			sites.push(newSite);
-			Store.save('sites', sites);
-			var newState = Object.assign({}, this.state, { sites: sites });
-			this.setState(newState);
 
+			// Update existing site
+			if (form.siteId) {
+				(function () {
+					var siteId = parseInt(form.siteId.value);
+					sites = sites.map(function (site) {
+						if (site.id == siteId) {
+							return Object.assign({}, site, siteData);
+						}
+						return site;
+					});
+				})();
+			} else {
+				siteData.id = +new Date();
+				sites.push(siteData);
+			}
+
+			var newState = Object.assign({}, this.state, { sites: sites }, { showForm: false });
+			this.setState(newState);
 			form.name.value = '';
 			form.aliases.value = '';
 			form.root.value = '';
+			Store.save('sites', sites);
+
+			if (form.siteId) {
+				this.props.showMessage('Updated ' + siteData.name + ' details', 'positive');
+			} else {
+				this.props.showMessage('Added ' + siteData.name + ' to sites', 'positive');
+			}
 		}
 	}, {
-		key: 'handleRemoveSite',
-		value: function handleRemoveSite(action) {
-			var newSites = this.state.sites.filter(function (_, i) {
+		key: 'handleChangeSite',
+		value: function handleChangeSite(action) {
+			var site = this.state.sites.find(function (_, i) {
+				return i == action.index;
+			});
+			var otherSites = this.state.sites.filter(function (_, i) {
 				return i != action.index;
 			});
-			Store.save('sites', newSites);
-			this.setState({
-				sites: newSites
-			});
+
+			switch (action.action) {
+				case 'edit':
+					this.setState({
+						showForm: true,
+						activeSite: site
+					});
+					break;
+				case 'remove':
+					Store.save('sites', otherSites);
+					this.setState({
+						sites: otherSites
+					});
+					this.props.showMessage('Removed ' + site.name + ' from sites', 'positive');
+					break;
+			}
+		}
+	}, {
+		key: 'handleImportSites',
+		value: function handleImportSites() {
+			console.log('Import sites');
+		}
+	}, {
+		key: 'handleExportSites',
+		value: function handleExportSites() {
+			console.log('Export sites');
 		}
 	}]);
 
@@ -28527,7 +28849,7 @@ var Sites = function (_React$Component) {
 
 exports.default = Sites;
 
-},{"../store":257,"./Site":252,"react":244}],254:[function(require,module,exports){
+},{"../store":258,"./Site":252,"./SiteForm":253,"react":244}],255:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -28559,7 +28881,7 @@ var Vhost = function (_React$Component) {
 		_this.state = {
 			active: false,
 			fetching: false,
-			action: null
+			site: _this.props.site
 		};
 		return _this;
 	}
@@ -28598,17 +28920,17 @@ var Vhost = function (_React$Component) {
 					{ className: 'Vhost-actions' },
 					this.state.active || _react2.default.createElement(
 						'button',
-						{ className: 'Vhost-actions-start', onClick: this.handleStart.bind(this) },
+						{ className: 'IconButton Vhost-actions-start', onClick: this.handleStart.bind(this) },
 						'Start'
 					),
 					this.state.active && _react2.default.createElement(
 						'button',
-						{ className: 'Vhost-actions-restart', onClick: this.handleRestart.bind(this) },
+						{ className: 'IconButton Vhost-actions-restart', onClick: this.handleRestart.bind(this) },
 						'Restart'
 					),
 					this.state.active && _react2.default.createElement(
 						'button',
-						{ className: 'Vhost-actions-stop', onClick: this.handleStop.bind(this) },
+						{ className: 'IconButton Vhost-actions-stop', onClick: this.handleStop.bind(this) },
 						'Stop'
 					)
 				)
@@ -28620,8 +28942,7 @@ var Vhost = function (_React$Component) {
 			var self = this;
 			this.setState({ fetching: true, action: 'start' });
 			setTimeout(function () {
-				self.setState({ fetching: false, action: null });
-				self.setState({ active: true });
+				self.setState({ fetching: false, active: true, action: null });
 				var action = {
 					type: 'start',
 					data: self.state
@@ -28649,8 +28970,7 @@ var Vhost = function (_React$Component) {
 			var self = this;
 			this.setState({ fetching: true, action: 'stop' });
 			setTimeout(function () {
-				self.setState({ fetching: false, action: null });
-				self.setState({ active: false });
+				self.setState({ fetching: false, active: false, action: null });
 				var action = {
 					type: 'stop',
 					data: self.state
@@ -28665,7 +28985,7 @@ var Vhost = function (_React$Component) {
 
 exports.default = Vhost;
 
-},{"react":244}],255:[function(require,module,exports){
+},{"react":244}],256:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -28713,7 +29033,7 @@ var Vhosts = function (_React$Component) {
 		var _this = _possibleConstructorReturn(this, (Vhosts.__proto__ || Object.getPrototypeOf(Vhosts)).call(this, props));
 
 		_this.state = {
-			loggedIn: true,
+			canSeeTomcatManager: true,
 			loading: false,
 			sites: []
 		};
@@ -28732,7 +29052,7 @@ var Vhosts = function (_React$Component) {
 		value: function render() {
 			var _this2 = this;
 
-			if (!this.state.loggedIn) {
+			if (!this.state.canSeeTomcatManager) {
 				return _react2.default.createElement(
 					'p',
 					{ className: 'Message Message--negative' },
@@ -28751,7 +29071,19 @@ var Vhosts = function (_React$Component) {
 	}, {
 		key: 'handleVhostChange',
 		value: function handleVhostChange(action) {
-			console.log('Host manager changed', action);
+			var message = '';
+			switch (action.type) {
+				case 'start':
+					message = 'Started ' + action.data.site.name;
+					break;
+				case 'restart':
+					message = 'Restarted ' + action.data.site.name;
+					break;
+				case 'stop':
+					message = 'Stopped ' + action.data.site.name;
+					break;
+			}
+			this.props.showMessage(message, 'positive');
 		}
 	}, {
 		key: 'loginToHostManager',
@@ -28777,12 +29109,11 @@ var Vhosts = function (_React$Component) {
 				});
 
 				_this3.setState({
-					// loggedIn:true,
+					canSeeTomcatManager: true,
 					sites: managerSites
 				});
 			}).catch(function (error, xhr) {
-				console.error(error);
-				console.log(xhr);
+				console.error(error, xhr);
 			});
 		}
 	}, {
@@ -28809,7 +29140,7 @@ var Vhosts = function (_React$Component) {
 
 exports.default = Vhosts;
 
-},{"../store":257,"./Vhost":254,"fast-html-parser":11,"qwest":59,"react":244,"react-router":213}],256:[function(require,module,exports){
+},{"../store":258,"./Vhost":255,"fast-html-parser":11,"qwest":59,"react":244,"react-router":213}],257:[function(require,module,exports){
 'use strict';
 
 var _react = require('react');
@@ -28852,7 +29183,7 @@ _reactDom2.default.render(_react2.default.createElement(
 	)
 ), document.querySelector('main'));
 
-},{"./components/Popup":250,"./components/Settings":251,"./components/Sites":253,"./components/Vhosts":255,"react":244,"react-dom":60,"react-router":213}],257:[function(require,module,exports){
+},{"./components/Popup":250,"./components/Settings":251,"./components/Sites":254,"./components/Vhosts":256,"react":244,"react-dom":60,"react-router":213}],258:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -28886,4 +29217,4 @@ if (localStorage.length == 0) {
 	localStorage.setItem('sites', JSON.stringify(defaultValues.sites));
 };
 
-},{}]},{},[256])
+},{}]},{},[257])
