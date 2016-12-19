@@ -19,10 +19,9 @@
 		}
 
 		.Form-inputs {
-			margin-left: 10em;
 			margin-bottom: 1.5em;
 
-			input {
+			input, textarea {
 				display: block;
 				width: 100%;
 				max-width: 30em;
@@ -42,6 +41,18 @@
 					border-color: @color-primary-darker;
 				}
 			}
+
+			input[type=checkbox], input[type=radio] {
+				display: inline;
+				width: auto;
+				margin: .6em 0;
+				border: none;
+				padding: 0;
+			}
+		}
+
+		label + .Form-inputs {
+			margin-left: 10em;
 		}
 	}
 
@@ -50,7 +61,7 @@
 		letter-spacing: .05em;
 		margin: 1em 0;
 		div {
-		
+
 		}
 		span {
 			color: @color-neutral;

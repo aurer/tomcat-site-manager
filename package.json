@@ -19,7 +19,6 @@
     "browser-sync": "^2.18.2",
     "copy": "^0.3.0",
     "del": "^2.2.2",
-    "fast-html-parser": "^1.0.1",
     "gulp": "^3.9.1",
     "gulp-babel": "^6.1.2",
     "gulp-browserify": "^0.5.1",

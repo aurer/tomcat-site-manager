@@ -23,10 +23,6 @@ class SiteForm extends React.Component {
 		this.handleUpdateInputs(this.props);
 	}
 
-	componentWillReceiveProps(nextProps) {
-		this.handleUpdateInputs(nextProps);
-	}
-
 	render() {
 		return (
 			<form className="Form" onSubmit={this.handleSubmit.bind(this)}>
@@ -54,6 +50,7 @@ class SiteForm extends React.Component {
 				<div className="Form-field">
 					{ this.state.siteId && <input type="hidden" name="siteId" value={this.state.siteId}/>}
 					<input type="submit" className="Button" value="Save"/>
+					<button className="Button Button--secondary" onClick={this.props.closeForm}>Cancel</button>
 				</div>
 			</form>
 		)
@@ -61,7 +58,7 @@ class SiteForm extends React.Component {
 
 	handleUpdateInputs(props) {
 		if (props.site) {
-			let site = props.site.front;
+			let site = props.site;
 			this.setState({
 				nameValue: site.name,
 				aliasesValue: site.aliases,

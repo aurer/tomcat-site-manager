@@ -4,8 +4,6 @@ import { Link, Redirect } from 'react-router';
 import * as Store from '../store';
 import Vhost from './Vhost';
 
-var HTMLParser = require('fast-html-parser');
-
 class Vhosts extends React.Component {
 	constructor(props) {
 		super(props);
@@ -13,21 +11,24 @@ class Vhosts extends React.Component {
 		this.state = {
 			canSeeTomcatManager: true,
 			loading: false,
-			sites: []
+			sites: [],
+			managerSites: []
 		};
 	}
 
 	componentWillMount() {
-		this.loginToHostManager();
 		let sites = Store.load('sites');
+		this.loginToHostManager();
 		this.setState({sites});
 	}
 
 	render() {
 		if (!this.state.canSeeTomcatManager) {
-			return (
-				<p className="Message Message--negative">Failed to reach Tomcat manager - please ensure it is running</p>
-			)
+			return (<p className="Message Message--negative">Failed to reach Tomcat manager - please ensure it is running</p>)
+		}
+
+		if (this.state.sites.length < 1) {
+			return (<p className="Message Message--info">You dont have any sites defined yet<br/><br/><Link to="sites.html">Add one now</Link></p>)
 		}
 
 		return (
@@ -74,8 +75,8 @@ class Vhosts extends React.Component {
 			});
 
 			this.setState({
-				canSeeTomcatManager:true,
-				sites: managerSites
+				canSeeTomcatManager: true,
+				managerSites
 			})
 		})
 		.catch((error, xhr) => {

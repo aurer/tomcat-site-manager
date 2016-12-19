@@ -2,8 +2,8 @@
 	padding: @space-sm @space;
 	display: block;
 	margin: .5em 0;
-	background-color: @color-neutral-light;
-	color: @color-neutral-darker;
+	background-color: lighten(@color-alert-ambiguous, 25%);
+	color: darken(@color-alert-ambiguous, 30%);
 	text-align: center;
 	font-weight: bold;
 
@@ -12,7 +12,8 @@
 		text-decoration: underline;
 	}
 
-	&--informative {
+	&--informative,
+	&--info {
 		background-color: lighten(@color-alert-neutral, 25%);
 		color: darken(@color-alert-neutral, 30%);
 
@@ -21,7 +22,8 @@
 		}
 	}
 
-	&--positive {
+	&--positive,
+	&--success {
 		background-color: lighten(@color-alert-positive, 25%);
 		color: darken(@color-alert-positive, 30%);
 
@@ -39,7 +41,8 @@
 		}
 	}
 
-	&--negative {
+	&--negative,
+	&--error {
 		background-color: lighten(@color-alert-negative, 25%);
 		color: darken(@color-alert-negative, 30%);
 

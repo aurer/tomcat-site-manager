@@ -12,6 +12,13 @@ class Popup extends React.Component {
 		}
 	}
 
+	componentWillMount() {
+		let settings = Store.load('settings');
+		// if (settings.domain.length < 1 || settings.root.length < 1) {
+			<Redirect to="settings.html" />
+		// }
+	}
+
 	render() {
 		return (
 			<section className="Section Section--popup">
