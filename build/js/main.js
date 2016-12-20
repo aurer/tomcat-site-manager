@@ -27856,11 +27856,24 @@ var ExportForm = function (_React$Component) {
 					_react2.default.createElement(
 						'div',
 						{ className: 'Form-inputs' },
-						_react2.default.createElement('textarea', { name: 'data', id: '', cols: '30', rows: '10', defaultValue: data })
+						_react2.default.createElement('textarea', {
+							name: 'data',
+							cols: '30',
+							rows: '10',
+							autoFocus: true,
+							defaultValue: data,
+							onKeyUp: this.handleKeys.bind(this) })
 					)
 				),
 				_react2.default.createElement('input', { type: 'submit', value: 'Done' })
 			);
+		}
+	}, {
+		key: 'handleKeys',
+		value: function handleKeys(e) {
+			if (e.keyCode == 27) {
+				this.props.onCancel();
+			}
 		}
 	}, {
 		key: 'handleSubmit',
@@ -27899,13 +27912,23 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var ImportForm = function (_React$Component) {
 	_inherits(ImportForm, _React$Component);
 
-	function ImportForm() {
+	function ImportForm(props) {
 		_classCallCheck(this, ImportForm);
 
-		return _possibleConstructorReturn(this, (ImportForm.__proto__ || Object.getPrototypeOf(ImportForm)).apply(this, arguments));
+		var _this = _possibleConstructorReturn(this, (ImportForm.__proto__ || Object.getPrototypeOf(ImportForm)).call(this, props));
+
+		_this.state = {
+			error: null
+		};
+		return _this;
 	}
 
 	_createClass(ImportForm, [{
+		key: "componentWillUnmount",
+		value: function componentWillUnmount() {
+			this.setState({ error: null });
+		}
+	}, {
 		key: "render",
 		value: function render() {
 			return _react2.default.createElement(
@@ -27940,6 +27963,11 @@ var ImportForm = function (_React$Component) {
 						)
 					)
 				),
+				this.state.error && _react2.default.createElement(
+					"div",
+					{ className: "Form-error" },
+					this.state.error
+				),
 				_react2.default.createElement(
 					"button",
 					{ type: "submit", className: "Button Button--secondary", onClick: this.props.onCancel },
@@ -27966,7 +27994,8 @@ var ImportForm = function (_React$Component) {
 			try {
 				data = JSON.parse(data);
 			} catch (e) {
-				return alert(e);
+				var message = "There was a propblem with the JSON you entered: " + e.toString();
+				return this.setState({ error: message });
 			}
 
 			// Construct sites array
@@ -28513,7 +28542,8 @@ var SiteForm = function (_React$Component) {
 			nameHelper: '',
 			aliasesHelper: '',
 			rootHelper: '',
-			siteId: null
+			siteId: null,
+			error: null
 		};
 		return _this;
 	}
@@ -28522,6 +28552,11 @@ var SiteForm = function (_React$Component) {
 		key: 'componentDidMount',
 		value: function componentDidMount() {
 			this.handleUpdateInputs(this.props);
+		}
+	}, {
+		key: 'componentWillUnmount',
+		value: function componentWillUnmount() {
+			this.setState({ error: null });
 		}
 	}, {
 		key: 'render',
@@ -28578,6 +28613,11 @@ var SiteForm = function (_React$Component) {
 					'div',
 					{ className: 'Form-field' },
 					this.state.siteId && _react2.default.createElement('input', { type: 'hidden', name: 'siteId', value: this.state.siteId }),
+					this.state.error && _react2.default.createElement(
+						'div',
+						{ className: 'Form-error' },
+						this.state.error
+					),
 					_react2.default.createElement('input', { type: 'submit', className: 'Button', value: 'Save' }),
 					_react2.default.createElement(
 						'button',
@@ -28717,8 +28757,20 @@ var SiteForm = function (_React$Component) {
 	}, {
 		key: 'handleSubmit',
 		value: function handleSubmit(e) {
-			this.props.onSubmit(e);
 			e.preventDefault();
+			var form = e.target;
+
+			if (form.name.value == '') {
+				form.name.focus();
+				return this.setState({ error: 'Please specify a "Site name"' });
+			}
+
+			if (form.root.value == '') {
+				form.root.focus();
+				return this.setState({ error: 'Please specify a "Site root"' });
+			}
+
+			this.props.onSubmit(e);
 		}
 	}]);
 
@@ -28826,8 +28878,15 @@ var Sites = function (_React$Component) {
 					)
 				),
 				this.state.showSiteForm && _react2.default.createElement(_SiteForm2.default, { site: this.state.activeSite, onSubmit: this.handleNewSiteForm.bind(this), closeForm: this.closeSiteForm.bind(this) }),
-				this.state.showExportForm && _react2.default.createElement(_ExportForm2.default, { onSubmit: this.handleExportForm.bind(this) }),
-				this.state.showImportForm && _react2.default.createElement(_ImportForm2.default, { onSubmit: this.handleImportForm.bind(this), onCancel: this.closeImportForm.bind(this) }),
+				this.state.showExportForm && _react2.default.createElement(_ExportForm2.default, {
+					onSubmit: this.handleExportForm.bind(this),
+					onCancel: this.closeExportForm.bind(this)
+				}),
+				this.state.showImportForm && _react2.default.createElement(_ImportForm2.default, {
+					onSubmit: this.handleImportForm.bind(this),
+					onCancel: this.closeImportForm.bind(this),
+					onError: this.handleImportError.bind(this)
+				}),
 				this.state.showSiteForm || _react2.default.createElement(
 					'table',
 					{ className: 'Sites' },
@@ -28902,9 +28961,19 @@ var Sites = function (_React$Component) {
 			this.setState({ showSiteForm: false });
 		}
 	}, {
+		key: 'closeExportForm',
+		value: function closeExportForm() {
+			this.setState({ showExportForm: false });
+		}
+	}, {
 		key: 'closeImportForm',
 		value: function closeImportForm() {
 			this.setState({ showImportForm: false });
+		}
+	}, {
+		key: 'handleImportError',
+		value: function handleImportError(error) {
+			this.props.showMessage(error.toString(), 'negative');
 		}
 	}, {
 		key: 'handleNewSiteForm',

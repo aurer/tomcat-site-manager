@@ -10,12 +10,24 @@ class ExportForm extends React.Component {
 			<form method="post" className="Form" onSubmit={this.handleSubmit.bind(this)}>
 				<div className="Form-field">
 					<div className="Form-inputs">
-						<textarea name="data" id="" cols="30" rows="10" defaultValue={data}></textarea>
+						<textarea
+							name="data"
+							cols="30"
+							rows="10"
+							autoFocus
+							defaultValue={data}
+							onKeyUp={this.handleKeys.bind(this)}></textarea>
 					</div>
 				</div>
 				<input type="submit" value="Done"/>
 			</form>
 		)
+	}
+
+	handleKeys(e) {
+		if (e.keyCode == 27) {
+			this.props.onCancel();
+		}
 	}
 
 	handleSubmit(e) {

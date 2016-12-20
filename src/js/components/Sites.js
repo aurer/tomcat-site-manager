@@ -36,8 +36,15 @@ class Sites extends React.Component {
 				</div>
 
 				{this.state.showSiteForm && <SiteForm site={this.state.activeSite} onSubmit={this.handleNewSiteForm.bind(this)} closeForm={this.closeSiteForm.bind(this)} />}
-				{this.state.showExportForm && <ExportForm onSubmit={this.handleExportForm.bind(this)} />}
-				{this.state.showImportForm && <ImportForm onSubmit={this.handleImportForm.bind(this)} onCancel={this.closeImportForm.bind(this)} />}
+				{this.state.showExportForm && <ExportForm
+					onSubmit={this.handleExportForm.bind(this)}
+					onCancel={this.closeExportForm.bind(this)}
+					/>}
+				{this.state.showImportForm && <ImportForm
+					onSubmit={this.handleImportForm.bind(this)}
+					onCancel={this.closeImportForm.bind(this)}
+					onError={this.handleImportError.bind(this)}
+					/>}
 
 				{this.state.showSiteForm ||
 					<table className="Sites">
@@ -90,8 +97,16 @@ class Sites extends React.Component {
 		this.setState({showSiteForm: false});
 	}
 
+	closeExportForm() {
+		this.setState({showExportForm: false});
+	}
+
 	closeImportForm() {
 		this.setState({showImportForm: false});
+	}
+
+	handleImportError(error) {
+		this.props.showMessage(error.toString(), 'negative');
 	}
 
 	handleNewSiteForm(e) {

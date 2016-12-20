@@ -1,6 +1,17 @@
 import React from 'react';
 
 class ImportForm extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			error: null
+		};
+	}
+
+	componentWillUnmount() {
+		this.setState({error: null});
+	}
+
 	render() {
 		return(
 			<form method="post" className="Form" onSubmit={this.handleSubmit.bind(this)}>
@@ -21,6 +32,7 @@ class ImportForm extends React.Component {
 						</div>
 					</div>
 				</div>
+				{this.state.error && <div className="Form-error">{this.state.error}</div>}
 				<button type="submit" className="Button Button--secondary" onClick={this.props.onCancel}>Cancel</button>
 				<input type="submit" value="Import"/>
 			</form>
@@ -42,7 +54,8 @@ class ImportForm extends React.Component {
 		try {
 			data = JSON.parse(data);
 		} catch(e) {
-			return alert(e);
+			var message = "There was a propblem with the JSON you entered: " + e.toString();
+			return this.setState({error: message});
 		}
 
 		// Construct sites array

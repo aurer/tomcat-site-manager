@@ -15,12 +15,17 @@ class SiteForm extends React.Component {
 			nameHelper: '',
 			aliasesHelper: '',
 			rootHelper: '',
-			siteId: null
+			siteId: null,
+			error: null
 		}
 	}
 
 	componentDidMount() {
 		this.handleUpdateInputs(this.props);
+	}
+
+	componentWillUnmount() {
+		this.setState({error: null});
 	}
 
 	render() {
@@ -48,7 +53,8 @@ class SiteForm extends React.Component {
 					</div>
 				</div>
 				<div className="Form-field">
-					{ this.state.siteId && <input type="hidden" name="siteId" value={this.state.siteId}/>}
+					{ this.state.siteId && <input type="hidden" name="siteId" value={this.state.siteId}/> }
+					{ this.state.error && <div className="Form-error">{this.state.error}</div> }
 					<input type="submit" className="Button" value="Save"/>
 					<button className="Button Button--secondary" onClick={this.props.closeForm}>Cancel</button>
 				</div>
@@ -138,8 +144,20 @@ class SiteForm extends React.Component {
 	}
 
 	handleSubmit(e) {
-		this.props.onSubmit(e);
 		e.preventDefault();
+		let form = e.target;
+
+		if (form.name.value == '') {
+			form.name.focus();
+			return this.setState({error: 'Please specify a "Site name"'});
+		}
+
+		if (form.root.value == '') {
+			form.root.focus();
+			return this.setState({error: 'Please specify a "Site root"'});
+		}
+
+		this.props.onSubmit(e);
 	}
 }
 
