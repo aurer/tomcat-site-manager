@@ -11,9 +11,30 @@
 		text-decoration: none;
 		outline: none;
 		color: inherit;
+		cursor: pointer;
+		background-color: @color-neutral-darker;
+		transition: background-color .2s;
+
+		&:hover {
+			background-color: @color-neutral-dark;
+		}
 
 		&.is-active {
 			background-color: @color-secondary;
+		}
+	}
+}
+
+.Nav--base {
+	margin-bottom: 0;
+	box-shadow: 0 -2px 10px fade(#000, 30%);
+
+	.Nav-item {
+		background-color: @color-primary-darker;
+		padding: .5em;
+
+		&:hover {
+			background-color: @color-primary-dark;
 		}
 	}
 }

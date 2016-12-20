@@ -16,9 +16,8 @@
     "128": "img/icon128.png"
   },
 
-	"options_page":"settings.html",
 	"permissions": [
-    "http://localhost/",
-    "http://*.netxtra.local/"
+		"tabs",
+		"http://*/"
   ]
 }

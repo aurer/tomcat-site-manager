@@ -1,11 +1,12 @@
 import React from 'react';
 import * as Store from '../store';
 
+const SETTINGS = Store.load('settings');
+
 class Settings extends React.Component {
 	constructor(props) {
 		super(props);
-		this.state = Store.load('settings');
-		console.log(props.location);
+		this.state = SETTINGS;
 	}
 
 	render() {
@@ -72,7 +73,7 @@ class Settings extends React.Component {
 	}
 
 	sanitiseRootValue(value) {
-		return value.replace(/\s+/g, '').replace(/[\/\\]$/g, '');
+		return value.replace(/\s+/g, '').replace(/[\/\\]$/g, '') + '\\';
 	}
 }
 

@@ -3,6 +3,8 @@ import { Link, Redirect } from 'react-router';
 import * as Store from '../store';
 import Vhosts from './Vhosts';
 
+const SETTINGS = Store.load('settings');
+
 class Popup extends React.Component {
 	constructor(props) {
 		super(props);
@@ -13,10 +15,10 @@ class Popup extends React.Component {
 	}
 
 	componentWillMount() {
-		let settings = Store.load('settings');
-		// if (settings.domain.length < 1 || settings.root.length < 1) {
+		let settings = SETTINGS;
+		if (settings.domain.length < 1 || settings.root.length < 1) {
 			<Redirect to="settings.html" />
-		// }
+		}
 	}
 
 	render() {
@@ -29,6 +31,9 @@ class Popup extends React.Component {
 				</nav>
 				{this.state.message && <div className="Message Message--positive">{this.state.message}</div>}
 				{React.cloneElement(this.props.children, { showMessage: this.handleShowMessage.bind(this) })}
+				<nav className="Nav Nav--base">
+					<a className="Nav-item" onClick={this.openManager.bind(this)}>Open Host Manager</a>
+				</nav>
 			</section>
 		)
 	}
@@ -38,6 +43,10 @@ class Popup extends React.Component {
 		setTimeout(() => {
 			this.setState({message: null, type: null});
 		}, 3000);
+	}
+
+	openManager() {
+		chrome.tabs.create({url:'http://localhost:8080/host-manager/html/'});
 	}
 }
 

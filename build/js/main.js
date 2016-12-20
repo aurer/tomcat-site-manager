@@ -25742,6 +25742,8 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+var SITES = Store.load('sites');
+
 var ExportForm = function (_React$Component) {
 	_inherits(ExportForm, _React$Component);
 
@@ -25754,7 +25756,7 @@ var ExportForm = function (_React$Component) {
 	_createClass(ExportForm, [{
 		key: 'render',
 		value: function render() {
-			var data = JSON.stringify(Store.load('sites'));
+			var data = JSON.stringify(SITES);
 			return _react2.default.createElement(
 				'form',
 				{ method: 'post', className: 'Form', onSubmit: this.handleSubmit.bind(this) },
@@ -25783,7 +25785,7 @@ var ExportForm = function (_React$Component) {
 
 exports.default = ExportForm;
 
-},{"../store":246,"react":233}],237:[function(require,module,exports){
+},{"../store":247,"react":233}],237:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -25930,6 +25932,8 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+var SETTINGS = Store.load('settings');
+
 var Popup = function (_React$Component) {
 	_inherits(Popup, _React$Component);
 
@@ -25948,10 +25952,10 @@ var Popup = function (_React$Component) {
 	_createClass(Popup, [{
 		key: 'componentWillMount',
 		value: function componentWillMount() {
-			var settings = Store.load('settings');
-			// if (settings.domain.length < 1 || settings.root.length < 1) {
-			_react2.default.createElement(_reactRouter.Redirect, { to: 'settings.html' });
-			// }
+			var settings = SETTINGS;
+			if (settings.domain.length < 1 || settings.root.length < 1) {
+				_react2.default.createElement(_reactRouter.Redirect, { to: 'settings.html' });
+			}
 		}
 	}, {
 		key: 'render',
@@ -25983,7 +25987,16 @@ var Popup = function (_React$Component) {
 					{ className: 'Message Message--positive' },
 					this.state.message
 				),
-				_react2.default.cloneElement(this.props.children, { showMessage: this.handleShowMessage.bind(this) })
+				_react2.default.cloneElement(this.props.children, { showMessage: this.handleShowMessage.bind(this) }),
+				_react2.default.createElement(
+					'nav',
+					{ className: 'Nav Nav--base' },
+					_react2.default.createElement(
+						'a',
+						{ className: 'Nav-item', onClick: this.openManager.bind(this) },
+						'Open Host Manager'
+					)
+				)
 			);
 		}
 	}, {
@@ -25996,6 +26009,11 @@ var Popup = function (_React$Component) {
 				_this2.setState({ message: null, type: null });
 			}, 3000);
 		}
+	}, {
+		key: 'openManager',
+		value: function openManager() {
+			chrome.tabs.create({ url: 'http://localhost:8080/host-manager/html/' });
+		}
 	}]);
 
 	return Popup;
@@ -26003,7 +26021,7 @@ var Popup = function (_React$Component) {
 
 exports.default = Popup;
 
-},{"../store":246,"./Vhosts":244,"react":233,"react-router":202}],239:[function(require,module,exports){
+},{"../store":247,"./Vhosts":244,"react":233,"react-router":202}],239:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -26030,6 +26048,8 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+var SETTINGS = Store.load('settings');
+
 var Settings = function (_React$Component) {
 	_inherits(Settings, _React$Component);
 
@@ -26038,8 +26058,7 @@ var Settings = function (_React$Component) {
 
 		var _this = _possibleConstructorReturn(this, (Settings.__proto__ || Object.getPrototypeOf(Settings)).call(this, props));
 
-		_this.state = Store.load('settings');
-		console.log(props.location);
+		_this.state = SETTINGS;
 		return _this;
 	}
 
@@ -26144,7 +26163,7 @@ var Settings = function (_React$Component) {
 	}, {
 		key: 'sanitiseRootValue',
 		value: function sanitiseRootValue(value) {
-			return value.replace(/\s+/g, '').replace(/[\/\\]$/g, '');
+			return value.replace(/\s+/g, '').replace(/[\/\\]$/g, '') + '\\';
 		}
 	}]);
 
@@ -26153,7 +26172,7 @@ var Settings = function (_React$Component) {
 
 exports.default = Settings;
 
-},{"../store":246,"react":233}],240:[function(require,module,exports){
+},{"../store":247,"react":233}],240:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -26180,7 +26199,7 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var Settings = Store.load('settings');
+var SETTINGS = Store.load('settings');
 
 var Site = function (_React$Component) {
 	_inherits(Site, _React$Component);
@@ -26216,8 +26235,7 @@ var Site = function (_React$Component) {
 					_react2.default.createElement(
 						'span',
 						null,
-						Settings.root,
-						'/'
+						SETTINGS.root
 					),
 					this.state.root
 				),
@@ -26260,7 +26278,7 @@ var Site = function (_React$Component) {
 
 exports.default = Site;
 
-},{"../store":246,"react":233}],241:[function(require,module,exports){
+},{"../store":247,"react":233}],241:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -26291,7 +26309,7 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var settings = Store.load('settings');
+var SETTINGS = Store.load('settings');
 
 var SiteForm = function (_React$Component) {
 	_inherits(SiteForm, _React$Component);
@@ -26447,7 +26465,7 @@ var SiteForm = function (_React$Component) {
 						'span',
 						null,
 						'.',
-						settings.domain
+						SETTINGS.domain
 					)
 				);
 			}
@@ -26458,7 +26476,7 @@ var SiteForm = function (_React$Component) {
 		value: function buildAliasesHelper(value, siteName) {
 			var helper = '';
 			var name = siteName || this.state.nameValue;
-			var domain = settings.domain;
+			var domain = SETTINGS.domain;
 			if (value.length) {
 				var helperSpans = value.split(',').map(function (part) {
 					return part.replace(' ', '');
@@ -26497,8 +26515,7 @@ var SiteForm = function (_React$Component) {
 					_react2.default.createElement(
 						'span',
 						null,
-						settings.root,
-						'/'
+						SETTINGS.root
 					),
 					value
 				);
@@ -26523,7 +26540,7 @@ var SiteForm = function (_React$Component) {
 
 exports.default = SiteForm;
 
-},{"../store":246,"./Site":240,"react":233}],242:[function(require,module,exports){
+},{"../store":247,"./Site":240,"react":233}],242:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -26566,6 +26583,8 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+var SITES = Store.load('sites');
+
 var Sites = function (_React$Component) {
 	_inherits(Sites, _React$Component);
 
@@ -26575,7 +26594,7 @@ var Sites = function (_React$Component) {
 		var _this = _possibleConstructorReturn(this, (Sites.__proto__ || Object.getPrototypeOf(Sites)).call(this, props));
 
 		_this.state = {
-			sites: Store.load('sites'),
+			sites: SITES,
 			activeSite: null,
 			showSiteForm: false,
 			showExportForm: false,
@@ -26619,7 +26638,7 @@ var Sites = function (_React$Component) {
 						'Export sites'
 					)
 				),
-				this.state.showSiteForm && _react2.default.createElement(_SiteForm2.default, { site: this.state.activeSite, onSubmit: this.handleSubmit.bind(this), closeForm: this.closeSiteForm.bind(this) }),
+				this.state.showSiteForm && _react2.default.createElement(_SiteForm2.default, { site: this.state.activeSite, onSubmit: this.handleNewSiteForm.bind(this), closeForm: this.closeSiteForm.bind(this) }),
 				this.state.showExportForm && _react2.default.createElement(_ExportForm2.default, { onSubmit: this.handleExportForm.bind(this) }),
 				this.state.showImportForm && _react2.default.createElement(_ImportForm2.default, { onSubmit: this.handleImportForm.bind(this), onCancel: this.closeImportForm.bind(this) }),
 				this.state.showSiteForm || _react2.default.createElement(
@@ -26701,14 +26720,14 @@ var Sites = function (_React$Component) {
 			this.setState({ showImportForm: false });
 		}
 	}, {
-		key: 'handleSubmit',
-		value: function handleSubmit(e) {
+		key: 'handleNewSiteForm',
+		value: function handleNewSiteForm(e) {
 			e.preventDefault();
 			var form = e.target;
 			var sites = this.state.sites;
 
 			var siteData = {
-				name: form.name.value,
+				name: form.name.value.toLowerCase(),
 				aliases: form.aliases.value,
 				root: form.root.value
 			};
@@ -26750,7 +26769,7 @@ var Sites = function (_React$Component) {
 	}, {
 		key: 'handleImportForm',
 		value: function handleImportForm(data, overwrite) {
-			var sites = Store.load('sites');
+			var sites = SITES;
 
 			sites = overwrite ? data.sites : sites.concat(data.sites);
 			sites = this.removeDuplicateSites(sites);
@@ -26806,7 +26825,7 @@ var Sites = function (_React$Component) {
 
 exports.default = Sites;
 
-},{"../store":246,"./ExportForm":236,"./ImportForm":237,"./Site":240,"./SiteForm":241,"react":233}],243:[function(require,module,exports){
+},{"../store":247,"./ExportForm":236,"./ImportForm":237,"./Site":240,"./SiteForm":241,"react":233}],243:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -26818,6 +26837,12 @@ var _createClass = function () { function defineProperties(target, props) { for 
 var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
+
+var _qwest = require('qwest');
+
+var _qwest2 = _interopRequireDefault(_qwest);
+
+var _helpers = require('../helpers');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -26838,17 +26863,30 @@ var Vhost = function (_React$Component) {
 		_this.state = {
 			active: false,
 			fetching: false,
-			site: _this.props.site
+			action: null,
+			csrfToken: _this.props.csrfToken
 		};
 		return _this;
 	}
 
 	_createClass(Vhost, [{
+		key: 'siteUrl',
+		value: function siteUrl() {
+			return 'http://' + this.props.site.name + '.' + this.props.settings.domain;
+		}
+	}, {
+		key: 'componentWillReceiveProps',
+		value: function componentWillReceiveProps(nextProps) {
+			this.props = nextProps;
+			this.checkSiteInManager();
+		}
+	}, {
 		key: 'render',
 		value: function render() {
 			var site = this.props.site;
 			var index = this.props.index;
 			var className = "Vhost";
+
 			className += this.state.fetching ? ' is-fetching' : this.state.active ? ' is-active' : '';
 
 			switch (this.state.action) {
@@ -26896,44 +26934,85 @@ var Vhost = function (_React$Component) {
 	}, {
 		key: 'handleStart',
 		value: function handleStart() {
-			var self = this;
+			var _this2 = this;
+
 			this.setState({ fetching: true, action: 'start' });
-			setTimeout(function () {
-				self.setState({ fetching: false, active: true, action: null });
-				var action = {
+			(0, _helpers.managerAddSite)(this.props.site, this.props.csrfToken).then(function (xhr, res) {
+				_this2.props.onChange({
 					type: 'start',
-					data: self.state
-				};
-				self.props.onChange(action);
-			}, 2000);
+					site: _this2.props.site,
+					response: res
+				});
+			}).catch(function (error, xhr) {
+				console.error(error, xhr);
+				_this2.setState({ fetching: false, action: null });
+			});
 		}
 	}, {
 		key: 'handleRestart',
 		value: function handleRestart() {
-			var self = this;
+			var _this3 = this;
+
 			this.setState({ fetching: true, action: 'restart' });
-			setTimeout(function () {
-				self.setState({ fetching: false, action: null });
-				var action = {
-					type: 'restart',
-					data: self.state
-				};
-				self.props.onChange(action);
-			}, 2000);
+
+			(0, _helpers.managerStopSite)(this.props.site.name, this.props.csrfToken).then(function (xhr, res) {
+				(0, _helpers.managerStartSite)(_this3.props.site.name, _this3.props.csrfToken).then(function (xhr, res) {
+					_this3.props.onChange({
+						type: 'restart',
+						site: _this3.props.site,
+						response: res
+					});
+				});
+			}).catch(function (error, xhr) {
+				console.error(error, xhr);
+				_this3.setState({ fetching: false, action: null });
+			});
 		}
 	}, {
 		key: 'handleStop',
 		value: function handleStop() {
-			var self = this;
+			var _this4 = this;
+
 			this.setState({ fetching: true, action: 'stop' });
-			setTimeout(function () {
-				self.setState({ fetching: false, active: false, action: null });
-				var action = {
+
+			(0, _helpers.managerRemoveSite)(this.props.site.name, this.props.csrfToken).then(function (xhr, res) {
+				_this4.props.onChange({
 					type: 'stop',
-					data: self.state
-				};
-				self.props.onChange(action);
-			}, 2000);
+					site: _this4.props.site,
+					response: res
+				});
+			}).catch(function (error, xhr) {
+				console.error(error, xhr);
+				_this4.setState({ fetching: false, action: null });
+			});
+		}
+	}, {
+		key: 'checkSiteInManager',
+		value: function checkSiteInManager() {
+			var _this5 = this;
+
+			this.setState({ fetching: false, action: null });
+			var isActive = false;
+			this.props.managerSites.forEach(function (site) {
+				if (site.name == _this5.props.site.name) {
+					return isActive = true;
+				}
+			});
+			this.setState({ active: isActive });
+		}
+	}, {
+		key: 'checkSiteStatus',
+		value: function checkSiteStatus() {
+			var _this6 = this;
+
+			var url = this.siteUrl();
+			this.setState({ fetching: true });
+			_qwest2.default.get(url).then(function (xhr, res) {
+				_this6.setState({ active: true, fetching: false });
+			}).catch(function (error, xhr) {
+				console.error(error, xhr);
+				_this6.setState({ fetching: false });
+			});
 		}
 	}]);
 
@@ -26942,7 +27021,7 @@ var Vhost = function (_React$Component) {
 
 exports.default = Vhost;
 
-},{"react":233}],244:[function(require,module,exports){
+},{"../helpers":246,"qwest":48,"react":233}],244:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -26961,13 +27040,15 @@ var _qwest2 = _interopRequireDefault(_qwest);
 
 var _reactRouter = require('react-router');
 
+var _Vhost = require('./Vhost');
+
+var _Vhost2 = _interopRequireDefault(_Vhost);
+
 var _store = require('../store');
 
 var Store = _interopRequireWildcard(_store);
 
-var _Vhost = require('./Vhost');
-
-var _Vhost2 = _interopRequireDefault(_Vhost);
+var _helpers = require('../helpers');
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -26978,6 +27059,9 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var SITES = Store.load('sites');
+var SETTINGS = Store.load('settings');
 
 var Vhosts = function (_React$Component) {
 	_inherits(Vhosts, _React$Component);
@@ -26991,7 +27075,9 @@ var Vhosts = function (_React$Component) {
 			canSeeTomcatManager: true,
 			loading: false,
 			sites: [],
-			managerSites: []
+			settings: {},
+			managerSites: [],
+			csrfToken: ''
 		};
 		return _this;
 	}
@@ -26999,9 +27085,8 @@ var Vhosts = function (_React$Component) {
 	_createClass(Vhosts, [{
 		key: 'componentWillMount',
 		value: function componentWillMount() {
-			var sites = Store.load('sites');
 			this.loginToHostManager();
-			this.setState({ sites: sites });
+			this.setState({ sites: SITES, settings: SETTINGS });
 		}
 	}, {
 		key: 'render',
@@ -27035,7 +27120,14 @@ var Vhosts = function (_React$Component) {
 				'div',
 				{ className: 'Vhosts' },
 				this.state.sites.map(function (site, i) {
-					return _react2.default.createElement(_Vhost2.default, { key: site.id, site: site, index: i, onChange: _this2.handleVhostChange.bind(_this2) });
+					return _react2.default.createElement(_Vhost2.default, {
+						key: site.id,
+						site: site,
+						settings: _this2.state.settings,
+						index: i,
+						managerSites: _this2.state.managerSites,
+						onChange: _this2.handleVhostChange.bind(_this2),
+						csrfToken: _this2.state.csrfToken });
 				})
 			);
 		}
@@ -27045,16 +27137,19 @@ var Vhosts = function (_React$Component) {
 			var message = '';
 			switch (action.type) {
 				case 'start':
-					message = 'Started ' + action.data.site.name;
+					message = 'Started ' + action.site.name;
 					break;
 				case 'restart':
-					message = 'Restarted ' + action.data.site.name;
+					message = 'Restarted ' + action.site.name;
 					break;
 				case 'stop':
-					message = 'Stopped ' + action.data.site.name;
+					message = 'Stopped ' + action.site.name;
 					break;
 			}
 			this.props.showMessage(message, 'positive');
+
+			// Update vhost props with new manager info
+			this.updateManagerInfo(action.response);
 		}
 	}, {
 		key: 'loginToHostManager',
@@ -27062,47 +27157,26 @@ var Vhosts = function (_React$Component) {
 			var _this3 = this;
 
 			var url = 'http://localhost:8080/host-manager/html/';
-			var settings = Store.load('settings');
-
 			_qwest2.default.get(url, null, {
-				user: settings.manager_username,
-				password: settings.manager_password
+				user: SETTINGS.manager_username,
+				password: SETTINGS.manager_password
 			}).then(function (xhr, res) {
-				var el = document.createElement('html');
-				el.innerHTML = res;
-				var siteLinks = el.querySelectorAll('td.row-left small a');
-				var managerSites = [];
-				siteLinks.forEach(function (link) {
-					managerSites.push({
-						link: link.href,
-						name: link.outerText
-					});
-				});
-
-				_this3.setState({
-					canSeeTomcatManager: true,
-					managerSites: managerSites
-				});
+				_this3.updateManagerInfo(res);
 			}).catch(function (error, xhr) {
 				console.error(error, xhr);
 			});
 		}
 	}, {
-		key: 'openManager',
-		value: function openManager() {
-			chrome.tabs.create({ url: 'http://localhost:8080/host-manager/html/' });
-		}
-	}, {
-		key: 'openSettings',
-		value: function openSettings() {
-			var settings = chrome.extension.getURL("settings.html");
-			chrome.tabs.create({ url: settings });
-		}
-	}, {
-		key: 'openSites',
-		value: function openSites() {
-			var settings = chrome.extension.getURL("sites.html");
-			chrome.tabs.create({ url: settings });
+		key: 'updateManagerInfo',
+		value: function updateManagerInfo(response) {
+			var html = (0, _helpers.parseHTML)(response);
+			var managerSites = (0, _helpers.findManagerSite)(html);
+			var csrfToken = (0, _helpers.findCsrfToken)(html);
+			this.setState({
+				canSeeTomcatManager: true,
+				managerSites: managerSites,
+				csrfToken: csrfToken
+			});
 		}
 	}]);
 
@@ -27111,7 +27185,7 @@ var Vhosts = function (_React$Component) {
 
 exports.default = Vhosts;
 
-},{"../store":246,"./Vhost":243,"qwest":48,"react":233,"react-router":202}],245:[function(require,module,exports){
+},{"../helpers":246,"../store":247,"./Vhost":243,"qwest":48,"react":233,"react-router":202}],245:[function(require,module,exports){
 'use strict';
 
 var _react = require('react');
@@ -27170,7 +27244,92 @@ _reactDom2.default.render(_react2.default.createElement(
 	)
 ), document.querySelector('main'));
 
-},{"./components/Popup":238,"./components/Settings":239,"./components/Sites":242,"./components/Vhosts":244,"./store":246,"react":233,"react-dom":49,"react-router":202}],246:[function(require,module,exports){
+},{"./components/Popup":238,"./components/Settings":239,"./components/Sites":242,"./components/Vhosts":244,"./store":247,"react":233,"react-dom":49,"react-router":202}],246:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+exports.parseHTML = parseHTML;
+exports.findCsrfToken = findCsrfToken;
+exports.findManagerSite = findManagerSite;
+exports.managerAddSite = managerAddSite;
+exports.managerStopSite = managerStopSite;
+exports.managerStartSite = managerStartSite;
+exports.managerRemoveSite = managerRemoveSite;
+
+var _qwest = require('qwest');
+
+var _qwest2 = _interopRequireDefault(_qwest);
+
+var _store = require('./store');
+
+var Store = _interopRequireWildcard(_store);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var SETTINGS = Store.load('settings');
+
+function parseHTML(string) {
+	var parser = new DOMParser();
+	var doc = parser.parseFromString(string, 'text/html');
+	var form = doc.querySelector('form.inline');
+	return doc;
+}
+
+function findCsrfToken(html) {
+	var form = html.querySelector('form.inline');
+	return form.getAttribute('action').match(/CSRF_NONCE=([\w]+)/)[1];
+}
+
+function findManagerSite(html) {
+	var siteLinks = html.querySelectorAll('td.row-left small a');
+	var managerSites = [];
+	siteLinks.forEach(function (link) {
+		managerSites.push({
+			link: link.href,
+			name: link.outerText
+		});
+	});
+	return managerSites;
+}
+
+function managerAddSite(site, token) {
+	var data = {
+		name: site.name,
+		aliases: site.aliases,
+		appBase: SETTINGS.root + site.root,
+		autoDeploy: 'on',
+		deployOnStartup: 'on',
+		deployXml: 'on',
+		unpackWARs: 'on',
+		'org.apache.catalina.filters.CSRF_NONCE': token
+	};
+	return _qwest2.default.post('http://localhost:8080/host-manager/html/add', data);
+}
+
+function managerControlSite(action, site, token) {
+	return _qwest2.default.post('http://localhost:8080/host-manager/html/' + action, {
+		name: site,
+		'org.apache.catalina.filters.CSRF_NONCE': token
+	});
+}
+
+function managerStopSite(site, token) {
+	return managerControlSite('stop', site, token);
+}
+
+function managerStartSite(site, token) {
+	return managerControlSite('start', site, token);
+}
+
+function managerRemoveSite(site, token) {
+	return managerControlSite('remove', site, token);
+}
+
+},{"./store":247,"qwest":48}],247:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {

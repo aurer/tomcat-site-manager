@@ -1,8 +1,12 @@
 import React from 'react';
 import qwest from 'qwest';
-import { Link, Redirect } from 'react-router';
-import * as Store from '../store';
+import { Link } from 'react-router';
 import Vhost from './Vhost';
+import * as Store from '../store';
+import { parseHTML, findCsrfToken, findManagerSite } from '../helpers';
+
+const SITES = Store.load('sites');
+const SETTINGS = Store.load('settings');
 
 class Vhosts extends React.Component {
 	constructor(props) {
@@ -12,14 +16,15 @@ class Vhosts extends React.Component {
 			canSeeTomcatManager: true,
 			loading: false,
 			sites: [],
-			managerSites: []
+			settings: {},
+			managerSites: [],
+			csrfToken: ''
 		};
 	}
 
 	componentWillMount() {
-		let sites = Store.load('sites');
 		this.loginToHostManager();
-		this.setState({sites});
+		this.setState({sites: SITES, settings: SETTINGS});
 	}
 
 	render() {
@@ -33,7 +38,14 @@ class Vhosts extends React.Component {
 
 		return (
 			<div className="Vhosts">
-				{this.state.sites.map((site, i) => <Vhost key={site.id} site={site} index={i} onChange={this.handleVhostChange.bind(this)} /> )}
+				{this.state.sites.map((site, i) => <Vhost
+					key={site.id}
+					site={site}
+					settings={this.state.settings}
+					index={i}
+					managerSites={this.state.managerSites}
+					onChange={this.handleVhostChange.bind(this)}
+					csrfToken={this.state.csrfToken} /> )}
 			</div>
 		)
 	}
@@ -42,60 +54,44 @@ class Vhosts extends React.Component {
 		let message = '';
 		switch (action.type) {
 			case 'start':
-				message = `Started ${action.data.site.name}`;
+				message = `Started ${action.site.name}`;
 			break;
 			case 'restart':
-				message = `Restarted ${action.data.site.name}`;
+				message = `Restarted ${action.site.name}`;
 			break;
 			case 'stop':
-				message = `Stopped ${action.data.site.name}`;
+				message = `Stopped ${action.site.name}`;
 			break;
 		}
 		this.props.showMessage(message, 'positive');
+
+		// Update vhost props with new manager info
+		this.updateManagerInfo(action.response);
 	}
 
 	loginToHostManager() {
 		let url = `http://localhost:8080/host-manager/html/`;
-		let settings = Store.load('settings');
-
 		qwest.get(url, null, {
-			user: settings.manager_username,
-			password: settings.manager_password
+			user: SETTINGS.manager_username,
+			password: SETTINGS.manager_password
 		})
 		.then((xhr, res) => {
-			let el = document.createElement('html');
-			el.innerHTML = res;
-			let siteLinks = el.querySelectorAll('td.row-left small a');
-			var managerSites = [];
-			siteLinks.forEach(link => {
-				managerSites.push({
-					link: link.href,
-					name: link.outerText
-				})
-			});
-
-			this.setState({
-				canSeeTomcatManager: true,
-				managerSites
-			})
+			this.updateManagerInfo(res);
 		})
 		.catch((error, xhr) => {
 			console.error(error, xhr);
 		})
 	}
 
-	openManager() {
-		chrome.tabs.create({url:'http://localhost:8080/host-manager/html/'});
-	}
-
-	openSettings() {
-		let settings = chrome.extension.getURL("settings.html");
-		chrome.tabs.create( { url:settings } );
-	}
-
-	openSites() {
-		let settings = chrome.extension.getURL("sites.html");
-		chrome.tabs.create( { url:settings } );
+	updateManagerInfo(response) {
+		let html = parseHTML(response);
+		let managerSites = findManagerSite(html);
+		let csrfToken = findCsrfToken(html);
+		this.setState({
+			canSeeTomcatManager: true,
+			managerSites,
+			csrfToken
+		});
 	}
 }
 

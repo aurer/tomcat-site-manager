@@ -5,11 +5,13 @@ import SiteForm from './SiteForm';
 import ImportForm from './ImportForm';
 import ExportForm from './ExportForm';
 
+const SITES = Store.load('sites');
+
 class Sites extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			sites: Store.load('sites'),
+			sites: SITES,
 			activeSite: null,
 			showSiteForm: false,
 			showExportForm: false,
@@ -33,7 +35,7 @@ class Sites extends React.Component {
 					<a disabled className="Button Button--secondary" onClick={this.openExportForm.bind(this)}>Export sites</a>
 				</div>
 
-				{this.state.showSiteForm && <SiteForm site={this.state.activeSite} onSubmit={this.handleSubmit.bind(this)} closeForm={this.closeSiteForm.bind(this)} />}
+				{this.state.showSiteForm && <SiteForm site={this.state.activeSite} onSubmit={this.handleNewSiteForm.bind(this)} closeForm={this.closeSiteForm.bind(this)} />}
 				{this.state.showExportForm && <ExportForm onSubmit={this.handleExportForm.bind(this)} />}
 				{this.state.showImportForm && <ImportForm onSubmit={this.handleImportForm.bind(this)} onCancel={this.closeImportForm.bind(this)} />}
 
@@ -92,13 +94,13 @@ class Sites extends React.Component {
 		this.setState({showImportForm: false});
 	}
 
-	handleSubmit(e) {
+	handleNewSiteForm(e) {
 		e.preventDefault();
 		let form = e.target;
 		let sites = this.state.sites;
 
 		let siteData = {
-			name:  	form.name.value,
+			name:  	form.name.value.toLowerCase(),
 			aliases: form.aliases.value,
 			root: 	form.root.value
 		}
@@ -136,7 +138,7 @@ class Sites extends React.Component {
 	}
 
 	handleImportForm(data, overwrite) {
-		let sites = Store.load('sites');
+		let sites = SITES;
 
 		sites = overwrite ? data.sites : sites.concat(data.sites);
 		sites = this.removeDuplicateSites(sites);

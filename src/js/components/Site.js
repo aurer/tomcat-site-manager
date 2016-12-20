@@ -1,7 +1,7 @@
 import React from 'react';
 import * as Store from '../store';
 
-let Settings = Store.load('settings');
+const SETTINGS = Store.load('settings');
 
 class Site extends React.Component {
 	constructor(props) {
@@ -19,7 +19,7 @@ class Site extends React.Component {
 					{this.state.aliases}
 				</td>
 				<td className="Site-root">
-					<span>{Settings.root}/</span>{this.state.root}
+					<span>{SETTINGS.root}</span>{this.state.root}
 				</td>
 				<td className="Site-actions">
 					<button className="IconButton Site-actions-edit" onClick={this.handleEditSite.bind(this)}>edit</button>
