@@ -45,7 +45,9 @@ class Vhost extends React.Component {
 		return (
 			<div className={className}>
 				<i className="Vhost-indicator"></i>
-				<span className="Vhost-name">{site.name}</span>
+				{this.state.active && <a className="Vhost-name" onClick={this.launchSite.bind(this)}>{site.name}</a> }
+				{this.state.active || <span className="Vhost-name">{site.name}</span> }
+
 				<span className="Vhost-actions">
 					{this.state.active || <button className="IconButton Vhost-actions-start" onClick={this.handleStart.bind(this)}>Start</button> }
 					{this.state.active && <button className="IconButton Vhost-actions-restart" onClick={this.handleRestart.bind(this)}>Restart</button> }
@@ -130,6 +132,28 @@ class Vhost extends React.Component {
 			console.error(error, xhr);
 			this.setState({fetching: false});
 		})
+	}
+
+	launchSite() {
+		let url = this.siteUrl();
+
+		// Look for a tab with the selected site already active
+		chrome.tabs.query({url: url.replace('http', '*') + '/*'}, tab => {
+			if (tab.length) {
+				chrome.tabs.reload(tab[0].id);
+				chrome.tabs.update(tab[0].id, {active: true});
+				return;
+			}
+
+			// Look for empty tabs and load site in it if one is found, otherwise create a new one.
+			chrome.tabs.query({url: "chrome://*/"}, tab => {
+				if( tab.length === 0 ){
+					return chrome.tabs.create({ url: url });
+				}
+				return chrome.tabs.update( tab[0].id, { url: url, active: true} );
+			});
+		});
+
 	}
 }
 

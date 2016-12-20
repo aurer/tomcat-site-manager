@@ -1,7 +1,9 @@
 import React from 'react';
 import { Link, Redirect } from 'react-router';
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 import * as Store from '../store';
 import Vhosts from './Vhosts';
+import Message from './Message';
 
 const SETTINGS = Store.load('settings');
 
@@ -10,7 +12,6 @@ class Popup extends React.Component {
 		super(props);
 		this.state = {
 			message: null,
-			type: null
 		}
 	}
 
@@ -29,8 +30,8 @@ class Popup extends React.Component {
 					<Link activeClassName="is-active" className="Nav-item" to="sites.html">Sites</Link>
 					<Link activeClassName="is-active" className="Nav-item" to="settings.html">Settings</Link>
 				</nav>
-				{this.state.message && <div className="Message Message--positive">{this.state.message}</div>}
 				{React.cloneElement(this.props.children, { showMessage: this.handleShowMessage.bind(this) })}
+				<Message message={this.state.message} removeMessage={this.removeMessage.bind(this)} />
 				<nav className="Nav Nav--base">
 					<a className="Nav-item" onClick={this.openManager.bind(this)}>Open Host Manager</a>
 				</nav>
@@ -39,10 +40,11 @@ class Popup extends React.Component {
 	}
 
 	handleShowMessage(message, type) {
-		this.setState({ message, type	});
-		setTimeout(() => {
-			this.setState({message: null, type: null});
-		}, 3000);
+		this.setState({ message: {text: message, type: type} });
+	}
+
+	removeMessage() {
+		this.setState({message: null});
 	}
 
 	openManager() {

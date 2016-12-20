@@ -1,11 +1,16 @@
+.Messages {
+	overflow: hidden;
+}
+
 .Message {
 	padding: @space-sm @space;
 	display: block;
-	margin: .5em 0;
 	background-color: lighten(@color-alert-ambiguous, 25%);
 	color: darken(@color-alert-ambiguous, 30%);
 	text-align: center;
 	font-weight: bold;
+	transition: all .5s;
+	margin-bottom: .5em;
 
 	a {
 		color: darken(@color-neutral, 50%);
@@ -50,8 +55,20 @@
 			color: darken(@color-alert-negative, 50%);
 		}
 	}
+}
 
-	+ .Message {
-		margin-top: @space-sm;
+.messageTransition-enter {
+	opacity: 0;
+
+	&.messageTransition-enter-active {
+		opacity: 1;
+	}
+}
+
+.messageTransition-leave {
+	opacity: 1;
+
+	&.messageTransition-leave-active {
+		opacity: 0;
 	}
 }
