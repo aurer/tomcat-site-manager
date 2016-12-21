@@ -30672,12 +30672,12 @@ var SETTINGS = Store.load('settings');
 function parseHTML(string) {
 	var parser = new DOMParser();
 	var doc = parser.parseFromString(string, 'text/html');
-	var form = doc.querySelector('form.inline');
+	var form = doc.querySelector('form');
 	return doc;
 }
 
 function findCsrfToken(html) {
-	var form = html.querySelector('form.inline');
+	var form = html.querySelector('form');
 	return form.getAttribute('action').match(/CSRF_NONCE=([\w]+)/)[1];
 }
 
