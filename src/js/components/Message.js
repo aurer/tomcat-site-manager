@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 
-const TIMEOUTS = [];
+var timeouts = [];
 
 class Message extends React.Component {
 	constructor(props) {
@@ -13,18 +13,18 @@ class Message extends React.Component {
 	}
 
 	componentWillReceiveProps(nextProps) {
-		var messages = this.state.messages;
-		if (nextProps.message) {
-			messages.push(nextProps.message);
-		} else {
-			messages.shift();
+		if (!nextProps.message) {
+			return;
 		}
+		var messages = this.state.messages;
+		messages.push(nextProps.message);
 		this.setState({messages});
 		this.handleRemoveMessages(messages.length);
 	}
 
 	render() {
 		var activeState = this.state.active ? 'is-active' : 'is-inactive';
+
 		return (
 			<div className="Messages">
 			<ReactCSSTransitionGroup
@@ -41,15 +41,18 @@ class Message extends React.Component {
 	}
 
 	handleRemoveMessages(id) {
-		if (TIMEOUTS[id]) {
-			clearTimeout(TIMEOUTS[id]);
+		if (timeouts[id]) {
+			clearTimeout(timeouts[id]);
 		}
 
-		TIMEOUTS[id] = setTimeout(this.removeMessage.bind(this), 3000);
+		timeouts[id] = setTimeout(this.removeMessage.bind(this), 3000);
 	}
 
 	removeMessage() {
-		this.props.removeMessage();
+		let messages = this.state.messages;
+		messages.shift();
+		this.setState({messages});
+		this.props.clearMessages();
 	}
 }
 

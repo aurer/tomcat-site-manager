@@ -15,7 +15,7 @@ class ImportForm extends React.Component {
 	render() {
 		return(
 			<form method="post" className="Form" onSubmit={this.handleSubmit.bind(this)}>
-				<div className="Form-field">
+				<div className="Form-field Form-field--slim">
 					<div className="Form-inputs">
 						<textarea
 							name="data"

@@ -31,7 +31,7 @@ class Popup extends React.Component {
 					<Link activeClassName="is-active" className="Nav-item" to="settings.html">Settings</Link>
 				</nav>
 				{React.cloneElement(this.props.children, { showMessage: this.handleShowMessage.bind(this) })}
-				<Message message={this.state.message} removeMessage={this.removeMessage.bind(this)} />
+				<Message message={this.state.message} clearMessages={this.clearMessages.bind(this)} />
 				<nav className="Nav Nav--base">
 					<a className="Nav-item" onClick={this.openManager.bind(this)}>Open Host Manager</a>
 				</nav>
@@ -43,12 +43,12 @@ class Popup extends React.Component {
 		this.setState({ message: {text: message, type: type} });
 	}
 
-	removeMessage() {
-		this.setState({message: null});
-	}
-
 	openManager() {
 		chrome.tabs.create({url:'http://localhost:8080/host-manager/html/'});
+	}
+
+	clearMessages() {
+		this.setState({message: null});
 	}
 }
 

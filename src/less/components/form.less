@@ -49,10 +49,32 @@
 				border: none;
 				padding: 0;
 			}
+
+			select {
+				display: block;
+				width: 100%;
+				background-color: fade(#000, 15%);
+				border: 1px solid fade(#fff, 8%);
+				color: inherit;
+				font-size: inherit;
+				outline: none;
+				box-sizing: border-box;
+				margin-bottom: .5em;
+				padding: .5em;
+				height: 2.4em;
+			}
 		}
 
 		label + .Form-inputs {
 			margin-left: 10em;
+		}
+	}
+
+	.Form-field--slim {
+		margin: 0;
+
+		.Form-inputs {
+			margin-bottom: .5em;
 		}
 	}
 
@@ -69,7 +91,7 @@
 	}
 
 	input[type=submit] {
-		&:extend(.Button);
+		&:extend(.Button all);
 		float: right;
 	}
 }

@@ -30,9 +30,9 @@ class Sites extends React.Component {
 		return (
 			<section className="Section Section--sites">
 				<div className="ButtonGroup">
-					<a className="Button Button" onClick={this.openSiteForm.bind(this)}>Add site</a>
-					<a disabled className="Button Button--secondary" onClick={this.openImportForm.bind(this)}>Import sites</a>
-					<a disabled className="Button Button--secondary" onClick={this.openExportForm.bind(this)}>Export sites</a>
+					<a className="Button" onClick={this.openSiteForm.bind(this)}>Add site</a>
+					<a className="Button" onClick={this.openImportForm.bind(this)}>Import sites</a>
+					<a className="Button" onClick={this.openExportForm.bind(this)}>Export sites</a>
 				</div>
 
 				{this.state.showSiteForm && <SiteForm site={this.state.activeSite} onSubmit={this.handleNewSiteForm.bind(this)} closeForm={this.closeSiteForm.bind(this)} />}
@@ -46,7 +46,7 @@ class Sites extends React.Component {
 					onError={this.handleImportError.bind(this)}
 					/>}
 
-				{this.state.showSiteForm ||
+				{(this.state.showSiteForm || this.state.showExportForm || this.state.showImportForm) ||
 					<table className="Sites">
 						<thead>
 							<tr>

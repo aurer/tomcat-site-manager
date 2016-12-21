@@ -27934,7 +27934,7 @@ var ImportForm = function (_React$Component) {
 				{ method: "post", className: "Form", onSubmit: this.handleSubmit.bind(this) },
 				_react2.default.createElement(
 					"div",
-					{ className: "Form-field" },
+					{ className: "Form-field Form-field--slim" },
 					_react2.default.createElement(
 						"div",
 						{ className: "Form-inputs" },
@@ -28041,7 +28041,7 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var TIMEOUTS = [];
+var timeouts = [];
 
 var Message = function (_React$Component) {
 	_inherits(Message, _React$Component);
@@ -28060,12 +28060,11 @@ var Message = function (_React$Component) {
 	_createClass(Message, [{
 		key: 'componentWillReceiveProps',
 		value: function componentWillReceiveProps(nextProps) {
-			var messages = this.state.messages;
-			if (nextProps.message) {
-				messages.push(nextProps.message);
-			} else {
-				messages.shift();
+			if (!nextProps.message) {
+				return;
 			}
+			var messages = this.state.messages;
+			messages.push(nextProps.message);
 			this.setState({ messages: messages });
 			this.handleRemoveMessages(messages.length);
 		}
@@ -28073,6 +28072,7 @@ var Message = function (_React$Component) {
 		key: 'render',
 		value: function render() {
 			var activeState = this.state.active ? 'is-active' : 'is-inactive';
+
 			return _react2.default.createElement(
 				'div',
 				{ className: 'Messages' },
@@ -28096,16 +28096,19 @@ var Message = function (_React$Component) {
 	}, {
 		key: 'handleRemoveMessages',
 		value: function handleRemoveMessages(id) {
-			if (TIMEOUTS[id]) {
-				clearTimeout(TIMEOUTS[id]);
+			if (timeouts[id]) {
+				clearTimeout(timeouts[id]);
 			}
 
-			TIMEOUTS[id] = setTimeout(this.removeMessage.bind(this), 3000);
+			timeouts[id] = setTimeout(this.removeMessage.bind(this), 3000);
 		}
 	}, {
 		key: 'removeMessage',
 		value: function removeMessage() {
-			this.props.removeMessage();
+			var messages = this.state.messages;
+			messages.shift();
+			this.setState({ messages: messages });
+			this.props.clearMessages();
 		}
 	}]);
 
@@ -28205,7 +28208,7 @@ var Popup = function (_React$Component) {
 					)
 				),
 				_react2.default.cloneElement(this.props.children, { showMessage: this.handleShowMessage.bind(this) }),
-				_react2.default.createElement(_Message2.default, { message: this.state.message, removeMessage: this.removeMessage.bind(this) }),
+				_react2.default.createElement(_Message2.default, { message: this.state.message, clearMessages: this.clearMessages.bind(this) }),
 				_react2.default.createElement(
 					'nav',
 					{ className: 'Nav Nav--base' },
@@ -28223,14 +28226,14 @@ var Popup = function (_React$Component) {
 			this.setState({ message: { text: message, type: type } });
 		}
 	}, {
-		key: 'removeMessage',
-		value: function removeMessage() {
-			this.setState({ message: null });
-		}
-	}, {
 		key: 'openManager',
 		value: function openManager() {
 			chrome.tabs.create({ url: 'http://localhost:8080/host-manager/html/' });
+		}
+	}, {
+		key: 'clearMessages',
+		value: function clearMessages() {
+			this.setState({ message: null });
 		}
 	}]);
 
@@ -28321,12 +28324,57 @@ var Settings = function (_React$Component) {
 					_react2.default.createElement(
 						'label',
 						{ htmlFor: '' },
+						'Operating System'
+					),
+					_react2.default.createElement(
+						'div',
+						{ className: 'Form-inputs' },
+						_react2.default.createElement(
+							'select',
+							{ name: 'os', defaultValue: this.state.os, onChange: this.handleOsChange.bind(this) },
+							_react2.default.createElement(
+								'option',
+								{ value: 'win' },
+								'Windows'
+							),
+							_react2.default.createElement(
+								'option',
+								{ value: 'mac' },
+								'Mac'
+							),
+							_react2.default.createElement(
+								'option',
+								{ value: 'lin' },
+								'Linux'
+							)
+						)
+					)
+				),
+				_react2.default.createElement(
+					'div',
+					{ className: 'Form-field' },
+					_react2.default.createElement(
+						'label',
+						{ htmlFor: '' },
 						'Tomcat version'
 					),
 					_react2.default.createElement(
 						'div',
 						{ className: 'Form-inputs' },
-						_react2.default.createElement('input', { type: 'text', name: 'tomcat_version', defaultValue: this.state.tomcat_version, autoComplete: 'off' })
+						_react2.default.createElement(
+							'select',
+							{ name: 'tomcat_version', defaultValue: this.state.tomcat_version },
+							_react2.default.createElement(
+								'option',
+								{ value: '7' },
+								'7'
+							),
+							_react2.default.createElement(
+								'option',
+								{ value: '6' },
+								'6'
+							)
+						)
 					)
 				),
 				_react2.default.createElement(
@@ -28353,7 +28401,8 @@ var Settings = function (_React$Component) {
 			e.preventDefault();
 			var form = e.target,
 			    domain = this.sanitiseDomainValue(form.domain.value),
-			    root = this.sanitiseRootValue(form.root.value),
+			    root = this.sanitiseRootValue(form.root.value, form.os.value),
+			    os = form.os.value,
 			    tomcat_version = form.tomcat_version.value,
 			    manager_username = form.manager_username.value,
 			    manager_password = form.manager_password.value;
@@ -28361,6 +28410,7 @@ var Settings = function (_React$Component) {
 			var newState = Object.assign({}, this.state, {
 				domain: domain,
 				root: root,
+				os: os,
 				tomcat_version: tomcat_version,
 				manager_username: manager_username,
 				manager_password: manager_password
@@ -28380,8 +28430,21 @@ var Settings = function (_React$Component) {
 		}
 	}, {
 		key: 'sanitiseRootValue',
-		value: function sanitiseRootValue(value) {
-			return value.replace(/\s+/g, '').replace(/[\/\\]$/g, '') + '\\';
+		value: function sanitiseRootValue(value, os) {
+			var ds = os == 'win' ? '\\' : '/';
+			return value.replace(/\s+/g, '').replace(/[\/\\]/g, ds).replace(/[\/\\]$/g, '') + ds;
+		}
+	}, {
+		key: 'handleOsChange',
+		value: function handleOsChange(e) {
+			var os = e.target.value;
+			var form = e.target.form;
+			this.setState({ os: os });
+
+			var root = form.root;
+			var rootValue = this.sanitiseRootValue(root.value, os);
+			root.value = rootValue;
+			this.setState({ root: root, rootValue: rootValue });
 		}
 	}]);
 
@@ -28865,17 +28928,17 @@ var Sites = function (_React$Component) {
 					{ className: 'ButtonGroup' },
 					_react2.default.createElement(
 						'a',
-						{ className: 'Button Button', onClick: this.openSiteForm.bind(this) },
+						{ className: 'Button', onClick: this.openSiteForm.bind(this) },
 						'Add site'
 					),
 					_react2.default.createElement(
 						'a',
-						{ disabled: true, className: 'Button Button--secondary', onClick: this.openImportForm.bind(this) },
+						{ className: 'Button', onClick: this.openImportForm.bind(this) },
 						'Import sites'
 					),
 					_react2.default.createElement(
 						'a',
-						{ disabled: true, className: 'Button Button--secondary', onClick: this.openExportForm.bind(this) },
+						{ className: 'Button', onClick: this.openExportForm.bind(this) },
 						'Export sites'
 					)
 				),
@@ -28889,7 +28952,7 @@ var Sites = function (_React$Component) {
 					onCancel: this.closeImportForm.bind(this),
 					onError: this.handleImportError.bind(this)
 				}),
-				this.state.showSiteForm || _react2.default.createElement(
+				this.state.showSiteForm || this.state.showExportForm || this.state.showImportForm || _react2.default.createElement(
 					'table',
 					{ className: 'Sites' },
 					_react2.default.createElement(

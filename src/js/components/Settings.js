@@ -26,9 +26,22 @@ class Settings extends React.Component {
 					</div>
 				</div>
 				<div className="Form-field">
+					<label htmlFor="">Operating System</label>
+					<div className="Form-inputs">
+						<select name="os" defaultValue={this.state.os} onChange={this.handleOsChange.bind(this)}>
+							<option value="win">Windows</option>
+							<option value="mac">Mac</option>
+							<option value="lin">Linux</option>
+						</select>
+					</div>
+				</div>
+				<div className="Form-field">
 					<label htmlFor="">Tomcat version</label>
 					<div className="Form-inputs">
-						<input type="text" name="tomcat_version" defaultValue={this.state.tomcat_version} autoComplete="off" />
+						<select name="tomcat_version" defaultValue={this.state.tomcat_version}>
+							<option value="7">7</option>
+							<option value="6">6</option>
+						</select>
 					</div>
 				</div>
 				<div className="Form-field">
@@ -47,7 +60,8 @@ class Settings extends React.Component {
 		e.preventDefault()
 		let form = e.target,
 			domain = this.sanitiseDomainValue(form.domain.value),
-			root = this.sanitiseRootValue(form.root.value),
+			root = this.sanitiseRootValue(form.root.value, form.os.value),
+			os = form.os.value,
 			tomcat_version = form.tomcat_version.value,
 			manager_username = form.manager_username.value,
 			manager_password = form.manager_password.value;
@@ -55,6 +69,7 @@ class Settings extends React.Component {
 		let newState = Object.assign({}, this.state, {
 			domain,
 			root,
+			os,
 			tomcat_version,
 			manager_username,
 			manager_password
@@ -72,8 +87,23 @@ class Settings extends React.Component {
 		return value.replace(/\s+/g, '');
 	}
 
-	sanitiseRootValue(value) {
-		return value.replace(/\s+/g, '').replace(/[\/\\]$/g, '') + '\\';
+	sanitiseRootValue(value, os) {
+		let ds = os == 'win' ? '\\' : '/';
+		return value
+			.replace(/\s+/g, '')
+			.replace(/[\/\\]/g, ds)
+			.replace(/[\/\\]$/g, '') + ds;
+	}
+
+	handleOsChange(e) {
+		let os = e.target.value;
+		let form = e.target.form;
+		this.setState({os});
+
+		let root = form.root;
+		let rootValue = this.sanitiseRootValue(root.value, os);
+		root.value = rootValue;
+		this.setState({root, rootValue});
 	}
 }
 
