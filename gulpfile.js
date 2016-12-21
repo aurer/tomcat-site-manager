@@ -11,7 +11,7 @@ CleanCss = require('less-plugin-clean-css');
 
 // Compile less
 gulp.task('less', function() {
-	return gulp.src('./src/less/main.less')
+	return gulp.src(['./src/less/main.less', './src/less/light-theme.less'])
 	.pipe(plumber())
 	.pipe(less({
 		plugins: [new CleanCss()]

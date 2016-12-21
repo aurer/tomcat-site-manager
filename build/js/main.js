@@ -29209,8 +29209,6 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var SETTINGS = Store.load('settings');
-
 var Popup = function (_React$Component) {
 	_inherits(Popup, _React$Component);
 
@@ -29228,7 +29226,7 @@ var Popup = function (_React$Component) {
 	_createClass(Popup, [{
 		key: 'componentWillMount',
 		value: function componentWillMount() {
-			var settings = SETTINGS;
+			var settings = Store.load('settings');
 			if (settings.domain.length < 1 || settings.root.length < 1) {
 				_react2.default.createElement(_reactRouter.Redirect, { to: 'settings.html' });
 			}
@@ -29236,9 +29234,11 @@ var Popup = function (_React$Component) {
 	}, {
 		key: 'render',
 		value: function render() {
+			var settings = Store.load('settings');
+			var popupClassName = 'Section Section--popup theme-' + settings.theme;
 			return _react2.default.createElement(
 				'section',
-				{ className: 'Section Section--popup' },
+				{ className: popupClassName },
 				_react2.default.createElement(
 					'nav',
 					{ className: 'Nav' },
@@ -29344,7 +29344,7 @@ var Settings = function (_React$Component) {
 					{ className: 'Form-field' },
 					_react2.default.createElement(
 						'label',
-						{ htmlFor: '' },
+						null,
 						'Local domain name'
 					),
 					_react2.default.createElement(
@@ -29358,7 +29358,7 @@ var Settings = function (_React$Component) {
 					{ className: 'Form-field' },
 					_react2.default.createElement(
 						'label',
-						{ htmlFor: '' },
+						null,
 						'Web root directory'
 					),
 					_react2.default.createElement(
@@ -29372,7 +29372,7 @@ var Settings = function (_React$Component) {
 					{ className: 'Form-field' },
 					_react2.default.createElement(
 						'label',
-						{ htmlFor: '' },
+						null,
 						'Operating System'
 					),
 					_react2.default.createElement(
@@ -29404,7 +29404,7 @@ var Settings = function (_React$Component) {
 					{ className: 'Form-field' },
 					_react2.default.createElement(
 						'label',
-						{ htmlFor: '' },
+						null,
 						'Tomcat version'
 					),
 					_react2.default.createElement(
@@ -29431,7 +29431,7 @@ var Settings = function (_React$Component) {
 					{ className: 'Form-field' },
 					_react2.default.createElement(
 						'label',
-						{ htmlFor: '' },
+						null,
 						'Hostmanager login'
 					),
 					_react2.default.createElement(
@@ -29441,36 +29441,58 @@ var Settings = function (_React$Component) {
 						_react2.default.createElement('input', { type: 'password', name: 'manager_password', defaultValue: this.state.manager_password, placeholder: 'Password', autoComplete: 'off' })
 					)
 				),
-				_react2.default.createElement('input', { type: 'submit' })
+				_react2.default.createElement(
+					'div',
+					{ className: 'Form-field' },
+					_react2.default.createElement(
+						'label',
+						null,
+						'Theme'
+					),
+					_react2.default.createElement(
+						'div',
+						{ className: 'Form-inputs' },
+						_react2.default.createElement(
+							'select',
+							{ name: 'theme', defaultValue: this.state.theme },
+							_react2.default.createElement(
+								'option',
+								{ value: 'dark' },
+								'Dark'
+							),
+							_react2.default.createElement(
+								'option',
+								{ value: 'light' },
+								'Light'
+							)
+						)
+					)
+				),
+				_react2.default.createElement('input', { type: 'submit', value: 'Save' })
 			);
 		}
 	}, {
 		key: 'handleSubmit',
 		value: function handleSubmit(e) {
 			e.preventDefault();
-			var form = e.target,
-			    domain = this.sanitiseDomainValue(form.domain.value),
-			    root = this.sanitiseRootValue(form.root.value, form.os.value),
-			    os = form.os.value,
-			    tomcat_version = form.tomcat_version.value,
-			    manager_username = form.manager_username.value,
-			    manager_password = form.manager_password.value;
+			var form = e.target;
 
 			var newState = Object.assign({}, this.state, {
-				domain: domain,
-				root: root,
-				os: os,
-				tomcat_version: tomcat_version,
-				manager_username: manager_username,
-				manager_password: manager_password
+				domain: this.sanitiseDomainValue(form.domain.value),
+				root: this.sanitiseRootValue(form.root.value, form.os.value),
+				os: form.os.value,
+				tomcat_version: form.tomcat_version.value,
+				manager_username: form.manager_username.value,
+				manager_password: form.manager_password.value,
+				theme: form.theme.value
 			});
 
-			form.domain.value = domain;
-			form.root.value = root;
+			form.domain.value = newState.domain;
+			form.root.value = newState.root;
 
 			Store.save('settings', newState);
 			this.setState(newState);
-			this.props.showMessage('Settings updated', 'positive');
+			this.props.showMessage('Settings saved', 'positive');
 		}
 	}, {
 		key: 'sanitiseDomainValue',

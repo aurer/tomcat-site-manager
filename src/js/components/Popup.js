@@ -6,8 +6,6 @@ import Vhosts from './Vhosts';
 import Message from './Message';
 import { openTab } from '../helpers';
 
-const SETTINGS = Store.load('settings');
-
 class Popup extends React.Component {
 	constructor(props) {
 		super(props);
@@ -17,15 +15,17 @@ class Popup extends React.Component {
 	}
 
 	componentWillMount() {
-		let settings = SETTINGS;
+		let settings = Store.load('settings');
 		if (settings.domain.length < 1 || settings.root.length < 1) {
 			<Redirect to="settings.html" />
 		}
 	}
 
 	render() {
+		let settings = Store.load('settings');
+		let popupClassName = `Section Section--popup theme-${settings.theme}`;
 		return (
-			<section className="Section Section--popup">
+			<section className={popupClassName}>
 				<nav className="Nav">
 					<Link activeClassName="is-active" className="Nav-item" to="vhosts.html">Vhosts</Link>
 					<Link activeClassName="is-active" className="Nav-item" to="sites.html">Sites</Link>

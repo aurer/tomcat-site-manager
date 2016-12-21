@@ -1,0 +1,83 @@
+@import 'config';
+
+.Section--popup.theme-light {
+	background-color: @color2-neutral-lighter;
+	color: @color2-neutral-darker;
+
+	.Nav {
+		.Nav-item {
+			border-bottom: 3px solid @color2-neutral-light;
+			background-color: @color2-neutral-light;
+
+			&.is-active {
+				background-color: @color2-neutral-light;
+				border-bottom-color: @color-primary-dark;
+			}
+		}
+
+		box-shadow: none;
+	}
+
+	.Vhost {
+		&-indicator {
+			background-color: transparent;
+			border: 1px solid @color2-neutral;
+		}
+
+		&-name {
+			color: @color2-neutral;
+		}
+
+		&.is-active {
+			.Vhost-name {
+				color: @color2-neutral-darker;
+
+				&:hover {
+					color: @color-primary;
+				}
+			}
+
+			.Vhost-indicator {
+				background-color: @color-alert-positive;
+				border-color: @color-alert-positive;
+			}
+		}
+	}
+
+	.Sites {
+		background-color: transparent;
+
+		th {
+			border-bottom-color: @color2-neutral-light;
+		}
+
+		.Site {
+			color: @color2-neutral-darker;
+		}
+	}
+
+	.Form {
+		background-color: @color2-neutral-light;
+		box-shadow: none;
+		margin: 0 .5em;
+
+		.Form-inputs {
+			input, textarea, select {
+				background-color: @color2-neutral-lighter;
+				border-color: @color2-neutral;
+			}
+		}
+	}
+
+	.Button, input[type=submit] {
+		&:hover {
+			background-color: @color-primary-dark;
+		}
+	}
+
+	.IconButton:hover {
+		path, polygon {
+			fill: @color-primary-darker;
+		}
+	}
+}

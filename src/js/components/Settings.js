@@ -12,19 +12,19 @@ class Settings extends React.Component {
 		return (
 			<form method="post" className="Form" onSubmit={this.handleSubmit.bind(this)}>
 				<div className="Form-field">
-					<label htmlFor="">Local domain name</label>
+					<label>Local domain name</label>
 					<div className="Form-inputs">
 						<input type="text" name="domain" defaultValue={this.state.domain} placeholder="yourname.netxtra.local" autoComplete="off" />
 					</div>
 				</div>
 				<div className="Form-field">
-					<label htmlFor="">Web root directory</label>
+					<label>Web root directory</label>
 					<div className="Form-inputs">
 						<input type="text" name="root" defaultValue={this.state.root} placeholder={rootPlacerholder} autoComplete="off" />
 					</div>
 				</div>
 				<div className="Form-field">
-					<label htmlFor="">Operating System</label>
+					<label>Operating System</label>
 					<div className="Form-inputs">
 						<select name="os" defaultValue={this.state.os} onChange={this.handleOsChange.bind(this)}>
 							<option value="win">Windows</option>
@@ -34,7 +34,7 @@ class Settings extends React.Component {
 					</div>
 				</div>
 				<div className="Form-field">
-					<label htmlFor="">Tomcat version</label>
+					<label>Tomcat version</label>
 					<div className="Form-inputs">
 						<select name="tomcat_version" defaultValue={this.state.tomcat_version}>
 							<option value="7">7</option>
@@ -43,42 +43,46 @@ class Settings extends React.Component {
 					</div>
 				</div>
 				<div className="Form-field">
-					<label htmlFor="">Hostmanager login</label>
+					<label>Hostmanager login</label>
 					<div className="Form-inputs">
 						<input type="text" name="manager_username" defaultValue={this.state.manager_username} placeholder="Username" autoComplete="off" />
 						<input type="password" name="manager_password" defaultValue={this.state.manager_password} placeholder="Password" autoComplete="off" />
 					</div>
 				</div>
-				<input type="submit"/>
+				<div className="Form-field">
+					<label>Theme</label>
+					<div className="Form-inputs">
+						<select name="theme" defaultValue={this.state.theme}>
+							<option value="dark">Dark</option>
+							<option value="light">Light</option>
+						</select>
+					</div>
+				</div>
+				<input type="submit" value="Save"/>
 			</form>
 		)
 	}
 
 	handleSubmit(e) {
 		e.preventDefault()
-		let form = e.target,
-			domain = this.sanitiseDomainValue(form.domain.value),
-			root = this.sanitiseRootValue(form.root.value, form.os.value),
-			os = form.os.value,
-			tomcat_version = form.tomcat_version.value,
-			manager_username = form.manager_username.value,
-			manager_password = form.manager_password.value;
+		let form = e.target;
 
 		let newState = Object.assign({}, this.state, {
-			domain,
-			root,
-			os,
-			tomcat_version,
-			manager_username,
-			manager_password
+			domain: 					this.sanitiseDomainValue(form.domain.value),
+			root: 						this.sanitiseRootValue(form.root.value, form.os.value),
+			os: 							form.os.value,
+			tomcat_version: 	form.tomcat_version.value,
+			manager_username: form.manager_username.value,
+			manager_password: form.manager_password.value,
+			theme: 						form.theme.value
 		});
 
-		form.domain.value = domain;
-		form.root.value = root;
+		form.domain.value = newState.domain;
+		form.root.value = newState.root;
 
 		Store.save('settings', newState);
 		this.setState(newState);
-		this.props.showMessage(`Settings updated`, 'positive');
+		this.props.showMessage(`Settings saved`, 'positive');
 	}
 
 	sanitiseDomainValue(value) {
