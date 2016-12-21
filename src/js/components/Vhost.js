@@ -1,7 +1,13 @@
 import React from 'react';
 import qwest from 'qwest';
 import Isvg from 'react-inlinesvg';
-import { managerAddSite, managerStopSite, managerStartSite, managerRemoveSite, svgPath } from '../helpers';
+import {
+	managerAddSite,
+	managerStopSite,
+	managerStartSite,
+	managerRemoveSite,
+	svgPath,
+	openTab } from '../helpers';
 
 class Vhost extends React.Component {
 	constructor(props) {
@@ -142,25 +148,7 @@ class Vhost extends React.Component {
 	}
 
 	launchSite() {
-		let url = this.siteUrl();
-
-		// Look for a tab with the selected site already active
-		chrome.tabs.query({url: url.replace('http', '*') + '/*'}, tab => {
-			if (tab.length) {
-				chrome.tabs.reload(tab[0].id);
-				chrome.tabs.update(tab[0].id, {active: true});
-				return;
-			}
-
-			// Look for empty tabs and load site in it if one is found, otherwise create a new one.
-			chrome.tabs.query({url: "chrome://*/"}, tab => {
-				if( tab.length === 0 ){
-					return chrome.tabs.create({ url: url });
-				}
-				return chrome.tabs.update( tab[0].id, { url: url, active: true} );
-			});
-		});
-
+		openTab(this.siteUrl());
 	}
 }
 

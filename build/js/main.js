@@ -29197,6 +29197,8 @@ var _Message = require('./Message');
 
 var _Message2 = _interopRequireDefault(_Message);
 
+var _helpers = require('../helpers');
+
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -29277,7 +29279,7 @@ var Popup = function (_React$Component) {
 	}, {
 		key: 'openManager',
 		value: function openManager() {
-			chrome.tabs.create({ url: 'http://localhost:8080/host-manager/html/' });
+			(0, _helpers.openTab)('http://localhost:8080/host-manager/html/');
 		}
 	}, {
 		key: 'clearMessages',
@@ -29291,7 +29293,7 @@ var Popup = function (_React$Component) {
 
 exports.default = Popup;
 
-},{"../store":277,"./Message":267,"./Vhosts":274,"react":259,"react-addons-css-transition-group":61,"react-router":221}],269:[function(require,module,exports){
+},{"../helpers":276,"../store":277,"./Message":267,"./Vhosts":274,"react":259,"react-addons-css-transition-group":61,"react-router":221}],269:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -29533,8 +29535,6 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var SETTINGS = Store.load('settings');
-
 var Site = function (_React$Component) {
 	_inherits(Site, _React$Component);
 
@@ -29550,27 +29550,31 @@ var Site = function (_React$Component) {
 	_createClass(Site, [{
 		key: 'render',
 		value: function render() {
+			var _this2 = this;
+
+			var settings = Store.load('settings');
+			var nameTitle = this.state.name + '.' + settings.domain;
+			var aliasesTitle = this.state.aliases.split(',').map(function (a) {
+				return a + '.' + _this2.state.name + '.' + settings.domain;
+			}).join(', ');
+			var rootTitle = settings.root + this.state.root;
+
 			return _react2.default.createElement(
 				'tr',
 				{ className: 'Site' },
 				_react2.default.createElement(
 					'td',
-					{ className: 'Site-name' },
+					{ className: 'Site-name', title: nameTitle },
 					this.state.name
 				),
 				_react2.default.createElement(
 					'td',
-					{ className: 'Site-aliases' },
+					{ className: 'Site-aliases', title: aliasesTitle },
 					this.state.aliases
 				),
 				_react2.default.createElement(
 					'td',
-					{ className: 'Site-root' },
-					_react2.default.createElement(
-						'span',
-						null,
-						SETTINGS.root
-					),
+					{ className: 'Site-root', title: rootTitle },
 					this.state.root
 				),
 				_react2.default.createElement(
@@ -30075,17 +30079,20 @@ var Sites = function (_React$Component) {
 		}
 	}, {
 		key: 'closeSiteForm',
-		value: function closeSiteForm() {
+		value: function closeSiteForm(e) {
+			e.preventDefault();
 			this.setState({ showSiteForm: false });
 		}
 	}, {
 		key: 'closeExportForm',
-		value: function closeExportForm() {
+		value: function closeExportForm(e) {
+			e.preventDefault();
 			this.setState({ showExportForm: false });
 		}
 	}, {
 		key: 'closeImportForm',
-		value: function closeImportForm() {
+		value: function closeImportForm(e) {
+			e.preventDefault();
 			this.setState({ showImportForm: false });
 		}
 	}, {
@@ -30400,24 +30407,7 @@ var Vhost = function (_React$Component) {
 	}, {
 		key: 'launchSite',
 		value: function launchSite() {
-			var url = this.siteUrl();
-
-			// Look for a tab with the selected site already active
-			chrome.tabs.query({ url: url.replace('http', '*') + '/*' }, function (tab) {
-				if (tab.length) {
-					chrome.tabs.reload(tab[0].id);
-					chrome.tabs.update(tab[0].id, { active: true });
-					return;
-				}
-
-				// Look for empty tabs and load site in it if one is found, otherwise create a new one.
-				chrome.tabs.query({ url: "chrome://*/" }, function (tab) {
-					if (tab.length === 0) {
-						return chrome.tabs.create({ url: url });
-					}
-					return chrome.tabs.update(tab[0].id, { url: url, active: true });
-				});
-			});
+			(0, _helpers.openTab)(this.siteUrl());
 		}
 	}]);
 
@@ -30465,9 +30455,6 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var SITES = Store.load('sites');
-var SETTINGS = Store.load('settings');
-
 var Vhosts = function (_React$Component) {
 	_inherits(Vhosts, _React$Component);
 
@@ -30491,7 +30478,7 @@ var Vhosts = function (_React$Component) {
 		key: 'componentWillMount',
 		value: function componentWillMount() {
 			this.loginToHostManager();
-			this.setState({ sites: SITES, settings: SETTINGS });
+			this.setState({ sites: Store.load('sites'), settings: Store.load('settings') });
 		}
 	}, {
 		key: 'render',
@@ -30563,8 +30550,8 @@ var Vhosts = function (_React$Component) {
 
 			var url = 'http://localhost:8080/host-manager/html/';
 			_qwest2.default.get(url, null, {
-				user: SETTINGS.manager_username,
-				password: SETTINGS.manager_password
+				user: this.state.settings.manager_username,
+				password: this.state.settings.manager_password
 			}).then(function (xhr, res) {
 				_this3.updateManagerInfo(res);
 			}).catch(function (error, xhr) {
@@ -30663,6 +30650,7 @@ exports.managerStopSite = managerStopSite;
 exports.managerStartSite = managerStartSite;
 exports.managerRemoveSite = managerRemoveSite;
 exports.svgPath = svgPath;
+exports.openTab = openTab;
 
 var _qwest = require('qwest');
 
@@ -30745,6 +30733,28 @@ function svgPath(svg) {
 		svgPath = safari.extension.baseURI;
 	}
 	return svgPath + 'img/' + svg;
+}
+
+function openTab(url) {
+	// Open in Chrome
+	if (typeof chrome != 'undefined') {
+		var urlSearch = url.replace('http', '*').replace(/[\/]$/g, '') + '/*';
+		chrome.tabs.query({ url: urlSearch }, function (tab) {
+			if (tab && tab.length) {
+				chrome.tabs.reload(tab[0].id);
+				chrome.tabs.update(tab[0].id, { active: true });
+				return;
+			}
+
+			// Look for empty tabs and load site in it if one is found, otherwise create a new one.
+			chrome.tabs.query({ url: "chrome://*/" }, function (tab) {
+				if (tab.length === 0) {
+					return chrome.tabs.create({ url: url });
+				}
+				return chrome.tabs.update(tab[0].id, { url: url, active: true });
+			});
+		});
+	}
 }
 
 },{"./store":277,"qwest":60}],277:[function(require,module,exports){

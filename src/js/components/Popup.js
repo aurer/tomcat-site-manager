@@ -4,6 +4,7 @@ import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 import * as Store from '../store';
 import Vhosts from './Vhosts';
 import Message from './Message';
+import { openTab } from '../helpers';
 
 const SETTINGS = Store.load('settings');
 
@@ -44,7 +45,7 @@ class Popup extends React.Component {
 	}
 
 	openManager() {
-		chrome.tabs.create({url:'http://localhost:8080/host-manager/html/'});
+		openTab('http://localhost:8080/host-manager/html/');
 	}
 
 	clearMessages() {

@@ -3,8 +3,6 @@ import * as Store from '../store';
 import Isvg from 'react-inlinesvg';
 import { svgPath } from '../helpers';
 
-const SETTINGS = Store.load('settings');
-
 class Site extends React.Component {
 	constructor(props) {
 		super(props);
@@ -12,16 +10,21 @@ class Site extends React.Component {
 	}
 
 	render() {
+		let settings = Store.load('settings');
+		let nameTitle = this.state.name + '.' + settings.domain;
+		let aliasesTitle = this.state.aliases.split(',').map(a => `${a}.${this.state.name}.${settings.domain}`).join(', ');
+		let rootTitle = settings.root + this.state.root;
+
 		return (
 			<tr className="Site">
-				<td className="Site-name">
+				<td className="Site-name" title={nameTitle}>
 					{this.state.name}
 				</td>
-				<td className="Site-aliases">
+				<td className="Site-aliases" title={aliasesTitle}>
 					{this.state.aliases}
 				</td>
-				<td className="Site-root">
-					<span>{SETTINGS.root}</span>{this.state.root}
+				<td className="Site-root" title={rootTitle}>
+					{this.state.root}
 				</td>
 				<td className="Site-actions">
 					<button className="IconButton Site-actions-edit" onClick={this.handleEditSite.bind(this)} title="Edit">

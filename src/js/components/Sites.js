@@ -93,15 +93,18 @@ class Sites extends React.Component {
 		this.setState({ showExportForm: true })
 	}
 
-	closeSiteForm() {
+	closeSiteForm(e) {
+		e.preventDefault();
 		this.setState({showSiteForm: false});
 	}
 
-	closeExportForm() {
+	closeExportForm(e) {
+		e.preventDefault();
 		this.setState({showExportForm: false});
 	}
 
-	closeImportForm() {
+	closeImportForm(e) {
+		e.preventDefault();
 		this.setState({showImportForm: false});
 	}
 

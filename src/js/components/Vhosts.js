@@ -5,9 +5,6 @@ import Vhost from './Vhost';
 import * as Store from '../store';
 import { parseHTML, findCsrfToken, findManagerSite } from '../helpers';
 
-const SITES = Store.load('sites');
-const SETTINGS = Store.load('settings');
-
 class Vhosts extends React.Component {
 	constructor(props) {
 		super(props);
@@ -24,7 +21,7 @@ class Vhosts extends React.Component {
 
 	componentWillMount() {
 		this.loginToHostManager();
-		this.setState({sites: SITES, settings: SETTINGS});
+		this.setState({sites: Store.load('sites'), settings: Store.load('settings')});
 	}
 
 	render() {
@@ -72,8 +69,8 @@ class Vhosts extends React.Component {
 	loginToHostManager() {
 		let url = `http://localhost:8080/host-manager/html/`;
 		qwest.get(url, null, {
-			user: SETTINGS.manager_username,
-			password: SETTINGS.manager_password
+			user: this.state.settings.manager_username,
+			password: this.state.settings.manager_password
 		})
 		.then((xhr, res) => {
 			this.updateManagerInfo(res);
