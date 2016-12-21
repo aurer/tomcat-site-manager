@@ -27832,8 +27832,6 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var SITES = Store.load('sites');
-
 var ExportForm = function (_React$Component) {
 	_inherits(ExportForm, _React$Component);
 
@@ -27846,7 +27844,7 @@ var ExportForm = function (_React$Component) {
 	_createClass(ExportForm, [{
 		key: 'render',
 		value: function render() {
-			var data = JSON.stringify(SITES);
+			var data = JSON.stringify(Store.load('sites'));
 			return _react2.default.createElement(
 				'form',
 				{ method: 'post', className: 'Form', onSubmit: this.handleSubmit.bind(this) },
@@ -28076,19 +28074,23 @@ var Message = function (_React$Component) {
 		value: function render() {
 			var activeState = this.state.active ? 'is-active' : 'is-inactive';
 			return _react2.default.createElement(
-				_reactAddonsCssTransitionGroup2.default,
-				{
-					transitionName: 'messageTransition',
-					transitionEnterTimeout: 500,
-					transitionLeaveTimeout: 300 },
-				this.state.messages.map(function (message, i) {
-					var className = 'Message Message--' + message.type;
-					return _react2.default.createElement(
-						'div',
-						{ key: i, className: className },
-						message.text
-					);
-				})
+				'div',
+				{ className: 'Messages' },
+				_react2.default.createElement(
+					_reactAddonsCssTransitionGroup2.default,
+					{
+						transitionName: 'messageTransition',
+						transitionEnterTimeout: 500,
+						transitionLeaveTimeout: 300 },
+					this.state.messages.map(function (message, i) {
+						var className = 'Message Message--' + message.type;
+						return _react2.default.createElement(
+							'div',
+							{ key: i, className: className },
+							message.text
+						);
+					})
+				)
 			);
 		}
 	}, {

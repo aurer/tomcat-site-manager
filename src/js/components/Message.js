@@ -26,6 +26,7 @@ class Message extends React.Component {
 	render() {
 		var activeState = this.state.active ? 'is-active' : 'is-inactive';
 		return (
+			<div className="Messages">
 			<ReactCSSTransitionGroup
 				transitionName="messageTransition"
 				transitionEnterTimeout={500}
@@ -35,6 +36,7 @@ class Message extends React.Component {
 					return <div key={i} className={className}>{message.text}</div>
 				})}
 			</ReactCSSTransitionGroup>
+			</div>
 		)
 	}
 

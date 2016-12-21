@@ -1,5 +1,9 @@
 .Messages {
 	overflow: hidden;
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
 }
 
 .Message {
@@ -10,7 +14,7 @@
 	text-align: center;
 	font-weight: bold;
 	transition: all .5s;
-	margin-bottom: .5em;
+	box-shadow: 0 1px 4px fade(#000, 40%);
 
 	a {
 		color: darken(@color-neutral, 50%);
@@ -58,17 +62,17 @@
 }
 
 .messageTransition-enter {
-	opacity: 0;
+	transform: translateY(-100%);
 
 	&.messageTransition-enter-active {
-		opacity: 1;
+		transform: translateY(0);
 	}
 }
 
 .messageTransition-leave {
-	opacity: 1;
+	transform: translateY(0);
 
 	&.messageTransition-leave-active {
-		opacity: 0;
+		transform: translateY(-100%);
 	}
 }
