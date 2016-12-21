@@ -71,3 +71,35 @@ export function svgPath(svg) {
 	}
 	return svgPath + 'img/' + svg;
 }
+
+export function openTab(url) {
+	// Open from Chrome
+	if (typeof chrome != 'undefined') {
+		var urlSearch = url.replace('http', '*').replace(/[\/]$/g, '') + '/*';
+		chrome.tabs.query({url: urlSearch}, tab => {
+			if (tab && tab.length) {
+				chrome.tabs.reload(tab[0].id);
+				chrome.tabs.update(tab[0].id, {active: true});
+				return;
+			}
+
+			// Look for empty tabs and load site in it if one is found, otherwise create a new one.
+			chrome.tabs.query({url: "chrome://*/"}, tab => {
+				if( tab.length === 0 ){
+					return chrome.tabs.create({ url: url });
+				}
+				return chrome.tabs.update( tab[0].id, { url: url, active: true} );
+			});
+		});
+	}
+
+	// Open from safari
+	if (typeof safari != undefined) {
+		let newTab = safari.application.activeBrowserWindow.openTab();
+		newTab.url = url;
+		return;
+	}
+
+	// Default open from browser
+	window.open(url);
+}

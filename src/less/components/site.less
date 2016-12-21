@@ -5,8 +5,18 @@
 	color: @color-neutral-lightest;
 	margin-bottom: .5em;
 
+	tbody {
+		display: block;
+		max-height: 360px;
+		overflow-y: scroll;
+	}
+
 	th, td {
 		padding: .8em .8em;
+		display: inline-block;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
 	}
 
 	th {
@@ -21,24 +31,30 @@
 }
 
 .Site {
-
 	&-name {
-		width: 20%;
+		width: 120px;
+		white-space: nowrap;
+		text-overflow: ellipsis;
 	}
 
 	&-aliases {
-		width: 30%;
+		width: 120px;
 	}
 
 	&-root {
-		width: auto;
+		width: 135px;
+
 		span {
 			opacity: .5;
 		}
 	}
 
+	th&-root {
+		width: 200px;
+	}
+
 	&-actions {
-		width: 30%;
+		width: 75px;
 		text-align: right;
 	}
 }

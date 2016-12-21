@@ -30739,7 +30739,7 @@ function svgPath(svg) {
 }
 
 function openTab(url) {
-	// Open from Chrome
+	// Open in Chrome
 	if (typeof chrome != 'undefined') {
 		var urlSearch = url.replace('http', '*').replace(/[\/]$/g, '') + '/*';
 		chrome.tabs.query({ url: urlSearch }, function (tab) {
@@ -30759,15 +30759,10 @@ function openTab(url) {
 		});
 	}
 
-	// Open from safari
 	if ((typeof safari === 'undefined' ? 'undefined' : _typeof(safari)) != undefined) {
 		var newTab = safari.application.activeBrowserWindow.openTab();
 		newTab.url = url;
-		return;
 	}
-
-	// Default open from browser
-	window.open(url);
 }
 
 },{"./store":277,"qwest":60}],277:[function(require,module,exports){

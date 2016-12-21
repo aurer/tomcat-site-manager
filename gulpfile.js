@@ -9,7 +9,6 @@ del = require('del'),
 runSequence = require('run-sequence'),
 CleanCss = require('less-plugin-clean-css');
 
-
 // Compile less
 gulp.task('less', function() {
 	return gulp.src('./src/less/main.less')
@@ -43,6 +42,11 @@ gulp.task('clean', function() {
 	return del('build/*');
 });
 
+// Build the safari extension from the build folder
+gulp.task('safari', function() {
+	gulp.src(['build/**/*', '!build/manifest.json', 'src/info.plist']).pipe(gulp.dest('Tomcat.safariextension'));
+});
+
 // Watch for changes
 gulp.task('watch', function() {
 	gulp.watch('src/less/**/*.less', ['less']);
@@ -62,4 +66,5 @@ gulp.task('serve', function() {
 gulp.task('default', function(callback) {
 	return runSequence('clean', 'copy', 'less', 'js', callback);
 });
+
 gulp.task('dev', ['default', 'watch', 'serve']);
