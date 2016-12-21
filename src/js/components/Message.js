@@ -29,8 +29,8 @@ class Message extends React.Component {
 			<div className="Messages">
 			<ReactCSSTransitionGroup
 				transitionName="messageTransition"
-				transitionEnterTimeout={500}
-				transitionLeaveTimeout={300}>
+				transitionEnterTimeout={200}
+				transitionLeaveTimeout={200}>
 				{this.state.messages.map((message, i) => {
 					var className = `Message Message--${message.type}`;
 					return <div key={i} className={className}>{message.text}</div>
@@ -45,7 +45,7 @@ class Message extends React.Component {
 			clearTimeout(timeouts[id]);
 		}
 
-		timeouts[id] = setTimeout(this.removeMessage.bind(this), 3000);
+		timeouts[id] = setTimeout(this.removeMessage.bind(this), 1000);
 	}
 
 	removeMessage() {

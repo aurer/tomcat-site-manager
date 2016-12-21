@@ -56,19 +56,23 @@
 
 .IconButton {
 	display: inline-block;
-	width: 23px;
-	height: 23px;
 	border: none;
 	background-color: transparent;
-	background-repeat: no-repeat;
-	background-position: center;
 	font-size: 0;
 	outline: none;
 	cursor: pointer;
 	border-radius: 3px;
 	margin-right: 1px;
+	padding: 0;
+
+	path, polygon {
+		fill: @color-primary;
+	}
 
 	&:hover {
-		background-color: #000;
+		background-color: fade(#000, 30%);
+		path, polygon {
+			fill: @color-primary-lighter;
+		}
 	}
 }

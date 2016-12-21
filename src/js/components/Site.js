@@ -1,5 +1,7 @@
 import React from 'react';
 import * as Store from '../store';
+import Isvg from 'react-inlinesvg';
+import { svgPath } from '../helpers';
 
 const SETTINGS = Store.load('settings');
 
@@ -22,8 +24,12 @@ class Site extends React.Component {
 					<span>{SETTINGS.root}</span>{this.state.root}
 				</td>
 				<td className="Site-actions">
-					<button className="IconButton Site-actions-edit" onClick={this.handleEditSite.bind(this)}>edit</button>
-					<button className="IconButton Site-actions-remove" onClick={this.handleRemoveSite.bind(this)}>remove</button>
+					<button className="IconButton Site-actions-edit" onClick={this.handleEditSite.bind(this)} title="Edit">
+						<Isvg src={svgPath('edit.svg')} />
+					</button>
+					<button className="IconButton Site-actions-remove" onClick={this.handleRemoveSite.bind(this)} title="Remove">
+						<Isvg src={svgPath('remove.svg')} />
+					</button>
 				</td>
 			</tr>
 		)

@@ -1,12 +1,10 @@
 import React from 'react';
 import * as Store from '../store';
 
-const SETTINGS = Store.load('settings');
-
 class Settings extends React.Component {
 	constructor(props) {
 		super(props);
-		this.state = SETTINGS;
+		this.state = Store.load('settings');
 	}
 
 	render() {

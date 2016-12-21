@@ -142,9 +142,9 @@ class Sites extends React.Component {
 		Store.save('sites', sites);
 
 		if (form.siteId) {
-			this.props.showMessage(`Updated ${siteData.name} details`, 'positive');
+			this.props.showMessage(`Updated '${siteData.name}' details`, 'positive');
 		} else {
-			this.props.showMessage(`Added ${siteData.name} to sites`, 'positive');
+			this.props.showMessage(`Added '${siteData.name}' to sites`, 'positive');
 		}
 	}
 
@@ -194,7 +194,7 @@ class Sites extends React.Component {
 				this.setState({
 					sites: otherSites
 				});
-				this.props.showMessage(`Removed ${site.name} from sites`, 'positive');
+				this.props.showMessage(`Removed '${site.name}' from sites`, 'positive');
 			break;
 		}
 	}

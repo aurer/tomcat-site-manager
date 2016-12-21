@@ -54,13 +54,13 @@ class Vhosts extends React.Component {
 		let message = '';
 		switch (action.type) {
 			case 'start':
-				message = `Started ${action.site.name}`;
+				message = `Started '${action.site.name}'`;
 			break;
 			case 'restart':
-				message = `Restarted ${action.site.name}`;
+				message = `Restarted '${action.site.name}'`;
 			break;
 			case 'stop':
-				message = `Stopped ${action.site.name}`;
+				message = `Stopped '${action.site.name}'`;
 			break;
 		}
 		this.props.showMessage(message, 'positive');

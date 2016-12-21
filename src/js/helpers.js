@@ -17,13 +17,17 @@ export function findCsrfToken(html) {
 
 export function findManagerSite(html) {
 	var siteLinks = html.querySelectorAll('td.row-left small a');
-	var managerSites = []
-	siteLinks.forEach(link => {
+	var managerSites = [];
+
+	// Workaround for Safari which doesn't like 'forEach' on nodeLists ???
+	for (var i = 0; i < siteLinks.length; i++) {
+		var link = siteLinks.item(i);
 		managerSites.push({
 			link: link.href,
 			name: link.outerText
 		})
-	});
+	}
+
 	return managerSites;
 }
 
@@ -58,4 +62,12 @@ export function managerStartSite(site, token) {
 
 export function managerRemoveSite(site, token) {
 	return managerControlSite('remove', site, token);
+}
+
+export function svgPath(svg) {
+	var svgPath = '../';
+	if (typeof safari !== 'undefined') {
+		svgPath = safari.extension.baseURI;
+	}
+	return svgPath + 'img/' + svg;
 }

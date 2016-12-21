@@ -1,6 +1,7 @@
 import React from 'react';
 import qwest from 'qwest';
-import { managerAddSite, managerStopSite, managerStartSite, managerRemoveSite } from '../helpers';
+import Isvg from 'react-inlinesvg';
+import { managerAddSite, managerStopSite, managerStartSite, managerRemoveSite, svgPath } from '../helpers';
 
 class Vhost extends React.Component {
 	constructor(props) {
@@ -49,9 +50,15 @@ class Vhost extends React.Component {
 				{this.state.active || <span className="Vhost-name">{site.name}</span> }
 
 				<span className="Vhost-actions">
-					{this.state.active || <button className="IconButton Vhost-actions-start" onClick={this.handleStart.bind(this)}>Start</button> }
-					{this.state.active && <button className="IconButton Vhost-actions-restart" onClick={this.handleRestart.bind(this)}>Restart</button> }
-					{this.state.active && <button className="IconButton Vhost-actions-stop" onClick={this.handleStop.bind(this)}>Stop</button> }
+					{this.state.active || <button className="IconButton Vhost-actions-start" onClick={this.handleStart.bind(this)} title="Start">
+						<Isvg src={svgPath('power.svg')} />
+					</button> }
+					{this.state.active && <button className="IconButton Vhost-actions-restart" onClick={this.handleRestart.bind(this)} title="Restart">
+						<Isvg src={svgPath('loop.svg')} />
+					</button> }
+					{this.state.active && <button className="IconButton Vhost-actions-stop" onClick={this.handleStop.bind(this)} title="Stop">
+						<Isvg src={svgPath('stop.svg')} />
+					</button> }
 				</span>
 			</div>
 		)
