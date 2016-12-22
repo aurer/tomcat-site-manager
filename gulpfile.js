@@ -54,11 +54,6 @@ gulp.task('clean', function() {
 	return del('build/*');
 });
 
-// Build the safari extension from the build folder
-gulp.task('safari', function() {
-	gulp.src(['build/**/*', '!build/manifest.json', 'src/info.plist']).pipe(gulp.dest('Tomcat.safariextension'));
-});
-
 // Watch for changes
 gulp.task('watch', function() {
 	gulp.watch('src/less/**/*.less', ['less']);
