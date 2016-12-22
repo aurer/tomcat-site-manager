@@ -29218,7 +29218,8 @@ var Popup = function (_React$Component) {
 		var _this = _possibleConstructorReturn(this, (Popup.__proto__ || Object.getPrototypeOf(Popup)).call(this, props));
 
 		_this.state = {
-			message: null
+			message: null,
+			canAccessTomcat: false
 		};
 		return _this;
 	}
@@ -29242,7 +29243,7 @@ var Popup = function (_React$Component) {
 					{ className: 'Nav' },
 					_react2.default.createElement(
 						_reactRouter.Link,
-						{ activeClassName: 'is-active', className: 'Nav-item', to: 'vhosts.html' },
+						{ activeClassName: 'is-active', className: 'Nav-item', to: 'index.html' },
 						'Vhosts'
 					),
 					_react2.default.createElement(
@@ -29439,33 +29440,6 @@ var Settings = function (_React$Component) {
 						_react2.default.createElement('input', { type: 'password', name: 'manager_password', defaultValue: this.state.manager_password, placeholder: 'Password', autoComplete: 'off' })
 					)
 				),
-				_react2.default.createElement(
-					'div',
-					{ className: 'Form-field' },
-					_react2.default.createElement(
-						'label',
-						null,
-						'Theme'
-					),
-					_react2.default.createElement(
-						'div',
-						{ className: 'Form-inputs' },
-						_react2.default.createElement(
-							'select',
-							{ name: 'theme', defaultValue: this.state.theme },
-							_react2.default.createElement(
-								'option',
-								{ value: 'dark' },
-								'Dark'
-							),
-							_react2.default.createElement(
-								'option',
-								{ value: 'light' },
-								'Light'
-							)
-						)
-					)
-				),
 				_react2.default.createElement('input', { type: 'submit', value: 'Save' })
 			);
 		}
@@ -29481,8 +29455,7 @@ var Settings = function (_React$Component) {
 				os: form.os.value,
 				tomcat_version: form.tomcat_version.value,
 				manager_username: form.manager_username.value,
-				manager_password: form.manager_password.value,
-				theme: form.theme.value
+				manager_password: form.manager_password.value
 			});
 
 			form.domain.value = newState.domain;
@@ -30271,8 +30244,7 @@ var Vhost = function (_React$Component) {
 		_this.state = {
 			active: false,
 			fetching: false,
-			action: null,
-			csrfToken: _this.props.csrfToken
+			action: null
 		};
 		return _this;
 	}
@@ -30350,7 +30322,7 @@ var Vhost = function (_React$Component) {
 			var _this2 = this;
 
 			this.setState({ fetching: true, action: 'start' });
-			(0, _helpers.managerAddSite)(this.props.site, this.props.csrfToken).then(function (xhr, res) {
+			(0, _helpers.managerAddSite)(this.props.site, window.csrfToken).then(function (xhr, res) {
 				_this2.props.onChange({
 					type: 'start',
 					site: _this2.props.site,
@@ -30368,8 +30340,8 @@ var Vhost = function (_React$Component) {
 
 			this.setState({ fetching: true, action: 'restart' });
 
-			(0, _helpers.managerStopSite)(this.props.site.name, this.props.csrfToken).then(function (xhr, res) {
-				(0, _helpers.managerStartSite)(_this3.props.site.name, _this3.props.csrfToken).then(function (xhr, res) {
+			(0, _helpers.managerStopSite)(this.props.site.name, window.csrfToken).then(function (xhr, res) {
+				(0, _helpers.managerStartSite)(_this3.props.site.name, window.csrfToken).then(function (xhr, res) {
 					_this3.props.onChange({
 						type: 'restart',
 						site: _this3.props.site,
@@ -30388,7 +30360,7 @@ var Vhost = function (_React$Component) {
 
 			this.setState({ fetching: true, action: 'stop' });
 
-			(0, _helpers.managerRemoveSite)(this.props.site.name, this.props.csrfToken).then(function (xhr, res) {
+			(0, _helpers.managerRemoveSite)(this.props.site.name, window.csrfToken).then(function (xhr, res) {
 				_this4.props.onChange({
 					type: 'stop',
 					site: _this4.props.site,
@@ -30487,12 +30459,11 @@ var Vhosts = function (_React$Component) {
 		var _this = _possibleConstructorReturn(this, (Vhosts.__proto__ || Object.getPrototypeOf(Vhosts)).call(this, props));
 
 		_this.state = {
-			canSeeTomcatManager: true,
+			canSeeTomcatManager: null,
 			loading: false,
 			sites: [],
 			settings: {},
-			managerSites: [],
-			csrfToken: ''
+			managerSites: []
 		};
 		return _this;
 	}
@@ -30508,25 +30479,51 @@ var Vhosts = function (_React$Component) {
 		value: function render() {
 			var _this2 = this;
 
-			if (!this.state.canSeeTomcatManager) {
+			if (this.state.canSeeTomcatManager === null) {
 				return _react2.default.createElement(
-					'p',
-					{ className: 'Message Message--negative' },
-					'Failed to reach Tomcat manager - please ensure it is running'
+					'div',
+					{ className: 'App-error' },
+					_react2.default.createElement(
+						'p',
+						null,
+						'Connecting to Tomcat...'
+					),
+					_react2.default.createElement('progress', null)
+				);
+			}
+
+			if (this.state.canSeeTomcatManager === false) {
+				return _react2.default.createElement(
+					'div',
+					{ className: 'App-error' },
+					_react2.default.createElement(
+						'p',
+						null,
+						'Could not connect to Tomcat'
+					),
+					_react2.default.createElement(
+						'p',
+						null,
+						'Please check Tomcat is running and that the username and password you supplied are correct'
+					)
 				);
 			}
 
 			if (this.state.sites.length < 1) {
 				return _react2.default.createElement(
-					'p',
-					{ className: 'Message Message--info' },
-					'You dont have any sites defined yet',
-					_react2.default.createElement('br', null),
-					_react2.default.createElement('br', null),
+					'div',
+					{ className: 'App-error' },
 					_react2.default.createElement(
-						_reactRouter.Link,
-						{ to: 'sites.html' },
-						'Add one now'
+						'p',
+						null,
+						'You dont have any sites defined yet',
+						_react2.default.createElement('br', null),
+						_react2.default.createElement('br', null),
+						_react2.default.createElement(
+							_reactRouter.Link,
+							{ to: 'sites.html' },
+							'Add one now'
+						)
 					)
 				);
 			}
@@ -30541,8 +30538,7 @@ var Vhosts = function (_React$Component) {
 						settings: _this2.state.settings,
 						index: i,
 						managerSites: _this2.state.managerSites,
-						onChange: _this2.handleVhostChange.bind(_this2),
-						csrfToken: _this2.state.csrfToken });
+						onChange: _this2.handleVhostChange.bind(_this2) });
 				})
 			);
 		}
@@ -30576,9 +30572,11 @@ var Vhosts = function (_React$Component) {
 				user: this.state.settings.manager_username,
 				password: this.state.settings.manager_password
 			}).then(function (xhr, res) {
+				_this3.setState({ canSeeTomcatManager: true });
 				_this3.updateManagerInfo(res);
 			}).catch(function (error, xhr) {
-				console.error(error, xhr);
+				console.log(error, xhr);
+				_this3.setState({ canSeeTomcatManager: false });
 			});
 		}
 	}, {
@@ -30587,11 +30585,8 @@ var Vhosts = function (_React$Component) {
 			var html = (0, _helpers.parseHTML)(response);
 			var managerSites = (0, _helpers.findManagerSite)(html);
 			var csrfToken = (0, _helpers.findCsrfToken)(html);
-			this.setState({
-				canSeeTomcatManager: true,
-				managerSites: managerSites,
-				csrfToken: csrfToken
-			});
+			window.csrfToken = csrfToken;
+			this.setState({ managerSites: managerSites });
 		}
 	}]);
 
@@ -30650,15 +30645,15 @@ function requireSettings(nextState, replaceState) {
 _reactDom2.default.render(_react2.default.createElement(
 	_reactRouter.Router,
 	{ history: _reactRouter.browserHistory },
-	_react2.default.createElement(_reactRouter.Redirect, { from: '/', to: 'vhosts.html' }),
+	_react2.default.createElement(_reactRouter.Redirect, { from: '/', to: 'index.html' }),
 	_react2.default.createElement(
 		_reactRouter.Route,
 		{ component: _Popup2.default, onEnter: requireSettings },
-		_react2.default.createElement(_reactRouter.Route, { path: '(*/)vhosts.html', component: _Vhosts2.default }),
-		_react2.default.createElement(_reactRouter.Route, { path: '(*/)settings.html', component: _Settings2.default }),
-		_react2.default.createElement(_reactRouter.Route, { path: '(*/)sites.html', component: _Sites2.default })
+		_react2.default.createElement(_reactRouter.Route, { path: '(*/)index.html', component: _Vhosts2.default }),
+		_react2.default.createElement(_reactRouter.Route, { path: '(*/)sites.html', component: _Sites2.default }),
+		_react2.default.createElement(_reactRouter.Route, { path: '(*/)settings.html', component: _Settings2.default })
 	)
-), document.querySelector('main'));
+), document.querySelector('.App'));
 
 },{"./components/Popup":268,"./components/Settings":269,"./components/Sites":272,"./components/Vhosts":274,"./store":277,"react":259,"react-dom":62,"react-router":221}],276:[function(require,module,exports){
 'use strict';
@@ -30721,7 +30716,7 @@ function findManagerSite(html) {
 	return managerSites;
 }
 
-function managerAddSite(site, token) {
+function managerAddSite(site) {
 	var data = {
 		name: site.name,
 		aliases: site.aliases,
@@ -30730,28 +30725,28 @@ function managerAddSite(site, token) {
 		deployOnStartup: 'on',
 		deployXml: 'on',
 		unpackWARs: 'on',
-		'org.apache.catalina.filters.CSRF_NONCE': token
+		'org.apache.catalina.filters.CSRF_NONCE': window.csrfToken
 	};
 	return _qwest2.default.post('http://localhost:8080/host-manager/html/add', data);
 }
 
-function managerControlSite(action, site, token) {
+function managerControlSite(action, site) {
 	return _qwest2.default.post('http://localhost:8080/host-manager/html/' + action, {
 		name: site,
-		'org.apache.catalina.filters.CSRF_NONCE': token
+		'org.apache.catalina.filters.CSRF_NONCE': window.csrfToken
 	});
 }
 
-function managerStopSite(site, token) {
-	return managerControlSite('stop', site, token);
+function managerStopSite(site) {
+	return managerControlSite('stop', site);
 }
 
-function managerStartSite(site, token) {
-	return managerControlSite('start', site, token);
+function managerStartSite(site) {
+	return managerControlSite('start', site);
 }
 
-function managerRemoveSite(site, token) {
-	return managerControlSite('remove', site, token);
+function managerRemoveSite(site) {
+	return managerControlSite('remove', site);
 }
 
 function svgPath(svg) {

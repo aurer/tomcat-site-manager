@@ -49,15 +49,6 @@ class Settings extends React.Component {
 						<input type="password" name="manager_password" defaultValue={this.state.manager_password} placeholder="Password" autoComplete="off" />
 					</div>
 				</div>
-				<div className="Form-field">
-					<label>Theme</label>
-					<div className="Form-inputs">
-						<select name="theme" defaultValue={this.state.theme}>
-							<option value="dark">Dark</option>
-							<option value="light">Light</option>
-						</select>
-					</div>
-				</div>
 				<input type="submit" value="Save"/>
 			</form>
 		)
@@ -73,8 +64,7 @@ class Settings extends React.Component {
 			os: 							form.os.value,
 			tomcat_version: 	form.tomcat_version.value,
 			manager_username: form.manager_username.value,
-			manager_password: form.manager_password.value,
-			theme: 						form.theme.value
+			manager_password: form.manager_password.value
 		});
 
 		form.domain.value = newState.domain;

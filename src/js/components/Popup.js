@@ -11,6 +11,7 @@ class Popup extends React.Component {
 		super(props);
 		this.state = {
 			message: null,
+			canAccessTomcat: false
 		}
 	}
 
@@ -25,7 +26,7 @@ class Popup extends React.Component {
 		return (
 			<section className="Section Section--popup">
 				<nav className="Nav">
-					<Link activeClassName="is-active" className="Nav-item" to="vhosts.html">Vhosts</Link>
+					<Link activeClassName="is-active" className="Nav-item" to="index.html">Vhosts</Link>
 					<Link activeClassName="is-active" className="Nav-item" to="sites.html">Sites</Link>
 					<Link activeClassName="is-active" className="Nav-item" to="settings.html">Settings</Link>
 				</nav>

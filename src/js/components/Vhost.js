@@ -16,8 +16,7 @@ class Vhost extends React.Component {
 		this.state = {
 			active: false,
 			fetching: false,
-			action: null,
-			csrfToken: this.props.csrfToken
+			action: null
 		};
 	}
 
@@ -72,7 +71,7 @@ class Vhost extends React.Component {
 
 	handleStart() {
 		this.setState({fetching: true, action: 'start'})
-		managerAddSite(this.props.site, this.props.csrfToken)
+		managerAddSite(this.props.site, window.csrfToken)
 		.then((xhr, res) => {
 			this.props.onChange({
 				type: 'start',
@@ -89,9 +88,9 @@ class Vhost extends React.Component {
 	handleRestart() {
 		this.setState({fetching: true, action: 'restart'})
 
-		managerStopSite(this.props.site.name, this.props.csrfToken)
+		managerStopSite(this.props.site.name, window.csrfToken)
 		.then((xhr, res) => {
-			managerStartSite(this.props.site.name, this.props.csrfToken)
+			managerStartSite(this.props.site.name, window.csrfToken)
 			.then((xhr, res) => {
 				this.props.onChange({
 					type: 'restart',
@@ -109,7 +108,7 @@ class Vhost extends React.Component {
 	handleStop() {
 		this.setState({fetching: true, action: 'stop'})
 
-		managerRemoveSite(this.props.site.name, this.props.csrfToken)
+		managerRemoveSite(this.props.site.name, window.csrfToken)
 		.then((xhr, res) => {
 			this.props.onChange({
 				type: 'stop',

@@ -19,12 +19,12 @@ function requireSettings(nextState, replaceState) {
 
 ReactDom.render(
 	<Router history={browserHistory}>
-		<Redirect from="/" to="vhosts.html" />
+		<Redirect from="/" to="index.html" />
 		<Route component={Popup} onEnter={requireSettings}>
-			<Route path="(*/)vhosts.html" component={Vhosts} />
-			<Route path="(*/)settings.html" component={Settings} />
+			<Route path="(*/)index.html" component={Vhosts} />
 			<Route path="(*/)sites.html" component={Sites} />
+			<Route path="(*/)settings.html" component={Settings} />
 		</Route>
 	</Router>,
-	document.querySelector('main')
+	document.querySelector('.App')
 );

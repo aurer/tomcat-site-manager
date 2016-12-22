@@ -10,12 +10,11 @@ class Vhosts extends React.Component {
 		super(props);
 
 		this.state = {
-			canSeeTomcatManager: true,
+			canSeeTomcatManager: null,
 			loading: false,
 			sites: [],
 			settings: {},
-			managerSites: [],
-			csrfToken: ''
+			managerSites: []
 		};
 	}
 
@@ -25,12 +24,30 @@ class Vhosts extends React.Component {
 	}
 
 	render() {
-		if (!this.state.canSeeTomcatManager) {
-			return (<p className="Message Message--negative">Failed to reach Tomcat manager - please ensure it is running</p>)
+		if (this.state.canSeeTomcatManager === null) {
+			return (
+				<div className="App-error">
+					<p>Connecting to Tomcat...</p>
+					<progress></progress>
+				</div>
+			)
+		}
+
+		if (this.state.canSeeTomcatManager === false) {
+			return (
+				<div className="App-error">
+					<p>Could not connect to Tomcat</p>
+					<p>Please check Tomcat is running and that the username and password you supplied are correct</p>
+				</div>
+			)
 		}
 
 		if (this.state.sites.length < 1) {
-			return (<p className="Message Message--info">You dont have any sites defined yet<br/><br/><Link to="sites.html">Add one now</Link></p>)
+			return (
+				<div className="App-error">
+					<p>You dont have any sites defined yet<br/><br/><Link to="sites.html">Add one now</Link></p>
+				</div>
+			)
 		}
 
 		return (
@@ -41,8 +58,7 @@ class Vhosts extends React.Component {
 					settings={this.state.settings}
 					index={i}
 					managerSites={this.state.managerSites}
-					onChange={this.handleVhostChange.bind(this)}
-					csrfToken={this.state.csrfToken} /> )}
+					onChange={this.handleVhostChange.bind(this)} /> )}
 			</div>
 		)
 	}
@@ -73,10 +89,12 @@ class Vhosts extends React.Component {
 			password: this.state.settings.manager_password
 		})
 		.then((xhr, res) => {
+			this.setState({ canSeeTomcatManager: true });
 			this.updateManagerInfo(res);
 		})
 		.catch((error, xhr) => {
-			console.error(error, xhr);
+			console.log(error, xhr);
+			this.setState({ canSeeTomcatManager: false });
 		})
 	}
 
@@ -84,11 +102,8 @@ class Vhosts extends React.Component {
 		let html = parseHTML(response);
 		let managerSites = findManagerSite(html);
 		let csrfToken = findCsrfToken(html);
-		this.setState({
-			canSeeTomcatManager: true,
-			managerSites,
-			csrfToken
-		});
+		window.csrfToken = csrfToken;
+		this.setState({ managerSites });
 	}
 }
 

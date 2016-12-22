@@ -31,7 +31,7 @@ export function findManagerSite(html) {
 	return managerSites;
 }
 
-export function managerAddSite(site, token) {
+export function managerAddSite(site) {
 	var data = {
 		name: site.name,
 		aliases: site.aliases,
@@ -40,28 +40,28 @@ export function managerAddSite(site, token) {
 		deployOnStartup: 'on',
 		deployXml: 'on',
 		unpackWARs: 'on',
-		'org.apache.catalina.filters.CSRF_NONCE': token
+		'org.apache.catalina.filters.CSRF_NONCE': window.csrfToken
 	};
 	return qwest.post('http://localhost:8080/host-manager/html/add', data);
 }
 
-function managerControlSite(action, site, token) {
+function managerControlSite(action, site) {
 	return qwest.post('http://localhost:8080/host-manager/html/' + action, {
 		name: site,
-		'org.apache.catalina.filters.CSRF_NONCE':token
+		'org.apache.catalina.filters.CSRF_NONCE': window.csrfToken
 	});
 }
 
-export function managerStopSite(site, token) {
-	return managerControlSite('stop', site, token);
+export function managerStopSite(site) {
+	return managerControlSite('stop', site);
 }
 
-export function managerStartSite(site, token) {
-	return managerControlSite('start', site, token);
+export function managerStartSite(site) {
+	return managerControlSite('start', site);
 }
 
-export function managerRemoveSite(site, token) {
-	return managerControlSite('remove', site, token);
+export function managerRemoveSite(site) {
+	return managerControlSite('remove', site);
 }
 
 export function svgPath(svg) {
