@@ -2,7 +2,7 @@
 	"manifest_version": 2,
 
 	"name": "Tomcat site manager",
-	"description": "Save and setup local sites on tomcat",
+	"description": "Create, reload and remove Tomcat virtual hosts",
 	"version": "3.0",
 
 	"browser_action": {

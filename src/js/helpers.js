@@ -75,7 +75,7 @@ export function svgPath(svg) {
 export function openTab(url) {
 	// Open from Chrome
 	if (typeof chrome != 'undefined') {
-		var urlSearch = url.replace('http', '*').replace(/[\/]$/g, '') + '/*';
+		var urlSearch = url.replace(/[\/]$/g, '') + '/*';
 		chrome.tabs.query({url: urlSearch}, tab => {
 			if (tab && tab.length) {
 				chrome.tabs.reload(tab[0].id);
@@ -85,16 +85,19 @@ export function openTab(url) {
 
 			// Look for empty tabs and load site in it if one is found, otherwise create a new one.
 			chrome.tabs.query({url: "chrome://*/"}, tab => {
-				if( tab.length === 0 ){
-					return chrome.tabs.create({ url: url });
+				if( tab.length > 0 ){
+					return chrome.tabs.update( tab[0].id, { url: url, active: true} );
 				}
-				return chrome.tabs.update( tab[0].id, { url: url, active: true} );
+
+				return chrome.tabs.create({ url: url });
 			});
 		});
+
+		return;
 	}
 
 	// Open from safari
-	if (typeof safari != undefined) {
+	if (typeof safari != 'undefined') {
 		let newTab = safari.application.activeBrowserWindow.openTab();
 		newTab.url = url;
 		return;
