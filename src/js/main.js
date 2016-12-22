@@ -7,6 +7,7 @@ import Sites from './components/Sites';
 import Settings from './components/Settings';
 import * as Store from './store';
 
+// Try to exsure settings are filled in
 function requireSettings(nextState, replaceState) {
 	let settings = Store.load('settings');
 	if (settings.domain.length < 1 || settings.root.length < 1) {

@@ -2,6 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>Author</key>
+	<string>Aurer</string>
 	<key>Builder Version</key>
 	<string>12602.2.14.0.7</string>
 	<key>CFBundleDisplayName</key>
@@ -47,6 +49,12 @@
 			</dict>
 		</array>
 	</dict>
+	<key>Companion Bundle Identifier</key>
+	<array>
+		<string>com.aurer.tomcat</string>
+	</array>
+	<key>Description</key>
+	<string>Manage Tomcat Virtual Hosts</string>
 	<key>DeveloperIdentifier</key>
 	<string>0000000000</string>
 	<key>ExtensionInfoDictionaryVersion</key>
@@ -61,5 +69,7 @@
 			<string>All</string>
 		</dict>
 	</dict>
+	<key>Website</key>
+	<string>http://aurer.co.uk</string>
 </dict>
 </plist>

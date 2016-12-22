@@ -22,10 +22,8 @@ class Popup extends React.Component {
 	}
 
 	render() {
-		let settings = Store.load('settings');
-		let popupClassName = `Section Section--popup theme-${settings.theme}`;
 		return (
-			<section className={popupClassName}>
+			<section className="Section Section--popup">
 				<nav className="Nav">
 					<Link activeClassName="is-active" className="Nav-item" to="vhosts.html">Vhosts</Link>
 					<Link activeClassName="is-active" className="Nav-item" to="sites.html">Sites</Link>

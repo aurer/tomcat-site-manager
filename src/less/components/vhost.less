@@ -18,13 +18,14 @@
 	}
 
 	a&-name {
-		color: @color-neutral-lightest;
+		color: @color-neutral-darker;
 		cursor: pointer;
 
 		&:hover {
-			color: @color-primary;
+			color: @color-primary-dark;
 		}
 	}
+
 
 	&-indicator {
 		display: inline-block;
@@ -32,7 +33,8 @@
 		height: 8px;
 		margin-top: 2px;
 		border-radius: 4px;
-		background-color: @color-neutral-dark;
+		background-color: transparent;
+		border: 1px solid @color-neutral;
 		transition: transform .2s;
 	}
 
@@ -73,7 +75,7 @@
 	&.is-active {
 		.Vhost-indicator {
 			background-color: @color-alert-positive;
-			border-color: @color-primary-light;
+			border-color: @color-alert-positive;
 		}
 	}
 }

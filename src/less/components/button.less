@@ -7,8 +7,8 @@
 	line-height: 1.1;
 	margin: 0 .2em;
 	border: none;
-	background-color: @color-primary;
-	color: @color-neutral-darker;
+	background-color: @color-primary-darker;
+	color: @color-neutral-lightest;
 	font-size: .9em;
 	font-weight: bold;
 	border-radius: 2px;
@@ -17,7 +17,7 @@
 	cursor: pointer;
 
 	&:hover {
-		background-color: @color-primary-light;
+		background-color: @color-primary-dark;
 	}
 
 	&--block {
@@ -66,12 +66,12 @@
 	padding: 0;
 
 	path, polygon {
-		fill: @color-primary;
+		fill: @color-primary-dark;
 	}
 
 	&:hover {
 		path, polygon {
-			fill: @color-primary-lighter;
+			fill: @color-neutral-darkest;
 		}
 	}
 }

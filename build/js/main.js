@@ -29234,11 +29234,9 @@ var Popup = function (_React$Component) {
 	}, {
 		key: 'render',
 		value: function render() {
-			var settings = Store.load('settings');
-			var popupClassName = 'Section Section--popup theme-' + settings.theme;
 			return _react2.default.createElement(
 				'section',
-				{ className: popupClassName },
+				{ className: 'Section Section--popup' },
 				_react2.default.createElement(
 					'nav',
 					{ className: 'Nav' },
@@ -29980,8 +29978,8 @@ var Sites = function (_React$Component) {
 			sites: SITES,
 			activeSite: null,
 			showSiteForm: false,
-			showExportForm: false,
-			showImportForm: false
+			showImportForm: false,
+			showExportForm: false
 		};
 		return _this;
 	}
@@ -29998,7 +29996,6 @@ var Sites = function (_React$Component) {
 		value: function render() {
 			var _this2 = this;
 
-			var sites = this.state.sites;
 			return _react2.default.createElement(
 				'section',
 				{ className: 'Section Section--sites' },
@@ -30021,16 +30018,17 @@ var Sites = function (_React$Component) {
 						'Export sites'
 					)
 				),
-				this.state.showSiteForm && _react2.default.createElement(_SiteForm2.default, { site: this.state.activeSite, onSubmit: this.handleNewSiteForm.bind(this), closeForm: this.closeSiteForm.bind(this) }),
+				this.state.showSiteForm && _react2.default.createElement(_SiteForm2.default, {
+					site: this.state.activeSite,
+					onSubmit: this.handleNewSiteForm.bind(this),
+					closeForm: this.closeSiteForm.bind(this) }),
 				this.state.showExportForm && _react2.default.createElement(_ExportForm2.default, {
 					onSubmit: this.handleExportForm.bind(this),
-					onCancel: this.closeExportForm.bind(this)
-				}),
+					onCancel: this.closeExportForm.bind(this) }),
 				this.state.showImportForm && _react2.default.createElement(_ImportForm2.default, {
 					onSubmit: this.handleImportForm.bind(this),
 					onCancel: this.closeImportForm.bind(this),
-					onError: this.handleImportError.bind(this)
-				}),
+					onError: this.handleImportError.bind(this) }),
 				this.state.showSiteForm || this.state.showExportForm || this.state.showImportForm || _react2.default.createElement(
 					'table',
 					{ className: 'Sites' },
@@ -30060,7 +30058,7 @@ var Sites = function (_React$Component) {
 					_react2.default.createElement(
 						'tbody',
 						null,
-						sites.map(function (site, i) {
+						this.state.sites.map(function (site, i) {
 							return _react2.default.createElement(_Site2.default, { key: site.id, site: site, index: i, onChange: _this2.handleChangeSite.bind(_this2) });
 						})
 					)
@@ -30072,27 +30070,30 @@ var Sites = function (_React$Component) {
 		value: function openSiteForm() {
 			this.setState({
 				showSiteForm: true,
-				showExportForm: false,
-				showImportForm: false
+				showImportForm: false,
+				showExportForm: false
 			});
+			this.forceUpdate();
 		}
 	}, {
 		key: 'openExportForm',
 		value: function openExportForm() {
 			this.setState({
 				showSiteForm: false,
-				showExportForm: true,
-				showImportForm: false
+				showImportForm: false,
+				showExportForm: true
 			});
+			this.forceUpdate();
 		}
 	}, {
 		key: 'openImportForm',
 		value: function openImportForm() {
 			this.setState({
 				showSiteForm: false,
-				showExportForm: false,
-				showImportForm: true
+				showImportForm: true,
+				showExportForm: false
 			});
+			this.forceUpdate();
 		}
 	}, {
 		key: 'openExportForm',
@@ -30636,6 +30637,7 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+// Try to exsure settings are filled in
 function requireSettings(nextState, replaceState) {
 	var settings = Store.load('settings');
 	if (settings.domain.length < 1 || settings.root.length < 1) {

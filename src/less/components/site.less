@@ -1,8 +1,7 @@
 .Sites {
 	width: 100%;
 	border-collapse: collapse;
-	background-color: @color-neutral-darkest;
-	color: @color-neutral-lightest;
+	color: @color-neutral-darker;
 	margin-bottom: .5em;
 
 	tbody {
@@ -12,7 +11,7 @@
 	}
 
 	th, td {
-		padding: .8em .8em;
+		padding: .5em .8em;
 		display: inline-block;
 		white-space: nowrap;
 		overflow: hidden;
@@ -22,35 +21,43 @@
 	th {
 		text-align: left;
 		color: @color-primary-dark;
-		border-bottom: 1px solid @color-neutral-dark;
+		border-bottom: 1px solid @color-neutral;
 	}
 }
 
 .Site {
 	&-name {
-		width: 120px;
+		width: 145px;
 		white-space: nowrap;
 		text-overflow: ellipsis;
 	}
 
 	&-aliases {
-		width: 120px;
+		width: 145px;
 	}
 
 	&-root {
-		width: 135px;
+		width: 160px;
 
 		span {
 			opacity: .5;
 		}
 	}
 
-	th&-root {
-		width: 210px;
+	td&-actions {
+		opacity: 0;
+		padding: .2em .5em .2em .2em;
+		position: absolute;
+		right: 0;
+		background-color: @color-neutral-lighter;
+		box-shadow: -5px 0 20px @color-neutral-lighter;
+		text-align: right;
+		transition: opacity .2s;
 	}
 
-	&-actions {
-		width: 75px;
-		text-align: right;
+	&:hover {
+		.Site-actions {
+			opacity: 1;
+		}
 	}
 }

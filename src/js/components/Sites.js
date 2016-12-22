@@ -14,8 +14,8 @@ class Sites extends React.Component {
 			sites: SITES,
 			activeSite: null,
 			showSiteForm: false,
-			showExportForm: false,
-			showImportForm: false
+			showImportForm: false,
+			showExportForm: false
 		};
 	}
 
@@ -25,8 +25,7 @@ class Sites extends React.Component {
 		}
 	}
 
-	render() {
-		let sites = this.state.sites;
+	render() {		
 		return (
 			<section className="Section Section--sites">
 				<div className="ButtonGroup">
@@ -35,16 +34,19 @@ class Sites extends React.Component {
 					<a className="Button" onClick={this.openExportForm.bind(this)}>Export sites</a>
 				</div>
 
-				{this.state.showSiteForm && <SiteForm site={this.state.activeSite} onSubmit={this.handleNewSiteForm.bind(this)} closeForm={this.closeSiteForm.bind(this)} />}
+				{this.state.showSiteForm && <SiteForm
+					site={this.state.activeSite}
+					onSubmit={this.handleNewSiteForm.bind(this)}
+					closeForm={this.closeSiteForm.bind(this)} />}
+
 				{this.state.showExportForm && <ExportForm
 					onSubmit={this.handleExportForm.bind(this)}
-					onCancel={this.closeExportForm.bind(this)}
-					/>}
+					onCancel={this.closeExportForm.bind(this)} />}
+
 				{this.state.showImportForm && <ImportForm
 					onSubmit={this.handleImportForm.bind(this)}
 					onCancel={this.closeImportForm.bind(this)}
-					onError={this.handleImportError.bind(this)}
-					/>}
+					onError={this.handleImportError.bind(this)} />}
 
 				{(this.state.showSiteForm || this.state.showExportForm || this.state.showImportForm) ||
 					<table className="Sites">
@@ -56,7 +58,7 @@ class Sites extends React.Component {
 							</tr>
 						</thead>
 						<tbody>
-							{sites.map((site, i) => <Site key={site.id} site={site} index={i} onChange={this.handleChangeSite.bind(this)} />)}
+							{this.state.sites.map((site, i) => <Site key={site.id} site={site} index={i} onChange={this.handleChangeSite.bind(this)} />)}
 						</tbody>
 					</table>
 				}
@@ -68,25 +70,28 @@ class Sites extends React.Component {
 	openSiteForm() {
 		this.setState({
 			showSiteForm: true,
-			showExportForm: false,
-			showImportForm: false
-		})
+			showImportForm: false,
+			showExportForm: false
+		});
+		this.forceUpdate();
 	}
 
 	openExportForm() {
 		this.setState({
 			showSiteForm: false,
-			showExportForm: true,
-			showImportForm: false
-		})
+			showImportForm: false,
+			showExportForm: true
+		});
+		this.forceUpdate();
 	}
 
 	openImportForm() {
 		this.setState({
 			showSiteForm: false,
-			showExportForm: false,
-			showImportForm: true
-		})
+			showImportForm: true,
+			showExportForm: false
+		});
+		this.forceUpdate();
 	}
 
 	openExportForm() {
