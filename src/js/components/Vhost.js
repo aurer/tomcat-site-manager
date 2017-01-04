@@ -77,54 +77,62 @@ class Vhost extends React.Component {
 	handleStart() {
 		this.setState({fetching: true, action: 'start'})
 		managerAddSite(this.props.site, window.csrfToken)
-		.then((xhr, res) => {
-			this.props.onChange({
-				type: 'start',
-				site: this.props.site,
-				response: res
+			.then((xhr, res) => {
+				this.props.onChange({
+					type: 'start',
+					site: this.props.site,
+					response: res
+				});
+			})
+			.catch((error, xhr) => {
+				console.error(error, xhr);
+				this.props.onError(`Failed to add '${this.props.site.name}'`);
+				this.setState({fetching: false, action: null});
 			});
-		})
-		.catch((error, xhr) => {
-			console.error(error, xhr);
-			this.setState({fetching: false, action: null});
-		});
 	}
 
 	handleRestart() {
 		this.setState({fetching: true, action: 'restart'})
 
 		managerStopSite(this.siteName(), window.csrfToken)
-		.then((xhr, res) => {
-			managerStartSite(this.siteName(), window.csrfToken)
 			.then((xhr, res) => {
-				this.props.onChange({
-					type: 'restart',
-					site: this.props.site,
-					response: res
+				managerStartSite(this.siteName(), window.csrfToken)
+				.then((xhr, res) => {
+					this.props.onChange({
+						type: 'restart',
+						site: this.props.site,
+						response: res
+					});
+				})
+				.catch((error, xhr) => {
+					console.error(error, xhr);
+					this.props.onError(`Failed to restart '${this.props.site.name}'`);
+					this.setState({fetching: false, action: null});
 				});
+			})
+			.catch((error, xhr) => {
+				console.error(error, xhr);
+				this.props.onError(`Failed to pause '${this.props.site.name}'`);
+				this.setState({fetching: false, action: null});
 			});
-		})
-		.catch((error, xhr) => {
-			console.error(error, xhr);
-			this.setState({fetching: false, action: null});
-		});
 	}
 
 	handleStop() {
 		this.setState({fetching: true, action: 'stop'})
 
 		managerRemoveSite(this.siteName(), window.csrfToken)
-		.then((xhr, res) => {
-			this.props.onChange({
-				type: 'stop',
-				site: this.props.site,
-				response: res
+			.then((xhr, res) => {
+				this.props.onChange({
+					type: 'stop',
+					site: this.props.site,
+					response: res
+				});
+			})
+			.catch((error, xhr) => {
+				console.error(error, xhr);
+				this.props.onError(`Failed to stop '${this.props.site.name}'`);
+				this.setState({fetching: false, action: null});
 			});
-		})
-		.catch((error, xhr) => {
-			console.error(error, xhr);
-			this.setState({fetching: false, action: null});
-		});
 	}
 
 	checkSiteInManager() {

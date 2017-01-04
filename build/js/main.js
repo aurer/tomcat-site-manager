@@ -30349,6 +30349,7 @@ var Vhost = function (_React$Component) {
 				});
 			}).catch(function (error, xhr) {
 				console.error(error, xhr);
+				_this2.props.onError('Failed to add \'' + _this2.props.site.name + '\'');
 				_this2.setState({ fetching: false, action: null });
 			});
 		}
@@ -30366,9 +30367,14 @@ var Vhost = function (_React$Component) {
 						site: _this3.props.site,
 						response: res
 					});
+				}).catch(function (error, xhr) {
+					console.error(error, xhr);
+					_this3.props.onError('Failed to restart \'' + _this3.props.site.name + '\'');
+					_this3.setState({ fetching: false, action: null });
 				});
 			}).catch(function (error, xhr) {
 				console.error(error, xhr);
+				_this3.props.onError('Failed to pause \'' + _this3.props.site.name + '\'');
 				_this3.setState({ fetching: false, action: null });
 			});
 		}
@@ -30387,6 +30393,7 @@ var Vhost = function (_React$Component) {
 				});
 			}).catch(function (error, xhr) {
 				console.error(error, xhr);
+				_this4.props.onError('Failed to stop \'' + _this4.props.site.name + '\'');
 				_this4.setState({ fetching: false, action: null });
 			});
 		}
@@ -30556,7 +30563,8 @@ var Vhosts = function (_React$Component) {
 						settings: _this2.state.settings,
 						index: i,
 						managerSites: _this2.state.managerSites,
-						onChange: _this2.handleVhostChange.bind(_this2) });
+						onChange: _this2.handleVhostChange.bind(_this2),
+						onError: _this2.handleVhostError.bind(_this2) });
 				})
 			);
 		}
@@ -30579,6 +30587,11 @@ var Vhosts = function (_React$Component) {
 
 			// Update vhost props with new manager info
 			this.updateManagerInfo(action.response);
+		}
+	}, {
+		key: 'handleVhostError',
+		value: function handleVhostError(error) {
+			this.props.showMessage(error, 'negative');
 		}
 	}, {
 		key: 'loginToHostManager',

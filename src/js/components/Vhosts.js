@@ -58,7 +58,8 @@ class Vhosts extends React.Component {
 					settings={this.state.settings}
 					index={i}
 					managerSites={this.state.managerSites}
-					onChange={this.handleVhostChange.bind(this)} /> )}
+					onChange={this.handleVhostChange.bind(this)}
+					onError={this.handleVhostError.bind(this) }/> )}
 			</div>
 		)
 	}
@@ -80,6 +81,10 @@ class Vhosts extends React.Component {
 
 		// Update vhost props with new manager info
 		this.updateManagerInfo(action.response);
+	}
+
+	handleVhostError(error) {
+		this.props.showMessage(error, 'negative');
 	}
 
 	loginToHostManager() {
