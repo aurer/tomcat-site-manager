@@ -29666,6 +29666,7 @@ var SiteForm = function (_React$Component) {
 	_createClass(SiteForm, [{
 		key: 'componentDidMount',
 		value: function componentDidMount() {
+			this.settings = Store.load('settings');
 			this.handleUpdateInputs(this.props);
 		}
 	}, {
@@ -29786,8 +29787,9 @@ var SiteForm = function (_React$Component) {
 	}, {
 		key: 'handleRootValue',
 		value: function handleRootValue(e) {
+			var ds = this.settings.os == 'win' ? '\\' : '/';
 			var input = e.target;
-			var rootValue = input.value;
+			var rootValue = input.value.replace(/[\/\\]/g, ds);
 			var helper = this.buildRootHelper(rootValue);
 			this.setState({
 				rootValue: rootValue,

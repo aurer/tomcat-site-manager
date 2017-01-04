@@ -21,6 +21,7 @@ class SiteForm extends React.Component {
 	}
 
 	componentDidMount() {
+		this.settings = Store.load('settings');
 		this.handleUpdateInputs(this.props);
 	}
 
@@ -101,8 +102,9 @@ class SiteForm extends React.Component {
 	}
 
 	handleRootValue(e) {
+		let ds = this.settings.os == 'win' ? '\\' : '/';
 		let input = e.target;
-		let rootValue = input.value;
+		let rootValue = input.value.replace(/[\/\\]/g, ds);
 		let helper = this.buildRootHelper(rootValue);
 		this.setState({
 			rootValue,
