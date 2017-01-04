@@ -23,7 +23,6 @@ a:hover {
   width: 450px;
   height: 520px;
   margin: 0 auto;
-  overflow: scroll;
   position: relative;
   background-color: #eaeeee;
   color: #3e4b4f;
@@ -305,11 +304,13 @@ a:hover {
   border-collapse: collapse;
   color: #3e4b4f;
   margin-bottom: .5em;
+  overflow: hidden;
 }
 .Sites tbody {
   display: block;
   max-height: 360px;
   overflow-y: scroll;
+  margin-right: -16px;
 }
 .Sites th,
 .Sites td {
