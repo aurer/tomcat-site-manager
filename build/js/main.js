@@ -29415,7 +29415,7 @@ var Settings = function (_React$Component) {
 							_react2.default.createElement(
 								'option',
 								{ value: '7' },
-								'7'
+								'7+'
 							),
 							_react2.default.createElement(
 								'option',

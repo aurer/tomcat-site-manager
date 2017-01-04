@@ -37,7 +37,7 @@ class Settings extends React.Component {
 					<label>Tomcat version</label>
 					<div className="Form-inputs">
 						<select name="tomcat_version" defaultValue={this.state.tomcat_version}>
-							<option value="7">7</option>
+							<option value="7">7+</option>
 							<option value="6">6</option>
 						</select>
 					</div>
