@@ -119,7 +119,6 @@ class Vhost extends React.Component {
 
 	handleStop() {
 		this.setState({fetching: true, action: 'stop'})
-
 		managerRemoveSite(this.siteName(), window.csrfToken)
 			.then((xhr, res) => {
 				this.props.onChange({

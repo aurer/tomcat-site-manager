@@ -30384,7 +30384,6 @@ var Vhost = function (_React$Component) {
 			var _this4 = this;
 
 			this.setState({ fetching: true, action: 'stop' });
-
 			(0, _helpers.managerRemoveSite)(this.siteName(), window.csrfToken).then(function (xhr, res) {
 				_this4.props.onChange({
 					type: 'stop',

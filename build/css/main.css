@@ -129,6 +129,7 @@ a:hover {
   border-radius: 3px;
   margin-right: 1px;
   padding: 0;
+  position: relative;
 }
 .IconButton path,
 .IconButton polygon {
@@ -428,14 +429,40 @@ a.Vhost-name:hover {
 .Vhost-actions {
   position: relative;
 }
-.is-starting .Vhost-actions-start {
-  animation: pulseFade infinite .4s;
+.is-starting .Vhost-actions-start svg {
+  visibility: hidden;
+}
+.is-starting .Vhost-actions-start:after {
+  content: '';
+  position: absolute;
+  top: 1px;
+  left: 1px;
+  width: 11px;
+  height: 11px;
+  margin: 3px;
+  border-radius: 11px;
+  border: 2px solid #0090a1;
+  border-bottom-color: transparent;
+  animation: spin linear infinite .5s;
 }
 .is-restarting .Vhost-actions-restart {
   animation: spin linear infinite .5s;
 }
-.is-stopping .Vhost-actions-stop {
-  animation: pulseFade infinite .4s;
+.is-stopping .Vhost-actions-stop svg {
+  visibility: hidden;
+}
+.is-stopping .Vhost-actions-stop:after {
+  content: '';
+  position: absolute;
+  top: 1px;
+  left: 1px;
+  width: 11px;
+  height: 11px;
+  margin: 3px;
+  border-radius: 11px;
+  border: 2px solid #0090a1;
+  border-bottom-color: transparent;
+  animation: spin linear infinite .5s;
 }
 .Vhost.is-fetching .Vhost-actions button {
   pointer-events: none;

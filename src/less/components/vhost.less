@@ -43,7 +43,23 @@
 
 		&-start {
 			.is-starting & {
-				animation: pulseFade infinite .4s;
+				svg {
+					visibility: hidden;
+				}
+
+				&:after {
+					content: '';
+					position: absolute;
+					top: 1px;
+					left: 1px;
+			    width: 11px;
+			    height: 11px;
+					margin: 3px;
+			    border-radius: 11px;
+			    border: 2px solid @color-primary-dark;
+			    border-bottom-color: transparent;
+					animation: spin linear infinite .5s;
+				}
 			}
 		}
 
@@ -55,7 +71,23 @@
 
 		&-stop {
 			.is-stopping & {
-				animation: pulseFade infinite .4s;
+				svg {
+					visibility: hidden;
+				}
+
+				&:after {
+					content: '';
+					position: absolute;
+					top: 1px;
+					left: 1px;
+			    width: 11px;
+			    height: 11px;
+					margin: 3px;
+			    border-radius: 11px;
+			    border: 2px solid @color-primary-dark;
+			    border-bottom-color: transparent;
+					animation: spin linear infinite .5s;
+				}
 			}
 		}
 	}
