@@ -1,8 +1,6 @@
 import qwest from 'qwest';
 import * as Store from './store';
 
-const SETTINGS = Store.load('settings');
-
 export function parseHTML(string) {
 	var parser = new DOMParser();
 	var doc = parser.parseFromString(string, 'text/html');
@@ -32,10 +30,11 @@ export function findManagerSite(html) {
 }
 
 export function managerAddSite(site) {
+	var settings = Store.load('settings');
 	var data = {
-		name: site.name,
+		name: `${site.name}.${settings.domain}`,
 		aliases: site.aliases,
-		appBase: SETTINGS.root + site.root,
+		appBase: settings.root + site.root,
 		autoDeploy: 'on',
 		deployOnStartup: 'on',
 		deployXml: 'on',

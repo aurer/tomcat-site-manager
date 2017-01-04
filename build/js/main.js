@@ -30223,7 +30223,13 @@ var _reactInlinesvg = require('react-inlinesvg');
 
 var _reactInlinesvg2 = _interopRequireDefault(_reactInlinesvg);
 
+var _store = require('../store');
+
+var Store = _interopRequireWildcard(_store);
+
 var _helpers = require('../helpers');
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -30250,9 +30256,14 @@ var Vhost = function (_React$Component) {
 	}
 
 	_createClass(Vhost, [{
+		key: 'siteName',
+		value: function siteName() {
+			return this.props.site.name + '.' + this.props.settings.domain;
+		}
+	}, {
 		key: 'siteUrl',
 		value: function siteUrl() {
-			return 'http://' + this.props.site.name + '.' + this.props.settings.domain;
+			return 'http://' + this.siteName();
 		}
 	}, {
 		key: 'componentWillReceiveProps',
@@ -30340,8 +30351,8 @@ var Vhost = function (_React$Component) {
 
 			this.setState({ fetching: true, action: 'restart' });
 
-			(0, _helpers.managerStopSite)(this.props.site.name, window.csrfToken).then(function (xhr, res) {
-				(0, _helpers.managerStartSite)(_this3.props.site.name, window.csrfToken).then(function (xhr, res) {
+			(0, _helpers.managerStopSite)(this.siteName(), window.csrfToken).then(function (xhr, res) {
+				(0, _helpers.managerStartSite)(_this3.siteName(), window.csrfToken).then(function (xhr, res) {
 					_this3.props.onChange({
 						type: 'restart',
 						site: _this3.props.site,
@@ -30360,7 +30371,7 @@ var Vhost = function (_React$Component) {
 
 			this.setState({ fetching: true, action: 'stop' });
 
-			(0, _helpers.managerRemoveSite)(this.props.site.name, window.csrfToken).then(function (xhr, res) {
+			(0, _helpers.managerRemoveSite)(this.siteName(), window.csrfToken).then(function (xhr, res) {
 				_this4.props.onChange({
 					type: 'stop',
 					site: _this4.props.site,
@@ -30374,12 +30385,11 @@ var Vhost = function (_React$Component) {
 	}, {
 		key: 'checkSiteInManager',
 		value: function checkSiteInManager() {
-			var _this5 = this;
-
 			this.setState({ fetching: false, action: null });
 			var isActive = false;
+			var siteName = this.siteName();
 			this.props.managerSites.forEach(function (site) {
-				if (site.name == _this5.props.site.name) {
+				if (site.name == siteName) {
 					return isActive = true;
 				}
 			});
@@ -30388,15 +30398,15 @@ var Vhost = function (_React$Component) {
 	}, {
 		key: 'checkSiteStatus',
 		value: function checkSiteStatus() {
-			var _this6 = this;
+			var _this5 = this;
 
 			var url = this.siteUrl();
 			this.setState({ fetching: true });
 			_qwest2.default.get(url).then(function (xhr, res) {
-				_this6.setState({ active: true, fetching: false });
+				_this5.setState({ active: true, fetching: false });
 			}).catch(function (error, xhr) {
 				console.error(error, xhr);
-				_this6.setState({ fetching: false });
+				_this5.setState({ fetching: false });
 			});
 		}
 	}, {
@@ -30411,7 +30421,7 @@ var Vhost = function (_React$Component) {
 
 exports.default = Vhost;
 
-},{"../helpers":276,"qwest":60,"react":259,"react-inlinesvg":193}],274:[function(require,module,exports){
+},{"../helpers":276,"../store":277,"qwest":60,"react":259,"react-inlinesvg":193}],274:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -30683,8 +30693,6 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var SETTINGS = Store.load('settings');
-
 function parseHTML(string) {
 	var parser = new DOMParser();
 	var doc = parser.parseFromString(string, 'text/html');
@@ -30714,10 +30722,11 @@ function findManagerSite(html) {
 }
 
 function managerAddSite(site) {
+	var settings = Store.load('settings');
 	var data = {
-		name: site.name,
+		name: site.name + '.' + settings.domain,
 		aliases: site.aliases,
-		appBase: SETTINGS.root + site.root,
+		appBase: settings.root + site.root,
 		autoDeploy: 'on',
 		deployOnStartup: 'on',
 		deployXml: 'on',

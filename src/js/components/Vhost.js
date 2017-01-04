@@ -1,6 +1,7 @@
 import React from 'react';
 import qwest from 'qwest';
 import Isvg from 'react-inlinesvg';
+import * as Store from '../store';
 import {
 	managerAddSite,
 	managerStopSite,
@@ -20,8 +21,12 @@ class Vhost extends React.Component {
 		};
 	}
 
+	siteName() {
+		return this.props.site.name + '.' + this.props.settings.domain;
+	}
+
 	siteUrl() {
-		return 'http://' + this.props.site.name + '.' + this.props.settings.domain;
+		return 'http://' + this.siteName();
 	}
 
 	componentWillReceiveProps(nextProps) {
@@ -88,9 +93,9 @@ class Vhost extends React.Component {
 	handleRestart() {
 		this.setState({fetching: true, action: 'restart'})
 
-		managerStopSite(this.props.site.name, window.csrfToken)
+		managerStopSite(this.siteName(), window.csrfToken)
 		.then((xhr, res) => {
-			managerStartSite(this.props.site.name, window.csrfToken)
+			managerStartSite(this.siteName(), window.csrfToken)
 			.then((xhr, res) => {
 				this.props.onChange({
 					type: 'restart',
@@ -108,7 +113,7 @@ class Vhost extends React.Component {
 	handleStop() {
 		this.setState({fetching: true, action: 'stop'})
 
-		managerRemoveSite(this.props.site.name, window.csrfToken)
+		managerRemoveSite(this.siteName(), window.csrfToken)
 		.then((xhr, res) => {
 			this.props.onChange({
 				type: 'stop',
@@ -125,8 +130,9 @@ class Vhost extends React.Component {
 	checkSiteInManager() {
 		this.setState({fetching: false, action: null});
 		var isActive = false;
+		var siteName = this.siteName();
 		this.props.managerSites.forEach(site => {
-			if (site.name == this.props.site.name) {
+			if (site.name == siteName) {
 				return isActive = true;
 			}
 		});
