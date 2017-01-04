@@ -208,6 +208,10 @@ a:hover {
 .Form .Form-field--slim .Form-inputs {
   margin-bottom: .5em;
 }
+.Form .Form-field--checkboxes label {
+  float: none;
+  vertical-align: middle;
+}
 .Form .Form-helper {
   font-size: .9em;
   letter-spacing: .05em;

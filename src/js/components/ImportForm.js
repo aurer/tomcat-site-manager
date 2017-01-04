@@ -25,10 +25,10 @@ class ImportForm extends React.Component {
 							placeholder="Paste your JSON config here and click import"
 							onKeyUp={this.handleKeys.bind(this)}></textarea>
 					</div>
-					<div className="Form-field">
-						<label htmlFor="overwrite">Overwrite existing</label>
+					<div className="Form-field Form-field--checkboxes">
 						<div className="Form-inputs">
-							<input type="checkbox" name="overwrite" defaultChecked={false} />
+							<input type="checkbox" name="overwrite" id="overwrite" defaultChecked={false} />
+							<label htmlFor="overwrite">Overwrite existing</label>
 						</div>
 					</div>
 				</div>

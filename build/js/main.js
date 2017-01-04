@@ -29006,16 +29006,16 @@ var ImportForm = function (_React$Component) {
 					),
 					_react2.default.createElement(
 						"div",
-						{ className: "Form-field" },
-						_react2.default.createElement(
-							"label",
-							{ htmlFor: "overwrite" },
-							"Overwrite existing"
-						),
+						{ className: "Form-field Form-field--checkboxes" },
 						_react2.default.createElement(
 							"div",
 							{ className: "Form-inputs" },
-							_react2.default.createElement("input", { type: "checkbox", name: "overwrite", defaultChecked: false })
+							_react2.default.createElement("input", { type: "checkbox", name: "overwrite", id: "overwrite", defaultChecked: false }),
+							_react2.default.createElement(
+								"label",
+								{ htmlFor: "overwrite" },
+								"Overwrite existing"
+							)
 						)
 					)
 				),
