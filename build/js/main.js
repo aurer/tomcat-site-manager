@@ -28891,8 +28891,15 @@ var ExportForm = function (_React$Component) {
 	}
 
 	_createClass(ExportForm, [{
+		key: 'componentDidMount',
+		value: function componentDidMount() {
+			this.textArea.select();
+		}
+	}, {
 		key: 'render',
 		value: function render() {
+			var _this2 = this;
+
 			var data = JSON.stringify(Store.load('sites'));
 			return _react2.default.createElement(
 				'form',
@@ -28907,8 +28914,10 @@ var ExportForm = function (_React$Component) {
 							name: 'data',
 							cols: '30',
 							rows: '10',
-							autoFocus: true,
 							defaultValue: data,
+							ref: function ref(textarea) {
+								_this2.textArea = textarea;
+							},
 							onKeyUp: this.handleKeys.bind(this) })
 					)
 				),
@@ -30048,7 +30057,6 @@ var Sites = function (_React$Component) {
 				showImportForm: false,
 				showExportForm: false
 			});
-			this.forceUpdate();
 		}
 	}, {
 		key: 'openExportForm',
@@ -30058,7 +30066,6 @@ var Sites = function (_React$Component) {
 				showImportForm: false,
 				showExportForm: true
 			});
-			this.forceUpdate();
 		}
 	}, {
 		key: 'openImportForm',
@@ -30068,7 +30075,6 @@ var Sites = function (_React$Component) {
 				showImportForm: true,
 				showExportForm: false
 			});
-			this.forceUpdate();
 		}
 	}, {
 		key: 'openExportForm',

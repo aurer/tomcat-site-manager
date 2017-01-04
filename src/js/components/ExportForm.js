@@ -2,6 +2,10 @@ import React from 'react';
 import * as Store from '../store';
 
 class ExportForm extends React.Component {
+	componentDidMount() {
+		this.textArea.select();
+	}
+
 	render() {
 		let data = JSON.stringify(Store.load('sites'));
 		return(
@@ -12,8 +16,8 @@ class ExportForm extends React.Component {
 							name="data"
 							cols="30"
 							rows="10"
-							autoFocus
 							defaultValue={data}
+							ref={(textarea) => {this.textArea = textarea}}
 							onKeyUp={this.handleKeys.bind(this)}></textarea>
 					</div>
 				</div>

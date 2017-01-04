@@ -25,7 +25,7 @@ class Sites extends React.Component {
 		}
 	}
 
-	render() {		
+	render() {
 		return (
 			<section className="Section Section--sites">
 				<div className="ButtonGroup">
@@ -73,7 +73,6 @@ class Sites extends React.Component {
 			showImportForm: false,
 			showExportForm: false
 		});
-		this.forceUpdate();
 	}
 
 	openExportForm() {
@@ -82,7 +81,6 @@ class Sites extends React.Component {
 			showImportForm: false,
 			showExportForm: true
 		});
-		this.forceUpdate();
 	}
 
 	openImportForm() {
@@ -91,7 +89,6 @@ class Sites extends React.Component {
 			showImportForm: true,
 			showExportForm: false
 		});
-		this.forceUpdate();
 	}
 
 	openExportForm() {
