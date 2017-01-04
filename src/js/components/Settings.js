@@ -76,7 +76,7 @@ class Settings extends React.Component {
 	}
 
 	sanitiseDomainValue(value) {
-		return value.replace(/\s+/g, '');
+		return value.replace(/\s+/g, '').replace(':8080', '');
 	}
 
 	sanitiseRootValue(value, os) {

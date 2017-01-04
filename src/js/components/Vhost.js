@@ -26,7 +26,7 @@ class Vhost extends React.Component {
 	}
 
 	siteUrl() {
-		return 'http://' + this.siteName();
+		return 'http://' + this.siteName() + ':8080';
 	}
 
 	componentWillReceiveProps(nextProps) {

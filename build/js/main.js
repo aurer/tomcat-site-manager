@@ -29468,7 +29468,7 @@ var Settings = function (_React$Component) {
 	}, {
 		key: 'sanitiseDomainValue',
 		value: function sanitiseDomainValue(value) {
-			return value.replace(/\s+/g, '');
+			return value.replace(/\s+/g, '').replace(':8080', '');
 		}
 	}, {
 		key: 'sanitiseRootValue',
@@ -30263,7 +30263,7 @@ var Vhost = function (_React$Component) {
 	}, {
 		key: 'siteUrl',
 		value: function siteUrl() {
-			return 'http://' + this.siteName();
+			return 'http://' + this.siteName() + ':8080';
 		}
 	}, {
 		key: 'componentWillReceiveProps',
