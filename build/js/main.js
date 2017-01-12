@@ -30694,6 +30694,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.parseHTML = parseHTML;
 exports.findCsrfToken = findCsrfToken;
 exports.findManagerSite = findManagerSite;
+exports.compileAliasString = compileAliasString;
 exports.managerAddSite = managerAddSite;
 exports.managerStopSite = managerStopSite;
 exports.managerStartSite = managerStartSite;
@@ -30741,11 +30742,18 @@ function findManagerSite(html) {
 	return managerSites;
 }
 
+function compileAliasString(name, aliases) {
+	var settings = Store.load('settings');
+	return aliases.split(',').map(function (alias) {
+		return alias.replace(/\s/g, '') + '.' + name + '.' + settings.domain;
+	}).join(', ');
+}
+
 function managerAddSite(site) {
 	var settings = Store.load('settings');
 	var data = {
 		name: site.name + '.' + settings.domain,
-		aliases: site.aliases,
+		aliases: compileAliasString(site.name, site.aliases),
 		appBase: settings.root + site.root,
 		autoDeploy: 'on',
 		deployOnStartup: 'on',
