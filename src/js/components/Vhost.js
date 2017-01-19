@@ -25,8 +25,38 @@ class Vhost extends React.Component {
 		return this.props.site.name + '.' + this.props.settings.domain;
 	}
 
+	siteNames() {
+		var baseName = this.props.site.name;
+		let names = [baseName];
+		if (this.props.site.aliases != '') {
+			this.props.site.aliases.split(',').forEach(alias => {
+				names.push(alias + '.' + baseName);
+			});
+		}
+		return names;
+	}
+
 	siteUrl() {
 		return 'http://' + this.siteName() + ':8080';
+	}
+
+	siteUrls() {
+		let urls = [];
+		urls.push(this.siteUrl());
+		if (this.props.site.aliases != '') {
+			this.props.site.aliases.split(',').forEach(alias => {
+				urls.push('http://' + alias.replace(/\s+/g, '') + '.' + this.props.site.name + '.' + this.props.settings.domain);
+			});
+		}
+		return urls;
+	}
+
+	siteLinks() {
+		return (
+			<span className="Vhost-siteLinks">
+				{this.siteNames().map(url => <a key={url} className="Vhost-name" onClick={this.launchSite.bind(this, url)}>{url}</a>)}
+			</span>
+		)
 	}
 
 	componentWillReceiveProps(nextProps) {
@@ -56,8 +86,9 @@ class Vhost extends React.Component {
 		return (
 			<div className={className}>
 				<i className="Vhost-indicator"></i>
-				{this.state.active && <a className="Vhost-name" onClick={this.launchSite.bind(this)}>{site.name}</a> }
-				{this.state.active || <span className="Vhost-name">{site.name}</span> }
+				{this.state.active && this.siteLinks() }
+
+				{this.state.active || <span className="Vhost-siteLinks"><span className="Vhost-name">{site.name}</span></span> }
 
 				<span className="Vhost-actions">
 					{this.state.active || <button className="IconButton Vhost-actions-start" onClick={this.handleStart.bind(this)} title="Start">
@@ -159,8 +190,9 @@ class Vhost extends React.Component {
 		})
 	}
 
-	launchSite() {
-		openTab(this.siteUrl());
+	launchSite(url) {
+		var fullUrl = 'http://' + url + '.' + this.props.settings.domain + ':8080';
+		openTab(fullUrl);
 	}
 }
 

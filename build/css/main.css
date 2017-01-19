@@ -402,12 +402,29 @@ td.Site-actions {
   display: flex;
   align-items: center;
   padding: .5em 0;
+  position: relative;
+}
+.Vhost-siteLinks {
+  flex: 1;
+  padding: 0 .5em;
+  position: relative;
+}
+.Vhost-siteLinks:hover {
+  background-color: #fff;
+  border-radius: 3px;
+  box-shadow: 0 1px 5px rgba(255, 255, 255, 0.2);
 }
 .Vhost-name {
-  flex: 1;
-  padding: .2em 1em;
+  padding: .2em .5em;
   color: #A3B2B6;
   transition: color .2s;
+  display: block;
+}
+.Vhost-name:hover {
+  background-color: #fff;
+}
+.Vhost .Vhost-name + .Vhost-name {
+  position: absolute;
 }
 a.Vhost-name {
   color: #3e4b4f;
