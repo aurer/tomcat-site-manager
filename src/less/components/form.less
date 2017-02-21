@@ -1,11 +1,12 @@
 .Form {
 	display: block;
 	max-width: 45em;
-	margin: 1em;
+	margin: 1em .5em;
 	overflow: hidden;
 	padding: 1em;
 	box-shadow: 0 1px 6px fade(#000, 15%);
-	background-color: @color-neutral-lightest;
+	background-color: @color-neutral-darker;
+	border-radius: 3px;
 
 	.Form-field {
 		margin: .5em 0;
@@ -27,12 +28,13 @@
 				box-sizing: border-box;
 				margin-bottom: .5em;
 				padding: .5em;
-				background-color: @color-neutral-lighter;
-				border: 1px solid darken(@color-neutral-light, 5%);
+				background-color: fade(#000, 30%);
+				border: 1px solid fade(#fff, 20%);
 				box-shadow: inset 0 2px 3px fade(#000, 10%);
 				color: inherit;
 				font-size: inherit;
 				outline: none;
+				transition: border-color .2s;
 
 				&:focus {
 					border-color: @color-primary-dark;
@@ -50,8 +52,8 @@
 			select {
 				display: block;
 				width: 100%;
-				background-color: @color-neutral-lighter;
-				border: 1px solid darken(@color-neutral-light, 5%);
+				background-color: fade(#000, 30%);
+				border: 1px solid fade(#fff, 20%);
 				color: inherit;
 				font-size: inherit;
 				outline: none;

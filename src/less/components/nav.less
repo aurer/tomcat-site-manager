@@ -3,6 +3,7 @@
 	text-align: center;
 	margin-bottom: .5em;
 	box-shadow: 0 1px 6px fade(#000, 30%);
+	position: relative;
 
 	.Nav-item {
 		flex: 1;
@@ -11,13 +12,25 @@
 		outline: none;
 		cursor: pointer;
 		transition: background-color .2s;
-		border-bottom: 4px solid @color-primary;
-		background-color: @color-primary;
+		border-bottom: 4px solid transparent;
+		background-color: @color-neutral-darker;
 		color: @color-neutral-lightest;
 
 		&.is-active {
-			border-bottom-color: @color-primary-darker;
+			border-bottom-color: @color-primary-light;
 		}
+	}
+
+	.Nav-indicator {
+		position: absolute;
+		bottom: 0;
+		height: 4px;
+		width: 100%;
+		left: 0;
+		background-color: @color-primary-light;
+		transition-property: left, width;
+		transition-duration: .4s;
+		transition-timing-function: cubic-bezier(.22,.02,.04,1);
 	}
 }
 
@@ -31,8 +44,8 @@
 
 	.Nav-item {
 		border: none;
-		background-color: @color-neutral-light;
-		color: @color-neutral-darker;
+		background-color: @color-neutral-darker;
+		color: @color-neutral-lighter;
 		font-weight: bold;
 		padding: .5em;
 	}

@@ -1,5 +1,5 @@
 .Vhosts {
-	max-height: 437px;
+	height: 437px;
 	overflow: auto;
 	margin: 0 0 .5em;
 	padding: 0 1em;
@@ -7,44 +7,66 @@
 
 .Vhost {
 	display: flex;
-	align-items: center;
 	padding: .5em 0;
 	position: relative;
 
 	&-siteLinks {
-		flex: 1;
-		padding: 0 .5em;
+		width: 50%;
+		margin: 0 .5em;
 		position: relative;
+	}
 
-		&:hover {
-			background-color: #fff;
-			border-radius: 3px;
-			box-shadow: 0 1px 5px fade(#fff, 20%);
+	&-aliases {
+		display: flex;
+		flex-direction: column;
+		position: absolute;
+		pointer-events: none;
+		opacity: 0;
+		transition-property: transform, opacity;
+		transition-duration: .3s;
+		transform-origin: top;
+		transform: scaleY(.9);
+		z-index: 100;
+		margin-top: 3px;
+		
+		a {
+			background-color: @color-primary-darker;
+			margin-top: 1px;
+		}
+	}
+
+	&-siteLinks:hover {
+		a.Vhost-name {
+			background-color: @color-primary-darker;
+
+			&:hover {
+				background-color: @color-primary;
+			}
+		}
+
+		.Vhost-aliases {
+			pointer-events: all;
+			opacity: 1;
+			transform: scaleY(1);
+
+			a:hover {
+				background-color: @color-primary;
+			}
 		}
 	}
 
 	&-name {
 		padding: .2em .5em;
 		color: @color-neutral;
-		transition: color .2s;
-		display: block;
-
-		&:hover {
-			background-color: #fff;
-		}
-	}
-
-	.Vhost-name + .Vhost-name {
-		position: absolute;
+		transition: color .2s, background-color .2s;
+		border-radius: 3px;
+		position: relative;
+		z-index: 0;
 	}
 
 	a&-name {
-		color: @color-neutral-darker;
+		color: @color-neutral-lighter;
 		cursor: pointer;
-
-		&:hover {
-			color: @color-primary-dark;
-		}
 	}
 
 
@@ -52,7 +74,7 @@
 		display: inline-block;
 		width: 8px;
 		height: 8px;
-		margin-top: 2px;
+		margin-top: .6em;
 		border-radius: 4px;
 		background-color: transparent;
 		border: 1px solid @color-neutral;
@@ -61,6 +83,8 @@
 
 	&-actions {
 		position: relative;
+		flex: 1;
+		text-align: right;
 
 		&-start {
 			.is-starting & {
@@ -129,6 +153,16 @@
 		.Vhost-indicator {
 			background-color: @color-alert-positive;
 			border-color: @color-alert-positive;
+		}
+
+		.Vhost-siteLinks {
+			border-radius: 3px;
+
+			&:hover {
+				.Vhost-name {
+					display: inline;
+				}
+			}
 		}
 	}
 }

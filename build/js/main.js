@@ -29921,7 +29921,11 @@ var Popup = function (_React$Component) {
 
 		_this.state = {
 			message: null,
-			canAccessTomcat: false
+			canAccessTomcat: false,
+			navPosition: {
+				width: '100%',
+				left: 0
+			}
 		};
 		return _this;
 	}
@@ -29942,22 +29946,23 @@ var Popup = function (_React$Component) {
 				{ className: 'Section Section--popup' },
 				_react2.default.createElement(
 					'nav',
-					{ className: 'Nav' },
+					{ className: 'Nav', ref: 'Nav' },
 					_react2.default.createElement(
-						_reactRouter.Link,
-						{ activeClassName: 'is-active', className: 'Nav-item', to: 'index.html' },
+						'a',
+						{ className: 'Nav-item', href: 'index.html', onClick: this.handleNavigation.bind(this) },
 						'Vhosts'
 					),
 					_react2.default.createElement(
-						_reactRouter.Link,
-						{ activeClassName: 'is-active', className: 'Nav-item', to: 'sites.html' },
+						'a',
+						{ className: 'Nav-item', href: 'sites.html', onClick: this.handleNavigation.bind(this) },
 						'Sites'
 					),
 					_react2.default.createElement(
-						_reactRouter.Link,
-						{ activeClassName: 'is-active', className: 'Nav-item', to: 'settings.html' },
+						'a',
+						{ className: 'Nav-item', href: 'settings.html', onClick: this.handleNavigation.bind(this) },
 						'Settings'
-					)
+					),
+					_react2.default.createElement('span', { style: { width: this.state.navPosition.width + 'px', left: this.state.navPosition.left + 'px' }, className: 'Nav-indicator' })
 				),
 				_react2.default.cloneElement(this.props.children, { showMessage: this.handleShowMessage.bind(this) }),
 				_react2.default.createElement(_Message2.default, { message: this.state.message, clearMessages: this.clearMessages.bind(this) }),
@@ -29971,6 +29976,29 @@ var Popup = function (_React$Component) {
 					)
 				)
 			);
+		}
+	}, {
+		key: 'componentDidMount',
+		value: function componentDidMount() {
+			var _this2 = this;
+
+			// Set nav indicator position
+			var nav = this.refs.Nav;
+			var path = window.location.pathname;
+			nav.querySelectorAll('a').forEach(function (a) {
+				if (a.pathname == path) {
+					_this2.setState({ navPosition: { left: a.offsetLeft, width: a.offsetWidth } });
+				}
+			});
+		}
+	}, {
+		key: 'handleNavigation',
+		value: function handleNavigation(e) {
+			e.preventDefault();
+			var link = e.target;
+			var to = link.pathname;
+			this.setState({ navPosition: { left: link.offsetLeft, width: link.offsetWidth } });
+			_reactRouter.browserHistory.push(to);
 		}
 	}, {
 		key: 'handleShowMessage',
@@ -30968,10 +30996,22 @@ var Vhost = function (_React$Component) {
 			var names = [baseName];
 			if (this.props.site.aliases != '') {
 				this.props.site.aliases.split(',').forEach(function (alias) {
-					names.push(alias + '.' + baseName);
+					names.push(alias.replace(/\s/g, '') + '.' + baseName);
 				});
 			}
 			return names;
+		}
+	}, {
+		key: 'siteAliases',
+		value: function siteAliases() {
+			var baseName = this.props.site.name;
+			var aliases = [];
+			if (this.props.site.aliases != '') {
+				this.props.site.aliases.split(',').forEach(function (alias) {
+					aliases.push(alias.replace(/\s/g, '') + '.' + baseName);
+				});
+			}
+			return aliases;
 		}
 	}, {
 		key: 'siteUrl',
@@ -30979,34 +31019,29 @@ var Vhost = function (_React$Component) {
 			return 'http://' + this.siteName() + ':8080';
 		}
 	}, {
-		key: 'siteUrls',
-		value: function siteUrls() {
-			var _this2 = this;
-
-			var urls = [];
-			urls.push(this.siteUrl());
-			if (this.props.site.aliases != '') {
-				this.props.site.aliases.split(',').forEach(function (alias) {
-					urls.push('http://' + alias.replace(/\s+/g, '') + '.' + _this2.props.site.name + '.' + _this2.props.settings.domain);
-				});
-			}
-			return urls;
-		}
-	}, {
 		key: 'siteLinks',
 		value: function siteLinks() {
-			var _this3 = this;
+			var _this2 = this;
 
 			return _react2.default.createElement(
 				'span',
 				{ className: 'Vhost-siteLinks' },
-				this.siteNames().map(function (url) {
-					return _react2.default.createElement(
-						'a',
-						{ key: url, className: 'Vhost-name', onClick: _this3.launchSite.bind(_this3, url) },
-						url
-					);
-				})
+				_react2.default.createElement(
+					'a',
+					{ className: 'Vhost-name', onClick: this.launchSite.bind(this, this.props.site.name) },
+					this.props.site.name
+				),
+				_react2.default.createElement(
+					'span',
+					{ className: 'Vhost-aliases' },
+					this.siteAliases().map(function (url) {
+						return _react2.default.createElement(
+							'a',
+							{ key: url, className: 'Vhost-name', onClick: _this2.launchSite.bind(_this2, url) },
+							url
+						);
+					})
+				)
 			);
 		}
 	}, {
@@ -31074,62 +31109,62 @@ var Vhost = function (_React$Component) {
 	}, {
 		key: 'handleStart',
 		value: function handleStart() {
-			var _this4 = this;
+			var _this3 = this;
 
 			this.setState({ fetching: true, action: 'start' });
 			(0, _helpers.managerAddSite)(this.props.site, window.csrfToken).then(function (xhr, res) {
-				_this4.props.onChange({
+				_this3.props.onChange({
 					type: 'start',
-					site: _this4.props.site,
+					site: _this3.props.site,
 					response: res
 				});
 			}).catch(function (error, xhr) {
 				console.error(error, xhr);
-				_this4.props.onError('Failed to add \'' + _this4.props.site.name + '\'');
-				_this4.setState({ fetching: false, action: null });
+				_this3.props.onError('Failed to add \'' + _this3.props.site.name + '\'');
+				_this3.setState({ fetching: false, action: null });
 			});
 		}
 	}, {
 		key: 'handleRestart',
 		value: function handleRestart() {
-			var _this5 = this;
+			var _this4 = this;
 
 			this.setState({ fetching: true, action: 'restart' });
 
 			(0, _helpers.managerStopSite)(this.siteName(), window.csrfToken).then(function (xhr, res) {
-				(0, _helpers.managerStartSite)(_this5.siteName(), window.csrfToken).then(function (xhr, res) {
-					_this5.props.onChange({
+				(0, _helpers.managerStartSite)(_this4.siteName(), window.csrfToken).then(function (xhr, res) {
+					_this4.props.onChange({
 						type: 'restart',
-						site: _this5.props.site,
+						site: _this4.props.site,
 						response: res
 					});
 				}).catch(function (error, xhr) {
 					console.error(error, xhr);
-					_this5.props.onError('Failed to restart \'' + _this5.props.site.name + '\'');
-					_this5.setState({ fetching: false, action: null });
+					_this4.props.onError('Failed to restart \'' + _this4.props.site.name + '\'');
+					_this4.setState({ fetching: false, action: null });
 				});
 			}).catch(function (error, xhr) {
 				console.error(error, xhr);
-				_this5.props.onError('Failed to pause \'' + _this5.props.site.name + '\'');
-				_this5.setState({ fetching: false, action: null });
+				_this4.props.onError('Failed to pause \'' + _this4.props.site.name + '\'');
+				_this4.setState({ fetching: false, action: null });
 			});
 		}
 	}, {
 		key: 'handleStop',
 		value: function handleStop() {
-			var _this6 = this;
+			var _this5 = this;
 
 			this.setState({ fetching: true, action: 'stop' });
 			(0, _helpers.managerRemoveSite)(this.siteName(), window.csrfToken).then(function (xhr, res) {
-				_this6.props.onChange({
+				_this5.props.onChange({
 					type: 'stop',
-					site: _this6.props.site,
+					site: _this5.props.site,
 					response: res
 				});
 			}).catch(function (error, xhr) {
 				console.error(error, xhr);
-				_this6.props.onError('Failed to stop \'' + _this6.props.site.name + '\'');
-				_this6.setState({ fetching: false, action: null });
+				_this5.props.onError('Failed to stop \'' + _this5.props.site.name + '\'');
+				_this5.setState({ fetching: false, action: null });
 			});
 		}
 	}, {
@@ -31148,15 +31183,15 @@ var Vhost = function (_React$Component) {
 	}, {
 		key: 'checkSiteStatus',
 		value: function checkSiteStatus() {
-			var _this7 = this;
+			var _this6 = this;
 
 			var url = this.siteUrl();
 			this.setState({ fetching: true });
 			_qwest2.default.get(url).then(function (xhr, res) {
-				_this7.setState({ active: true, fetching: false });
+				_this6.setState({ active: true, fetching: false });
 			}).catch(function (error, xhr) {
 				console.error(error, xhr);
-				_this7.setState({ fetching: false });
+				_this6.setState({ fetching: false });
 			});
 		}
 	}, {

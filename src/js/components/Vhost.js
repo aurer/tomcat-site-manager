@@ -30,31 +30,34 @@ class Vhost extends React.Component {
 		let names = [baseName];
 		if (this.props.site.aliases != '') {
 			this.props.site.aliases.split(',').forEach(alias => {
-				names.push(alias + '.' + baseName);
+				names.push(alias.replace(/\s/g, '') + '.' + baseName);
 			});
 		}
 		return names;
+	}
+
+	siteAliases() {
+		var baseName = this.props.site.name;
+		let aliases = [];
+		if (this.props.site.aliases != '') {
+			this.props.site.aliases.split(',').forEach(alias => {
+				aliases.push(alias.replace(/\s/g, '') + '.' + baseName);
+			});
+		}
+		return aliases;
 	}
 
 	siteUrl() {
 		return 'http://' + this.siteName() + ':8080';
 	}
 
-	siteUrls() {
-		let urls = [];
-		urls.push(this.siteUrl());
-		if (this.props.site.aliases != '') {
-			this.props.site.aliases.split(',').forEach(alias => {
-				urls.push('http://' + alias.replace(/\s+/g, '') + '.' + this.props.site.name + '.' + this.props.settings.domain);
-			});
-		}
-		return urls;
-	}
-
 	siteLinks() {
 		return (
 			<span className="Vhost-siteLinks">
-				{this.siteNames().map(url => <a key={url} className="Vhost-name" onClick={this.launchSite.bind(this, url)}>{url}</a>)}
+				<a className="Vhost-name" onClick={this.launchSite.bind(this, this.props.site.name)}>{this.props.site.name}</a>
+				<span className="Vhost-aliases">
+					{this.siteAliases().map(url => <a key={url} className="Vhost-name" onClick={this.launchSite.bind(this, url)}>{url}</a>)}
+				</span>
 			</span>
 		)
 	}

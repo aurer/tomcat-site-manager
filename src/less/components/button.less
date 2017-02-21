@@ -7,7 +7,7 @@
 	line-height: 1.1;
 	margin: 0 .2em;
 	border: none;
-	background-color: @color-primary-darker;
+	background-color: @color-primary-dark;
 	color: @color-neutral-lightest;
 	font-size: .9em;
 	font-weight: bold;
@@ -17,7 +17,7 @@
 	cursor: pointer;
 
 	&:hover {
-		background-color: @color-primary-dark;
+		background-color: @color-primary;
 		color: @color-neutral-lightest;
 	}
 
@@ -42,6 +42,7 @@
 .ButtonGroup {
 	display: flex;
 	margin-bottom: .5em;
+	padding-top: .5em;
 	padding-left: .5em;
 	padding-right: .5em;
 
@@ -68,12 +69,12 @@
 	position: relative;
 
 	path, polygon {
-		fill: @color-primary-dark;
+		fill: @color-primary;
 	}
 
 	&:hover {
 		path, polygon {
-			fill: @color-neutral-darkest;
+			fill: @color-primary-light;
 		}
 	}
 }

@@ -24,8 +24,8 @@ a:hover {
   height: 520px;
   margin: 0 auto;
   position: relative;
-  background-color: #eaeeee;
-  color: #3e4b4f;
+  background-color: #1d2224;
+  color: #ffffff;
 }
 .App-loading,
 .App-error {
@@ -73,7 +73,7 @@ a:hover {
   line-height: 1.1;
   margin: 0 .2em;
   border: none;
-  background-color: #006c79;
+  background-color: #0090a1;
   color: #ffffff;
   font-size: .9em;
   font-weight: bold;
@@ -84,7 +84,7 @@ a:hover {
 }
 .Button:hover,
 .Form input[type=submit]:hover {
-  background-color: #0090a1;
+  background-color: #00B0C5;
   color: #ffffff;
 }
 .Button--block,
@@ -107,6 +107,7 @@ a:hover {
 .ButtonGroup {
   display: flex;
   margin-bottom: .5em;
+  padding-top: .5em;
   padding-left: .5em;
   padding-right: .5em;
 }
@@ -133,20 +134,21 @@ a:hover {
 }
 .IconButton path,
 .IconButton polygon {
-  fill: #0090a1;
+  fill: #00B0C5;
 }
 .IconButton:hover path,
 .IconButton:hover polygon {
-  fill: #1d2224;
+  fill: #45ebff;
 }
 .Form {
   display: block;
   max-width: 45em;
-  margin: 1em;
+  margin: 1em .5em;
   overflow: hidden;
   padding: 1em;
   box-shadow: 0 1px 6px rgba(0, 0, 0, 0.15);
-  background-color: #ffffff;
+  background-color: #3e4b4f;
+  border-radius: 3px;
 }
 .Form .Form-field {
   margin: .5em 0;
@@ -168,12 +170,13 @@ a:hover {
   box-sizing: border-box;
   margin-bottom: .5em;
   padding: .5em;
-  background-color: #eaeeee;
-  border: 1px solid #bfcacd;
+  background-color: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.2);
   box-shadow: inset 0 2px 3px rgba(0, 0, 0, 0.1);
   color: inherit;
   font-size: inherit;
   outline: none;
+  transition: border-color 0.2s;
 }
 .Form .Form-field .Form-inputs input:focus,
 .Form .Form-field .Form-inputs textarea:focus {
@@ -190,8 +193,8 @@ a:hover {
 .Form .Form-field .Form-inputs select {
   display: block;
   width: 100%;
-  background-color: #eaeeee;
-  border: 1px solid #bfcacd;
+  background-color: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.2);
   color: inherit;
   font-size: inherit;
   outline: none;
@@ -307,7 +310,7 @@ a:hover {
 .Sites {
   width: 100%;
   border-collapse: collapse;
-  color: #3e4b4f;
+  color: #eaeeee;
   margin-bottom: .5em;
   overflow: hidden;
 }
@@ -327,7 +330,7 @@ a:hover {
 }
 .Sites th {
   text-align: left;
-  color: #0090a1;
+  color: #45ebff;
   border-bottom: 1px solid #A3B2B6;
 }
 .Site-name {
@@ -349,8 +352,8 @@ td.Site-actions {
   padding: .2em .5em .2em .2em;
   position: absolute;
   right: 0;
-  background-color: #eaeeee;
-  box-shadow: -5px 0 20px #eaeeee;
+  background-color: #1d2224;
+  box-shadow: -5px 0 20px #1d2224;
   text-align: right;
   transition: opacity .2s;
 }
@@ -362,6 +365,7 @@ td.Site-actions {
   text-align: center;
   margin-bottom: .5em;
   box-shadow: 0 1px 6px rgba(0, 0, 0, 0.3);
+  position: relative;
 }
 .Nav .Nav-item {
   flex: 1;
@@ -370,12 +374,23 @@ td.Site-actions {
   outline: none;
   cursor: pointer;
   transition: background-color 0.2s;
-  border-bottom: 4px solid #00B0C5;
-  background-color: #00B0C5;
+  border-bottom: 4px solid transparent;
+  background-color: #3e4b4f;
   color: #ffffff;
 }
 .Nav .Nav-item.is-active {
-  border-bottom-color: #006c79;
+  border-bottom-color: #45ebff;
+}
+.Nav .Nav-indicator {
+  position: absolute;
+  bottom: 0;
+  height: 4px;
+  width: 100%;
+  left: 0;
+  background-color: #45ebff;
+  transition-property: left, width;
+  transition-duration: .4s;
+  transition-timing-function: cubic-bezier(0.22, 0.02, 0.04, 1);
 }
 .Nav--base {
   margin-bottom: 0;
@@ -387,57 +402,75 @@ td.Site-actions {
 }
 .Nav--base .Nav-item {
   border: none;
-  background-color: #ced6d8;
-  color: #3e4b4f;
+  background-color: #3e4b4f;
+  color: #eaeeee;
   font-weight: bold;
   padding: .5em;
 }
 .Vhosts {
-  max-height: 437px;
+  height: 437px;
   overflow: auto;
   margin: 0 0 .5em;
   padding: 0 1em;
 }
 .Vhost {
   display: flex;
-  align-items: center;
   padding: .5em 0;
   position: relative;
 }
 .Vhost-siteLinks {
-  flex: 1;
-  padding: 0 .5em;
+  width: 50%;
+  margin: 0 .5em;
   position: relative;
 }
-.Vhost-siteLinks:hover {
-  background-color: #fff;
-  border-radius: 3px;
-  box-shadow: 0 1px 5px rgba(255, 255, 255, 0.2);
+.Vhost-aliases {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  pointer-events: none;
+  opacity: 0;
+  transition-property: transform, opacity;
+  transition-duration: .3s;
+  transform-origin: top;
+  transform: scaleY(0.9);
+  z-index: 100;
+  margin-top: 3px;
+}
+.Vhost-aliases a {
+  background-color: #006c79;
+  margin-top: 1px;
+}
+.Vhost-siteLinks:hover a.Vhost-name {
+  background-color: #006c79;
+}
+.Vhost-siteLinks:hover a.Vhost-name:hover {
+  background-color: #00B0C5;
+}
+.Vhost-siteLinks:hover .Vhost-aliases {
+  pointer-events: all;
+  opacity: 1;
+  transform: scaleY(1);
+}
+.Vhost-siteLinks:hover .Vhost-aliases a:hover {
+  background-color: #00B0C5;
 }
 .Vhost-name {
   padding: .2em .5em;
   color: #A3B2B6;
-  transition: color .2s;
-  display: block;
-}
-.Vhost-name:hover {
-  background-color: #fff;
-}
-.Vhost .Vhost-name + .Vhost-name {
-  position: absolute;
+  transition: color 0.2s, background-color 0.2s;
+  border-radius: 3px;
+  position: relative;
+  z-index: 0;
 }
 a.Vhost-name {
-  color: #3e4b4f;
+  color: #eaeeee;
   cursor: pointer;
-}
-a.Vhost-name:hover {
-  color: #0090a1;
 }
 .Vhost-indicator {
   display: inline-block;
   width: 8px;
   height: 8px;
-  margin-top: 2px;
+  margin-top: .6em;
   border-radius: 4px;
   background-color: transparent;
   border: 1px solid #A3B2B6;
@@ -445,6 +478,8 @@ a.Vhost-name:hover {
 }
 .Vhost-actions {
   position: relative;
+  flex: 1;
+  text-align: right;
 }
 .is-starting .Vhost-actions-start svg {
   visibility: hidden;
@@ -490,4 +525,10 @@ a.Vhost-name:hover {
 .Vhost.is-active .Vhost-indicator {
   background-color: #47b04a;
   border-color: #47b04a;
+}
+.Vhost.is-active .Vhost-siteLinks {
+  border-radius: 3px;
+}
+.Vhost.is-active .Vhost-siteLinks:hover .Vhost-name {
+  display: inline;
 }

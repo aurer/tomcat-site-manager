@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, Redirect } from 'react-router';
+import { Link, Redirect, browserHistory } from 'react-router';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 import * as Store from '../store';
 import Vhosts from './Vhosts';
@@ -11,7 +11,11 @@ class Popup extends React.Component {
 		super(props);
 		this.state = {
 			message: null,
-			canAccessTomcat: false
+			canAccessTomcat: false,
+			navPosition: {
+				width: '100%',
+				left: 0
+			}
 		}
 	}
 
@@ -25,10 +29,11 @@ class Popup extends React.Component {
 	render() {
 		return (
 			<section className="Section Section--popup">
-				<nav className="Nav">
-					<Link activeClassName="is-active" className="Nav-item" to="index.html">Vhosts</Link>
-					<Link activeClassName="is-active" className="Nav-item" to="sites.html">Sites</Link>
-					<Link activeClassName="is-active" className="Nav-item" to="settings.html">Settings</Link>
+				<nav className="Nav" ref="Nav">
+					<a className="Nav-item" href="index.html" onClick={this.handleNavigation.bind(this)}>Vhosts</a>
+					<a className="Nav-item" href="sites.html" onClick={this.handleNavigation.bind(this)}>Sites</a>
+					<a className="Nav-item" href="settings.html" onClick={this.handleNavigation.bind(this)}>Settings</a>
+					<span style={{width: this.state.navPosition.width + 'px', left: this.state.navPosition.left + 'px'}} className="Nav-indicator"></span>
 				</nav>
 				{React.cloneElement(this.props.children, { showMessage: this.handleShowMessage.bind(this) })}
 				<Message message={this.state.message} clearMessages={this.clearMessages.bind(this)} />
@@ -37,6 +42,25 @@ class Popup extends React.Component {
 				</nav>
 			</section>
 		)
+	}
+
+	componentDidMount() {
+		// Set nav indicator position
+		var nav = this.refs.Nav;
+		var path = window.location.pathname;
+		nav.querySelectorAll('a').forEach(a => {
+			if (a.pathname == path) {
+				this.setState({navPosition: {left: a.offsetLeft, width: a.offsetWidth}})
+			}
+		});
+	}
+	
+	handleNavigation(e) {
+		e.preventDefault();
+		var link = e.target;
+		var to = link.pathname;
+		this.setState({navPosition: {left: link.offsetLeft, width: link.offsetWidth}})
+		browserHistory.push(to);
 	}
 
 	handleShowMessage(message, type) {
