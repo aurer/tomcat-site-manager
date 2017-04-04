@@ -30281,10 +30281,17 @@ var Site = function (_React$Component) {
 				return a + '.' + _this2.state.name + '.' + settings.domain;
 			}).join(', ');
 			var rootTitle = settings.root + this.state.root;
+			var checked = this.state.active ? 'checked' : '';
+			var siteClassName = 'Site ' + (this.state.active ? 'is-active' : 'is-inactive');
 
 			return _react2.default.createElement(
 				'tr',
-				{ className: 'Site' },
+				{ className: siteClassName },
+				_react2.default.createElement(
+					'td',
+					{ className: 'Site-active' },
+					_react2.default.createElement('input', { type: 'checkbox', value: 'true', checked: checked, onChange: this.toggleSite.bind(this) })
+				),
 				_react2.default.createElement(
 					'td',
 					{ className: 'Site-name', title: nameTitle },
@@ -30329,6 +30336,14 @@ var Site = function (_React$Component) {
 		value: function handleRemoveSite(e) {
 			this.props.onChange({
 				action: 'remove',
+				index: this.props.index
+			});
+		}
+	}, {
+		key: 'toggleSite',
+		value: function toggleSite(e) {
+			this.props.onChange({
+				action: e.target.checked ? 'activate' : 'deactivate',
 				index: this.props.index
 			});
 		}
@@ -30745,7 +30760,7 @@ var Sites = function (_React$Component) {
 							null,
 							_react2.default.createElement(
 								'th',
-								{ className: 'Site-name' },
+								{ className: 'Site-name', rowspan: '2' },
 								'Name'
 							),
 							_react2.default.createElement(
@@ -30833,9 +30848,11 @@ var Sites = function (_React$Component) {
 			var sites = this.state.sites;
 
 			var siteData = {
+				active: true,
 				name: form.name.value.toLowerCase(),
 				aliases: form.aliases.value,
-				root: form.root.value
+				root: form.root.value,
+				pos: 0
 			};
 
 			// Update existing site
@@ -30921,6 +30938,30 @@ var Sites = function (_React$Component) {
 						sites: otherSites
 					});
 					this.props.showMessage('Removed \'' + site.name + '\' from sites', 'positive');
+					break;
+				case 'activate':
+					var newState = this.state.sites.map(function (site, i) {
+						if (i == action.index) {
+							site.active = true;
+						}
+						return site;
+					});
+					this.setState({
+						sites: newState
+					});
+					Store.save('sites', newState);
+					break;
+				case 'deactivate':
+					var newState = this.state.sites.map(function (site, i) {
+						if (i == action.index) {
+							site.active = false;
+						}
+						return site;
+					});
+					this.setState({
+						sites: newState
+					});
+					Store.save('sites', newState);
 					break;
 			}
 		}
@@ -31267,8 +31308,12 @@ var Vhosts = function (_React$Component) {
 	_createClass(Vhosts, [{
 		key: 'componentWillMount',
 		value: function componentWillMount() {
+			var sites = Store.load('sites').filter(function (site) {
+				return site.active;
+			});
+			var settings = Store.load('settings');
 			this.loginToHostManager();
-			this.setState({ sites: Store.load('sites'), settings: Store.load('settings') });
+			this.setState({ sites: sites, settings: settings });
 		}
 	}, {
 		key: 'render',
@@ -31288,7 +31333,7 @@ var Vhosts = function (_React$Component) {
 				);
 			}
 
-			if (this.state.canSeeTomcatManager === false) {
+			if (window.location.hostname != "localhost" && this.state.canSeeTomcatManager === false) {
 				return _react2.default.createElement(
 					'div',
 					{ className: 'App-error' },

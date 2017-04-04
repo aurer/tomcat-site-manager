@@ -14,9 +14,14 @@ class Site extends React.Component {
 		let nameTitle = this.state.name + '.' + settings.domain;
 		let aliasesTitle = this.state.aliases.split(',').map(a => `${a}.${this.state.name}.${settings.domain}`).join(', ');
 		let rootTitle = settings.root + this.state.root;
+		let checked = this.state.active ? 'checked' : '';
+		let siteClassName = 'Site ' + (this.state.active ? 'is-active' : 'is-inactive');
 
 		return (
-			<tr className="Site">
+			<tr className={siteClassName}>
+				<td className="Site-active">
+					<input type="checkbox" value="true" checked={checked} onChange={this.toggleSite.bind(this)} />
+				</td>
 				<td className="Site-name" title={nameTitle}>
 					{this.state.name}
 				</td>
@@ -48,6 +53,13 @@ class Site extends React.Component {
 	handleRemoveSite(e) {
 		this.props.onChange({
 			action: 'remove',
+			index: this.props.index
+		});
+	}
+
+	toggleSite(e) {
+		this.props.onChange({
+			action: e.target.checked ? 'activate' : 'deactivate',
 			index: this.props.index
 		});
 	}

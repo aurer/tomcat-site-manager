@@ -19,8 +19,10 @@ class Vhosts extends React.Component {
 	}
 
 	componentWillMount() {
+		let sites = Store.load('sites').filter(site => site.active);
+		let settings = Store.load('settings');
 		this.loginToHostManager();
-		this.setState({sites: Store.load('sites'), settings: Store.load('settings')});
+		this.setState({sites, settings});
 	}
 
 	render() {
@@ -33,7 +35,7 @@ class Vhosts extends React.Component {
 			)
 		}
 
-		if (this.state.canSeeTomcatManager === false) {
+		if (window.location.hostname != "localhost" && this.state.canSeeTomcatManager === false) {
 			return (
 				<div className="App-error">
 					<p>Could not connect to Tomcat</p>

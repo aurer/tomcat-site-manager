@@ -52,7 +52,7 @@ class Sites extends React.Component {
 					<table className="Sites">
 						<thead>
 							<tr>
-								<th className="Site-name">Name</th>
+								<th className="Site-name" rowspan="2">Name</th>
 								<th className="Site-aliases">Aliases</th>
 								<th className="Site-root" colSpan="2">Root</th>
 							</tr>
@@ -120,9 +120,11 @@ class Sites extends React.Component {
 		let sites = this.state.sites;
 
 		let siteData = {
+			active: true,
 			name:  	form.name.value.toLowerCase(),
 			aliases: form.aliases.value,
-			root: 	form.root.value
+			root: 	form.root.value,
+			pos: 0
 		}
 
 		// Update existing site
@@ -200,6 +202,30 @@ class Sites extends React.Component {
 					sites: otherSites
 				});
 				this.props.showMessage(`Removed '${site.name}' from sites`, 'positive');
+			break;
+			case 'activate':
+				var newState = this.state.sites.map((site, i) => {
+					if (i == action.index) {
+						site.active = true
+					}
+					return site
+				});
+				this.setState({
+					sites: newState
+				});
+				Store.save('sites', newState);
+			break;
+			case 'deactivate':
+				var newState = this.state.sites.map((site, i) => {
+					if (i == action.index) {
+						site.active = false
+					}
+					return site
+				});
+				this.setState({
+					sites: newState
+				});
+				Store.save('sites', newState);
 			break;
 		}
 	}

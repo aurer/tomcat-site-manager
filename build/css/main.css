@@ -313,12 +313,7 @@ a:hover {
   color: #eaeeee;
   margin-bottom: .5em;
   overflow: hidden;
-}
-.Sites tbody {
   display: block;
-  max-height: 360px;
-  overflow-y: scroll;
-  margin-right: -17px;
 }
 .Sites th,
 .Sites td {
@@ -328,36 +323,64 @@ a:hover {
   overflow: hidden;
   text-overflow: ellipsis;
 }
+.Sites thead {
+  display: block;
+}
+.Sites thead tr {
+  display: flex;
+}
+.Sites tbody {
+  display: block;
+  max-height: 360px;
+  overflow-y: scroll;
+  margin-right: -17px;
+}
+.Sites tbody tr {
+  display: flex;
+  position: relative;
+}
 .Sites th {
+  flex: 1;
   text-align: left;
   color: #45ebff;
   border-bottom: 1px solid #A3B2B6;
 }
-.Site-name {
-  width: 145px;
+.Sites .Site {
+  transition: opacity .3s;
+}
+.Sites .Site.is-inactive {
+  opacity: .4;
+}
+.Sites .Site-active {
+  padding-left: .2em;
+  padding-right: 0;
+}
+.Sites .Site-name {
+  flex-basis: 30%;
   white-space: nowrap;
   text-overflow: ellipsis;
 }
-.Site-aliases {
-  width: 145px;
+.Sites .Site-aliases {
+  flex-basis: 30%;
 }
-.Site-root {
-  width: 160px;
+.Sites .Site-root {
+  flex-basis: 30%;
 }
-.Site-root span {
+.Sites .Site-root span {
   opacity: .5;
 }
-td.Site-actions {
+.Sites .Site-actions {
   opacity: 0;
   padding: .2em .5em .2em .2em;
   position: absolute;
   right: 0;
+  top: 0;
   background-color: #1d2224;
   box-shadow: -5px 0 20px #1d2224;
   text-align: right;
   transition: opacity .2s;
 }
-.Site:hover .Site-actions {
+.Sites .Site:hover .Site-actions {
   opacity: 1;
 }
 .Nav {

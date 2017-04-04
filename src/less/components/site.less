@@ -4,13 +4,7 @@
 	color: @color-neutral-lighter;
 	margin-bottom: .5em;
 	overflow: hidden;
-
-	tbody {
-		display: block;
-		max-height: 360px;
-		overflow-y: scroll;
-		margin-right: -17px;
-	}
+	display: block;
 
 	th, td {
 		padding: .5em .8em;
@@ -19,47 +13,81 @@
 		overflow: hidden;
 		text-overflow: ellipsis;
 	}
+	
+	thead {
+		display: block;
+
+		tr {
+			display: flex;
+		}
+	}
+
+	tbody {
+		display: block;
+		max-height: 360px;
+		overflow-y: scroll;
+		margin-right: -17px;
+
+		tr {
+			display: flex;
+			position: relative;
+		}
+	}
 
 	th {
+		flex: 1;
 		text-align: left;
 		color: @color-primary-light;
 		border-bottom: 1px solid @color-neutral;
 	}
-}
+	
+	.Site {
+		transition: opacity .3s;
 
-.Site {
-	&-name {
-		width: 145px;
-		white-space: nowrap;
-		text-overflow: ellipsis;
-	}
+		&.is-inactive {
+			opacity: .4;
+		}
 
-	&-aliases {
-		width: 145px;
-	}
+		&-active {
+			padding-left: .2em;
+			padding-right: 0;
+		}
 
-	&-root {
-		width: 160px;
+		&-name {
+			flex-basis: 30%;
+			white-space: nowrap;
+			text-overflow: ellipsis;
+		}
 
-		span {
-			opacity: .5;
+		&-aliases {
+			flex-basis: 30%;
+		}
+
+		&-root {
+			flex-basis: 30%;
+
+			span {
+				opacity: .5;
+			}
+		}
+
+		&-actions {
+			opacity: 0;
+			padding: .2em .5em .2em .2em;
+			position: absolute;
+			right: 0;
+			top: 0;
+			background-color: @color-neutral-darkest;
+			box-shadow: -5px 0 20px @color-neutral-darkest;
+			text-align: right;
+			transition: opacity .2s;
+		}
+
+		&:hover {
+			.Site-actions {
+				opacity: 1;
+			}
 		}
 	}
-
-	td&-actions {
-		opacity: 0;
-		padding: .2em .5em .2em .2em;
-		position: absolute;
-		right: 0;
-		background-color: @color-neutral-darkest;
-		box-shadow: -5px 0 20px @color-neutral-darkest;
-		text-align: right;
-		transition: opacity .2s;
-	}
-
-	&:hover {
-		.Site-actions {
-			opacity: 1;
-		}
-	}
 }
+
