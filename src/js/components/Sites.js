@@ -52,7 +52,7 @@ class Sites extends React.Component {
 					<table className="Sites">
 						<thead>
 							<tr>
-								<th className="Site-name" rowspan="2">Name</th>
+								<th className="Site-name" rowSpan="2">Name</th>
 								<th className="Site-aliases">Aliases</th>
 								<th className="Site-root" colSpan="2">Root</th>
 							</tr>
