@@ -2,8 +2,6 @@ import React from 'react';
 import * as Store from '../store';
 import Site from './Site';
 
-const SETTINGS = Store.load('settings');
-
 class SiteForm extends React.Component {
 	constructor(props) {
 		super(props);
@@ -115,7 +113,7 @@ class SiteForm extends React.Component {
 	buildNameHelper(value) {
 		let helper = '';
 		if (value.length) {
-			helper = (<div className="Form-helper Form-helper--name">{value}<span>.{SETTINGS.domain}</span></div>);
+			helper = (<div className="Form-helper Form-helper--name">{value}<span>.{this.settings.domain}</span></div>);
 		}
 		return helper;
 	}
@@ -123,7 +121,7 @@ class SiteForm extends React.Component {
 	buildAliasesHelper(value, siteName) {
 		let helper = '';
 		let name = siteName || this.state.nameValue;
-		let domain = SETTINGS.domain;
+		let domain = this.settings.domain;
 		if (value.length) {
 			let helperSpans = value.split(',').map(part => part.replace(' ', ''));
 			helper = <div className="Form-helper Form-helper--alias">{helperSpans.map((alias,i) => (<div key={i}>{alias}<span>.{name}.{domain}</span> </div>))}</div>
@@ -134,7 +132,7 @@ class SiteForm extends React.Component {
 	buildRootHelper(value) {
 		let helper = '';
 		if (value.length) {
-			helper = (<div className="Form-helper Form-helper--root"><span>{SETTINGS.root}</span>{value}</div>);
+			helper = (<div className="Form-helper Form-helper--root"><span>{this.settings.root}</span>{value}</div>);
 		}
 		return helper;
 	}

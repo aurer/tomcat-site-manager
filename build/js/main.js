@@ -30385,8 +30385,6 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var SETTINGS = Store.load('settings');
-
 var SiteForm = function (_React$Component) {
 	_inherits(SiteForm, _React$Component);
 
@@ -30554,7 +30552,7 @@ var SiteForm = function (_React$Component) {
 						'span',
 						null,
 						'.',
-						SETTINGS.domain
+						this.settings.domain
 					)
 				);
 			}
@@ -30565,7 +30563,7 @@ var SiteForm = function (_React$Component) {
 		value: function buildAliasesHelper(value, siteName) {
 			var helper = '';
 			var name = siteName || this.state.nameValue;
-			var domain = SETTINGS.domain;
+			var domain = this.settings.domain;
 			if (value.length) {
 				var helperSpans = value.split(',').map(function (part) {
 					return part.replace(' ', '');
@@ -30604,7 +30602,7 @@ var SiteForm = function (_React$Component) {
 					_react2.default.createElement(
 						'span',
 						null,
-						SETTINGS.root
+						this.settings.root
 					),
 					value
 				);
@@ -30760,7 +30758,7 @@ var Sites = function (_React$Component) {
 							null,
 							_react2.default.createElement(
 								'th',
-								{ className: 'Site-name', rowspan: '2' },
+								{ className: 'Site-name', rowSpan: '2' },
 								'Name'
 							),
 							_react2.default.createElement(
