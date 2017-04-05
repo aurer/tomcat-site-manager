@@ -45,7 +45,11 @@
 		transition: opacity .3s;
 
 		&.is-inactive {
-			opacity: .4;
+			.Site-name,
+			.Site-aliases,
+			.Site-root {
+				opacity: .3;
+			}
 		}
 
 		&-active {

@@ -348,8 +348,10 @@ a:hover {
 .Sites .Site {
   transition: opacity .3s;
 }
-.Sites .Site.is-inactive {
-  opacity: .4;
+.Sites .Site.is-inactive .Site-name,
+.Sites .Site.is-inactive .Site-aliases,
+.Sites .Site.is-inactive .Site-root {
+  opacity: .3;
 }
 .Sites .Site-active {
   padding-left: .2em;
