@@ -2,7 +2,6 @@ let defaultValues = {
 	settings: {
 		domain: '',
 		root: '',
-		tomcat_version: 7,
 		manager_username: '',
 		manager_password: ''
 	},

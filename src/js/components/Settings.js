@@ -34,15 +34,6 @@ class Settings extends React.Component {
 					</div>
 				</div>
 				<div className="Form-field">
-					<label>Tomcat version</label>
-					<div className="Form-inputs">
-						<select name="tomcat_version" defaultValue={this.state.tomcat_version}>
-							<option value="7">7+</option>
-							<option value="6">6</option>
-						</select>
-					</div>
-				</div>
-				<div className="Form-field">
 					<label>Hostmanager login</label>
 					<div className="Form-inputs">
 						<input type="text" name="manager_username" defaultValue={this.state.manager_username} placeholder="Username" autoComplete="off" />
@@ -62,7 +53,6 @@ class Settings extends React.Component {
 			domain: 					this.sanitiseDomainValue(form.domain.value),
 			root: 						this.sanitiseRootValue(form.root.value, form.os.value),
 			os: 							form.os.value,
-			tomcat_version: 	form.tomcat_version.value,
 			manager_username: form.manager_username.value,
 			manager_password: form.manager_password.value
 		});
@@ -91,7 +81,6 @@ class Settings extends React.Component {
 		let os = e.target.value;
 		let form = e.target.form;
 		this.setState({os});
-
 		let root = form.root;
 		let rootValue = this.sanitiseRootValue(root.value, os);
 		root.value = rootValue;
