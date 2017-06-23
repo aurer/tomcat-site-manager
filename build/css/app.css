@@ -10,21 +10,22 @@ body {
 body {
   font-family: 'Montserrat', sans-serif;
   font-size: 14px;
-  background-color: #1d2224;
+  background-color: #111516;
 }
 a {
-  color: #00B0C5;
+  color: #B7C800;
   text-decoration: none;
+  transition: all .2s;
 }
 a:hover {
-  color: #3e4b4f;
+  color: #f6ff95;
 }
 .App {
   width: 450px;
   height: 520px;
   margin: 0 auto;
   position: relative;
-  background-color: #1d2224;
+  background-color: #111516;
   color: #ffffff;
 }
 .App-loading,
@@ -35,13 +36,19 @@ a:hover {
 }
 @keyframes blink {
   0% {
-    background-color: transparent;
+    background-color: rgba(239, 255, 72, 0.2);
+    border-color: rgba(239, 255, 72, 0);
+    box-shadow: 0 0 10px rgba(150, 164, 0, 0.2);
   }
   50% {
-    background-color: #45ebff;
+    background-color: #efff48;
+    border-color: #efff48;
+    box-shadow: 0 0 10px #96a400;
   }
   100% {
-    background-color: transparent;
+    background-color: rgba(239, 255, 72, 0.2);
+    border-color: rgba(239, 255, 72, 0);
+    box-shadow: 0 0 10px rgba(150, 164, 0, 0.2);
   }
 }
 @keyframes pulseFade {
@@ -73,18 +80,18 @@ a:hover {
   line-height: 1.1;
   margin: 0 .2em;
   border: none;
-  background-color: #0090a1;
+  background-color: #96a400;
   color: #ffffff;
   font-size: .9em;
   font-weight: bold;
-  border-radius: 2px;
+  border-radius: 3px;
   transition: background .2s;
   outline: none;
   cursor: pointer;
 }
 .Button:hover,
 .Form input[type=submit]:hover {
-  background-color: #00B0C5;
+  background-color: #B7C800;
   color: #ffffff;
 }
 .Button--block,
@@ -94,7 +101,7 @@ a:hover {
 }
 .Button:visited,
 .Form input[type=submit]:visited {
-  color: #3e4b4f;
+  color: #283032;
 }
 .Button--secondary,
 .Form input[type=submit]--secondary {
@@ -134,11 +141,11 @@ a:hover {
 }
 .IconButton path,
 .IconButton polygon {
-  fill: #00B0C5;
+  fill: #B7C800;
 }
 .IconButton:hover path,
 .IconButton:hover polygon {
-  fill: #45ebff;
+  fill: #efff48;
 }
 .Form {
   display: block;
@@ -147,7 +154,7 @@ a:hover {
   overflow: hidden;
   padding: 1em;
   box-shadow: 0 1px 6px rgba(0, 0, 0, 0.15);
-  background-color: #3e4b4f;
+  background-color: #283032;
   border-radius: 3px;
 }
 .Form .Form-field {
@@ -180,7 +187,7 @@ a:hover {
 }
 .Form .Form-field .Form-inputs input:focus,
 .Form .Form-field .Form-inputs textarea:focus {
-  border-color: #0090a1;
+  border-color: #96a400;
 }
 .Form .Form-field .Form-inputs input[type=checkbox],
 .Form .Form-field .Form-inputs input[type=radio] {
@@ -342,7 +349,7 @@ a:hover {
 .Sites th {
   flex: 1;
   text-align: left;
-  color: #45ebff;
+  color: #efff48;
   border-bottom: 1px solid #A3B2B6;
 }
 .Sites .Site {
@@ -377,8 +384,8 @@ a:hover {
   position: absolute;
   right: 0;
   top: 0;
-  background-color: #1d2224;
-  box-shadow: -5px 0 20px #1d2224;
+  background-color: #111516;
+  box-shadow: -5px 0 20px #111516;
   text-align: right;
   transition: opacity .2s;
 }
@@ -400,11 +407,11 @@ a:hover {
   cursor: pointer;
   transition: background-color 0.2s;
   border-bottom: 4px solid transparent;
-  background-color: #3e4b4f;
+  background-color: #283032;
   color: #ffffff;
 }
 .Nav .Nav-item.is-active {
-  border-bottom-color: #45ebff;
+  border-bottom-color: #efff48;
 }
 .Nav .Nav-indicator {
   position: absolute;
@@ -412,7 +419,7 @@ a:hover {
   height: 4px;
   width: 100%;
   left: 0;
-  background-color: #45ebff;
+  background-color: #efff48;
   transition-property: left, width;
   transition-duration: .4s;
   transition-timing-function: cubic-bezier(0.22, 0.02, 0.04, 1);
@@ -427,7 +434,7 @@ a:hover {
 }
 .Nav--base .Nav-item {
   border: none;
-  background-color: #3e4b4f;
+  background-color: #283032;
   color: #eaeeee;
   font-weight: bold;
   padding: .5em;
@@ -462,14 +469,14 @@ a:hover {
   margin-top: 3px;
 }
 .Vhost-aliases a {
-  background-color: #006c79;
+  background-color: #717c00;
   margin-top: 1px;
 }
 .Vhost-siteLinks:hover a.Vhost-name {
-  background-color: #006c79;
+  background-color: #717c00;
 }
 .Vhost-siteLinks:hover a.Vhost-name:hover {
-  background-color: #00B0C5;
+  background-color: #B7C800;
 }
 .Vhost-siteLinks:hover .Vhost-aliases {
   pointer-events: all;
@@ -477,7 +484,7 @@ a:hover {
   transform: scaleY(1);
 }
 .Vhost-siteLinks:hover .Vhost-aliases a:hover {
-  background-color: #00B0C5;
+  background-color: #B7C800;
 }
 .Vhost-name {
   padding: .2em .5em;
@@ -498,8 +505,8 @@ a.Vhost-name {
   margin-top: .6em;
   border-radius: 4px;
   background-color: transparent;
-  border: 1px solid #A3B2B6;
-  transition: transform .2s;
+  border: 1px solid #283032;
+  transition: all 1s;
 }
 .Vhost-actions {
   position: relative;
@@ -518,7 +525,7 @@ a.Vhost-name {
   height: 11px;
   margin: 3px;
   border-radius: 11px;
-  border: 2px solid #0090a1;
+  border: 2px solid #96a400;
   border-bottom-color: transparent;
   animation: spin linear infinite .5s;
 }
@@ -537,7 +544,7 @@ a.Vhost-name {
   height: 11px;
   margin: 3px;
   border-radius: 11px;
-  border: 2px solid #0090a1;
+  border: 2px solid #96a400;
   border-bottom-color: transparent;
   animation: spin linear infinite .5s;
 }
@@ -545,11 +552,12 @@ a.Vhost-name {
   pointer-events: none;
 }
 .Vhost.is-fetching .Vhost-indicator {
-  animation: blink infinite .2s;
+  animation: blink infinite .5s;
 }
 .Vhost.is-active .Vhost-indicator {
-  background-color: #47b04a;
-  border-color: #47b04a;
+  background-color: #efff48;
+  border-color: #efff48;
+  box-shadow: 0 0 10px #96a400;
 }
 .Vhost.is-active .Vhost-siteLinks {
   border-radius: 3px;

@@ -12,7 +12,7 @@ rename = require('gulp-rename');
 
 // Compile less
 gulp.task('less', function() {
-	return gulp.src(['./src/less/main.less', './src/less/light-theme.less'])
+	return gulp.src(['./src/less/app.less'])
 	.pipe(plumber())
 	.pipe(less())
 	.pipe(gulp.dest('./build/css'))

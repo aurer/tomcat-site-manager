@@ -77,8 +77,8 @@
 		margin-top: .6em;
 		border-radius: 4px;
 		background-color: transparent;
-		border: 1px solid @color-neutral;
-		transition: transform .2s;
+		border: 1px solid @color-neutral-darker;
+		transition: all 1s;
 	}
 
 	&-actions {
@@ -145,14 +145,15 @@
 		}
 
 		.Vhost-indicator {
-			animation: blink infinite .2s;
+			animation: blink infinite .5s;
 		}
 	}
 
 	&.is-active {
 		.Vhost-indicator {
-			background-color: @color-alert-positive;
-			border-color: @color-alert-positive;
+			background-color: @color-primary-light;
+			border-color: @color-primary-light;
+			box-shadow: 0 0 10px @color-primary-dark;
 		}
 
 		.Vhost-siteLinks {
