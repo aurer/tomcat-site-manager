@@ -30062,6 +30062,11 @@ var Settings = function (_React$Component) {
 	}
 
 	_createClass(Settings, [{
+		key: 'componentWillMount',
+		value: function componentWillMount() {
+			this.setState(Store.load('settings'));
+		}
+	}, {
 		key: 'render',
 		value: function render() {
 			var rootPlacerholder = 'c:\\www\\';
@@ -30134,33 +30139,6 @@ var Settings = function (_React$Component) {
 					_react2.default.createElement(
 						'label',
 						null,
-						'Tomcat version'
-					),
-					_react2.default.createElement(
-						'div',
-						{ className: 'Form-inputs' },
-						_react2.default.createElement(
-							'select',
-							{ name: 'tomcat_version', defaultValue: this.state.tomcat_version },
-							_react2.default.createElement(
-								'option',
-								{ value: '7' },
-								'7+'
-							),
-							_react2.default.createElement(
-								'option',
-								{ value: '6' },
-								'6'
-							)
-						)
-					)
-				),
-				_react2.default.createElement(
-					'div',
-					{ className: 'Form-field' },
-					_react2.default.createElement(
-						'label',
-						null,
 						'Hostmanager login'
 					),
 					_react2.default.createElement(
@@ -30183,7 +30161,6 @@ var Settings = function (_React$Component) {
 				domain: this.sanitiseDomainValue(form.domain.value),
 				root: this.sanitiseRootValue(form.root.value, form.os.value),
 				os: form.os.value,
-				tomcat_version: form.tomcat_version.value,
 				manager_username: form.manager_username.value,
 				manager_password: form.manager_password.value
 			});
@@ -30212,7 +30189,6 @@ var Settings = function (_React$Component) {
 			var os = e.target.value;
 			var form = e.target.form;
 			this.setState({ os: os });
-
 			var root = form.root;
 			var rootValue = this.sanitiseRootValue(root.value, os);
 			root.value = rootValue;
@@ -30682,8 +30658,6 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var SITES = Store.load('sites');
-
 var Sites = function (_React$Component) {
 	_inherits(Sites, _React$Component);
 
@@ -30693,7 +30667,7 @@ var Sites = function (_React$Component) {
 		var _this = _possibleConstructorReturn(this, (Sites.__proto__ || Object.getPrototypeOf(Sites)).call(this, props));
 
 		_this.state = {
-			sites: SITES,
+			sites: Store.load('sites'),
 			activeSite: null,
 			showSiteForm: false,
 			showImportForm: false,
@@ -30705,8 +30679,11 @@ var Sites = function (_React$Component) {
 	_createClass(Sites, [{
 		key: 'componentWillMount',
 		value: function componentWillMount() {
-			if (!this.state.sites.length) {
+			var sites = Store.load('sites');
+			if (!sites.length) {
 				this.setState({ showSiteForm: true });
+			} else {
+				this.setState({ sites: sites });
 			}
 		}
 	}, {
@@ -30890,7 +30867,7 @@ var Sites = function (_React$Component) {
 	}, {
 		key: 'handleImportForm',
 		value: function handleImportForm(data, overwrite) {
-			var sites = SITES;
+			var sites = Store.load('sites');
 
 			sites = overwrite ? data.sites : sites.concat(data.sites);
 			sites = this.removeDuplicateSites(sites);
@@ -31355,14 +31332,7 @@ var Vhosts = function (_React$Component) {
 					_react2.default.createElement(
 						'p',
 						null,
-						'You dont have any sites defined yet',
-						_react2.default.createElement('br', null),
-						_react2.default.createElement('br', null),
-						_react2.default.createElement(
-							_reactRouter.Link,
-							{ to: 'sites.html' },
-							'Add one now'
-						)
+						'You dont have any active sites'
 					)
 				);
 			}
@@ -31653,7 +31623,6 @@ var defaultValues = {
 	settings: {
 		domain: '',
 		root: '',
-		tomcat_version: 7,
 		manager_username: '',
 		manager_password: ''
 	},
