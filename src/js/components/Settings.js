@@ -7,6 +7,10 @@ class Settings extends React.Component {
 		this.state = Store.load('settings');
 	}
 
+	componentWillMount() {
+		this.setState(Store.load('settings'));
+	}
+
 	render() {
 		let rootPlacerholder = 'c:\\www\\';
 		return (

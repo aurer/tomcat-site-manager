@@ -47,7 +47,7 @@ class Vhosts extends React.Component {
 		if (this.state.sites.length < 1) {
 			return (
 				<div className="App-error">
-					<p>You dont have any sites defined yet<br/><br/><Link to="sites.html">Add one now</Link></p>
+					<p>You dont have any active sites yet</p>
 				</div>
 			)
 		}

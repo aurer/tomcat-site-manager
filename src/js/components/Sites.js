@@ -5,13 +5,11 @@ import SiteForm from './SiteForm';
 import ImportForm from './ImportForm';
 import ExportForm from './ExportForm';
 
-const SITES = Store.load('sites');
-
 class Sites extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			sites: SITES,
+			sites: Store.load('sites'),
 			activeSite: null,
 			showSiteForm: false,
 			showImportForm: false,
@@ -20,8 +18,11 @@ class Sites extends React.Component {
 	}
 
 	componentWillMount() {
-		if (!this.state.sites.length) {
+		var sites = Store.load('sites');
+		if (!sites.length) {
 			this.setState({showSiteForm: true});
+		} else {
+			this.setState({sites:sites});
 		}
 	}
 
@@ -160,7 +161,7 @@ class Sites extends React.Component {
 	}
 
 	handleImportForm(data, overwrite) {
-		let sites = SITES;
+		let sites = Store.load('sites');
 
 		sites = overwrite ? data.sites : sites.concat(data.sites);
 		sites = this.removeDuplicateSites(sites);
