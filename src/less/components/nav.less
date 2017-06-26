@@ -13,7 +13,7 @@
 		cursor: pointer;
 		transition: background-color .2s;
 		border-bottom: 4px solid transparent;
-		background-color: @color-neutral-darker;
+		background-color: fade(@color-neutral-darkest, 80%);
 		color: @color-neutral-lightest;
 
 		&.is-active {
@@ -27,7 +27,8 @@
 		height: 4px;
 		width: 100%;
 		left: 0;
-		background-color: @color-primary-light;
+		background-color: @color-primary;
+		background: linear-gradient(to right, @color-secondary, @color-primary);
 		transition-property: left, width;
 		transition-duration: .4s;
 		transition-timing-function: cubic-bezier(.22,.02,.04,1);

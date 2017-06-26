@@ -8,16 +8,18 @@
 	margin: 0 .2em;
 	border: none;
 	background-color: @color-primary-dark;
+	background: @color-primary;
+	background: linear-gradient(to bottom right, @color-secondary, @color-primary);
 	color: @color-neutral-lightest;
-	font-size: .9em;
-	font-weight: bold;
-	border-radius: 3px;
+	font-size: .95em;
+	font-weight: light;
+	border-radius: 20px;
 	transition: background .2s;
 	outline: none;
 	cursor: pointer;
 
 	&:hover {
-		background-color: @color-primary;
+		background: linear-gradient(to bottom right, @color-primary, @color-primary);
 		color: @color-neutral-lightest;
 	}
 
@@ -74,7 +76,7 @@
 
 	&:hover {
 		path, polygon {
-			fill: @color-primary-light;
+			fill: @color-secondary;
 		}
 	}
 }

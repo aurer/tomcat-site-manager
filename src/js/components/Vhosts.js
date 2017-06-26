@@ -79,14 +79,14 @@ class Vhosts extends React.Component {
 				message = `Stopped '${action.site.name}'`;
 			break;
 		}
-		this.props.showMessage(message, 'positive');
+		notify(message, 'positive');
 
 		// Update vhost props with new manager info
 		this.updateManagerInfo(action.response);
 	}
 
 	handleVhostError(error) {
-		this.props.showMessage(error, 'negative');
+		notify(error, 'negative');
 	}
 
 	loginToHostManager() {

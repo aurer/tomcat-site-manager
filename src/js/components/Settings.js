@@ -50,7 +50,7 @@ class Settings extends React.Component {
 	}
 
 	handleSubmit(e) {
-		e.preventDefault()
+		e.preventDefault();
 		let form = e.target;
 
 		let newState = Object.assign({}, this.state, {
@@ -66,7 +66,7 @@ class Settings extends React.Component {
 
 		Store.save('settings', newState);
 		this.setState(newState);
-		this.props.showMessage(`Settings saved`, 'positive');
+		notify('Settings updated');
 	}
 
 	sanitiseDomainValue(value) {

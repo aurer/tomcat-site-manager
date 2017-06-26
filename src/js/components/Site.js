@@ -6,41 +6,83 @@ import { svgPath } from '../helpers';
 class Site extends React.Component {
 	constructor(props) {
 		super(props);
-		this.state = this.props.site;
+		this.state = {
+			over: false
+		};
 	}
 
 	render() {
-		let settings = Store.load('settings');
-		let nameTitle = this.state.name + '.' + settings.domain;
-		let aliasesTitle = this.state.aliases.split(',').map(a => `${a}.${this.state.name}.${settings.domain}`).join(', ');
-		let rootTitle = settings.root + this.state.root;
-		let checked = this.state.active ? 'checked' : '';
-		let siteClassName = 'Site ' + (this.state.active ? 'is-active' : 'is-inactive');
+		var site = this.props.site;
+		var id = this.props.index + site.name;
+		var settings = Store.load('settings');
+		var nameTitle = site.name + '.' + settings.domain;
+		var aliasesTitle = site.aliases.split(',').map(a => `${a}.${site.name}.${settings.domain}`).join(', ');
+		var rootTitle = settings.root + site.root;
+		var checked = site.active ? 'checked' : '';
+		var siteClassName = 'Site ' + (site.active ? 'is-active' : 'is-inactive');
+		siteClassName += (this.state.over ? ' over' : '');
 
 		return (
-			<tr className={siteClassName}>
-				<td className="Site-active">
-					<input type="checkbox" value="true" checked={checked} onChange={this.toggleSite.bind(this)} />
-				</td>
-				<td className="Site-name" title={nameTitle}>
-					{this.state.name}
-				</td>
-				<td className="Site-aliases" title={aliasesTitle}>
-					{this.state.aliases}
-				</td>
-				<td className="Site-root" title={rootTitle}>
-					{this.state.root}
-				</td>
-				<td className="Site-actions">
+			<div
+				className={siteClassName}
+				draggable
+				onDragStart={this.onDragStart.bind(this)}
+				onDragEnter={this.onDragEnter.bind(this)}
+				onDragLeave={this.onDragLeave.bind(this)}
+				onDragEnd={this.onDragEnd}
+				onDrop={this.onDrop}
+			>
+				<div className="Site-status">
+					<input type="checkbox" id={id} value="true" checked={checked} onChange={this.toggleSite.bind(this)} />
+				</div>
+				<div className="Site-name" title={nameTitle}>
+					{site.name}
+				</div>
+				<div className="Site-aliases" title={aliasesTitle}>
+					{site.aliases}
+				</div>
+				<div className="Site-root" title={rootTitle}>
+					{site.root}
+				</div>
+				<div className="Site-actions">
 					<button className="IconButton Site-actions-edit" onClick={this.handleEditSite.bind(this)} title="Edit">
 						<Isvg src={svgPath('edit.svg')} />
 					</button>
 					<button className="IconButton Site-actions-remove" onClick={this.handleRemoveSite.bind(this)} title="Remove">
 						<Isvg src={svgPath('remove.svg')} />
 					</button>
-				</td>
-			</tr>
+				</div>
+			</div>
 		)
+	}
+
+	onDragStart() {
+
+	}
+
+	onDragOver() {
+
+	}
+
+	onDragEnter() {
+		this.setState({
+			over: true
+		})
+	}
+
+	onDragLeave() {
+		this.setState({
+			over: false
+		})
+	}
+
+	onDragEnd(e) {
+		console.log(e.dataTransfer.getData('text/html'));
+	}
+
+	onDrop(e) {
+		// e.stopPropagation();
+		console.log(e);
 	}
 
 	handleEditSite(e) {

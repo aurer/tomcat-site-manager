@@ -11,6 +11,7 @@ class Sites extends React.Component {
 		this.state = {
 			sites: Store.load('sites'),
 			activeSite: null,
+			form: false,
 			showSiteForm: false,
 			showImportForm: false,
 			showExportForm: false
@@ -20,7 +21,7 @@ class Sites extends React.Component {
 	componentWillMount() {
 		var sites = Store.load('sites');
 		if (!sites.length) {
-			this.setState({showSiteForm: true});
+			this.setState({form: 'site'});
 		} else {
 			this.setState({sites:sites});
 		}
@@ -35,84 +36,72 @@ class Sites extends React.Component {
 					<a className="Button" onClick={this.openExportForm.bind(this)}>Export sites</a>
 				</div>
 
-				{this.state.showSiteForm && <SiteForm
-					site={this.state.activeSite}
-					onSubmit={this.handleNewSiteForm.bind(this)}
-					closeForm={this.closeSiteForm.bind(this)} />}
+				{this.state.form == false &&
+					<div className="Sites">
+						<div className="Sites-header">
+							<div className="Site-name" rowSpan="2">Name</div>
+							<div className="Site-aliases">Aliases</div>
+							<div className="Site-root" colSpan="2">Root</div>
+						</div>
+						{this.state.sites.map((site, i) => <Site key={site.id} site={site} index={i} onReorder={this.onReorder.bind(this)} onChange={this.handleChangeSite.bind(this)} />)}
+					</div>
+				}
 
-				{this.state.showExportForm && <ExportForm
-					onSubmit={this.handleExportForm.bind(this)}
-					onCancel={this.closeExportForm.bind(this)} />}
+				{this.state.form == 'site' &&
+					<SiteForm
+						site={this.state.activeSite}
+						onSubmit={this.handleNewSiteForm.bind(this)}
+						closeForm={this.closeForm.bind(this)}
+					/>
+				}
 
-				{this.state.showImportForm && <ImportForm
-					onSubmit={this.handleImportForm.bind(this)}
-					onCancel={this.closeImportForm.bind(this)}
-					onError={this.handleImportError.bind(this)} />}
+				{this.state.form == 'export' &&
+					<ExportForm
+						onSubmit={this.handleExportForm.bind(this)}
+						onCancel={this.closeForm.bind(this)}
+					/>
+				}
 
-				{(this.state.showSiteForm || this.state.showExportForm || this.state.showImportForm) ||
-					<table className="Sites">
-						<thead>
-							<tr>
-								<th className="Site-name" rowSpan="2">Name</th>
-								<th className="Site-aliases">Aliases</th>
-								<th className="Site-root" colSpan="2">Root</th>
-							</tr>
-						</thead>
-						<tbody>
-							{this.state.sites.map((site, i) => <Site key={site.id} site={site} index={i} onChange={this.handleChangeSite.bind(this)} />)}
-						</tbody>
-					</table>
+				{this.state.form == 'import' &&
+					<ImportForm
+						onSubmit={this.handleImportForm.bind(this)}
+						onCancel={this.closeForm.bind(this)}
+						onError={this.closeForm.bind(this)}
+					/>
 				}
 
 			</section>
 		)
 	}
 
+	onReorder() {
+		console.log('Did re-order');
+	}
+
 	openSiteForm() {
 		this.setState({
-			showSiteForm: true,
-			showImportForm: false,
-			showExportForm: false
+			form: 'site'
 		});
 	}
 
 	openExportForm() {
 		this.setState({
-			showSiteForm: false,
-			showImportForm: false,
-			showExportForm: true
+			form: 'export'
 		});
 	}
 
 	openImportForm() {
 		this.setState({
-			showSiteForm: false,
-			showImportForm: true,
-			showExportForm: false
+			form: 'import'
 		});
 	}
 
-	openExportForm() {
-		this.setState({ showExportForm: true })
-	}
-
-	closeSiteForm(e) {
-		e.preventDefault();
-		this.setState({showSiteForm: false});
-	}
-
-	closeExportForm(e) {
-		e.preventDefault();
-		this.setState({showExportForm: false});
-	}
-
-	closeImportForm(e) {
-		e.preventDefault();
-		this.setState({showImportForm: false});
+	closeForm() {
+		this.setState({form: false});
 	}
 
 	handleImportError(error) {
-		this.props.showMessage(error.toString(), 'negative');
+		notify(error.toString(), 'negative');
 	}
 
 	handleNewSiteForm(e) {
@@ -142,7 +131,7 @@ class Sites extends React.Component {
 			sites.push(siteData);
 		}
 
-		let newState = Object.assign({}, this.state, { sites }, {showSiteForm: false});
+		let newState = Object.assign({}, this.state, { sites }, {form: false});
 		this.setState(newState);
 		form.name.value = '';
 		form.aliases.value = '';
@@ -150,9 +139,9 @@ class Sites extends React.Component {
 		Store.save('sites', sites);
 
 		if (form.siteId) {
-			this.props.showMessage(`Updated '${siteData.name}' details`, 'positive');
+			notify(`Updated '${siteData.name}' details`, 'positive');
 		} else {
-			this.props.showMessage(`Added '${siteData.name}' to sites`, 'positive');
+			notify(`Added '${siteData.name}' to sites`, 'positive');
 		}
 	}
 
@@ -168,7 +157,7 @@ class Sites extends React.Component {
 
 		Store.save('sites', sites);
 		this.setState({sites, showImportForm: false});
-		this.props.showMessage(`Imported ${data.sites.length} sites`, 'positive');
+		notify(`Imported ${data.sites.length} sites`, 'positive');
 	}
 
 	removeDuplicateSites(sites) {
@@ -193,7 +182,7 @@ class Sites extends React.Component {
 		switch (action.action) {
 			case 'edit':
 				this.setState({
-					showSiteForm: true,
+					form: 'site',
 					activeSite: site
 				});
 			break;
@@ -202,7 +191,7 @@ class Sites extends React.Component {
 				this.setState({
 					sites: otherSites
 				});
-				this.props.showMessage(`Removed '${site.name}' from sites`, 'positive');
+				notify(`Removed '${site.name}' from sites`, 'positive');
 			break;
 			case 'activate':
 				var newState = this.state.sites.map((site, i) => {

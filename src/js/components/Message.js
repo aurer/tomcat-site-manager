@@ -19,7 +19,7 @@ class Message extends React.Component {
 		var messages = this.state.messages;
 		messages.push(nextProps.message);
 		this.setState({messages});
-		this.handleRemoveMessages(messages.length);
+		this.removeMessages(messages.length);
 	}
 
 	render() {
@@ -40,7 +40,7 @@ class Message extends React.Component {
 		)
 	}
 
-	handleRemoveMessages(id) {
+	removeMessages(id) {
 		if (timeouts[id]) {
 			clearTimeout(timeouts[id]);
 		}
