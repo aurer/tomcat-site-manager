@@ -29129,7 +29129,7 @@ var App = function (_React$Component5) {
 		var _this6 = _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this, props));
 
 		_this6.state = {
-			view: 'sites'
+			view: 'vhosts'
 		};
 		return _this6;
 	}
