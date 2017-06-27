@@ -29896,10 +29896,8 @@ var Site = function (_React$Component) {
 					className: siteClassName,
 					draggable: true,
 					onDragStart: this.onDragStart.bind(this),
-					onDragEnter: this.onDragEnter.bind(this),
-					onDragLeave: this.onDragLeave.bind(this),
-					onDragEnd: this.onDragEnd,
-					onDrop: this.onDrop
+					onDragOver: this.onDragOver.bind(this),
+					onDrop: this.onDrop.bind(this)
 				},
 				_react2.default.createElement(
 					'div',
@@ -29939,34 +29937,22 @@ var Site = function (_React$Component) {
 		}
 	}, {
 		key: 'onDragStart',
-		value: function onDragStart() {}
+		value: function onDragStart(e) {
+			e.dataTransfer.setData("text", this.props.index);
+			e.dataTransfer.effectAllowed = "move";
+		}
 	}, {
 		key: 'onDragOver',
-		value: function onDragOver() {}
-	}, {
-		key: 'onDragEnter',
-		value: function onDragEnter() {
-			this.setState({
-				over: true
-			});
-		}
-	}, {
-		key: 'onDragLeave',
-		value: function onDragLeave() {
-			this.setState({
-				over: false
-			});
-		}
-	}, {
-		key: 'onDragEnd',
-		value: function onDragEnd(e) {
-			console.log(e.dataTransfer.getData('text/html'));
+		value: function onDragOver(e) {
+			e.preventDefault();
 		}
 	}, {
 		key: 'onDrop',
 		value: function onDrop(e) {
-			// e.stopPropagation();
-			console.log(e);
+			var from = e.dataTransfer.getData("text");
+			var to = this.props.index;
+			e.preventDefault();
+			this.props.onReorder(from, to);
 		}
 	}, {
 		key: 'handleEditSite',
@@ -30336,7 +30322,7 @@ var Sites = function (_React$Component) {
 		var _this = _possibleConstructorReturn(this, (Sites.__proto__ || Object.getPrototypeOf(Sites)).call(this, props));
 
 		_this.state = {
-			sites: Store.load('sites'),
+			sites: [],
 			activeSite: null,
 			form: false,
 			showSiteForm: false,
@@ -30427,8 +30413,20 @@ var Sites = function (_React$Component) {
 		}
 	}, {
 		key: 'onReorder',
-		value: function onReorder() {
-			console.log('Did re-order');
+		value: function onReorder(from, to) {
+			var sites = this.state.sites;
+
+			// Re-arrange sites
+			sites.splice(to, 0, sites.splice(from, 1)[0]);
+
+			// Re-set pos based on index
+			sites.map(function (site, index) {
+				return site.pos = index + 1;
+			});
+
+			// Save changes
+			this.setState({ sites: sites });
+			Store.save('sites', sites);
 		}
 	}, {
 		key: 'openSiteForm',
@@ -30467,13 +30465,18 @@ var Sites = function (_React$Component) {
 			e.preventDefault();
 			var form = e.target;
 			var sites = this.state.sites;
+			sites = sites.sort(function (a, b) {
+				return a.pos > b.pos;
+			});
+
+			var pos = sites.length ? sites[sites.length - 1].pos + 1 : 1;
 
 			var siteData = {
 				active: true,
 				name: form.name.value.toLowerCase(),
 				aliases: form.aliases.value,
 				root: form.root.value,
-				pos: 0
+				pos: pos
 			};
 
 			// Update existing site

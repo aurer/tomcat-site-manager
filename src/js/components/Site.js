@@ -27,10 +27,8 @@ class Site extends React.Component {
 				className={siteClassName}
 				draggable
 				onDragStart={this.onDragStart.bind(this)}
-				onDragEnter={this.onDragEnter.bind(this)}
-				onDragLeave={this.onDragLeave.bind(this)}
-				onDragEnd={this.onDragEnd}
-				onDrop={this.onDrop}
+				onDragOver={this.onDragOver.bind(this)}
+				onDrop={this.onDrop.bind(this)}
 			>
 				<div className="Site-status">
 					<input type="checkbox" id={id} value="true" checked={checked} onChange={this.toggleSite.bind(this)} />
@@ -56,33 +54,20 @@ class Site extends React.Component {
 		)
 	}
 
-	onDragStart() {
-
+	onDragStart(e) {
+		e.dataTransfer.setData("text", this.props.index);
+		e.dataTransfer.effectAllowed = "move";
 	}
 
-	onDragOver() {
-
-	}
-
-	onDragEnter() {
-		this.setState({
-			over: true
-		})
-	}
-
-	onDragLeave() {
-		this.setState({
-			over: false
-		})
-	}
-
-	onDragEnd(e) {
-		console.log(e.dataTransfer.getData('text/html'));
+	onDragOver(e) {
+		e.preventDefault();
 	}
 
 	onDrop(e) {
-		// e.stopPropagation();
-		console.log(e);
+		var from = e.dataTransfer.getData("text");
+		var to = this.props.index;
+		e.preventDefault();
+		this.props.onReorder(from, to);
 	}
 
 	handleEditSite(e) {
