@@ -1,4 +1,6 @@
 .Sites {
+	overflow: hidden;
+
 	.Sites-header {
 		display: grid;
 		grid-template-columns: repeat(3, 1fr);
@@ -11,6 +13,12 @@
 			padding-left: 2em;
 		}
 	}
+
+	.Sites-body {
+		overflow-y: auto;
+		max-height: 330px;
+		margin-right: -17px;
+	}
 }
 
 .Site {
@@ -20,8 +28,16 @@
 	position: relative;
 	overflow: hidden;
 
-	.Site-status {
+	&.is-inactive {
+		.Site-name,
+		.Site-aliases,
+		.Site-root {
+			opacity: .3;
+		}
+	}
 
+	&.over {
+		border-top: 1px dashed @color-primary-light;
 	}
 
 	.Site-actions {
@@ -38,6 +54,18 @@
 	&:hover .Site-actions {
 		transform: translateX(0);
 		opacity: 1;
+	}
+	
+	.Site-name,
+	.Site-root,
+	.Site-aliases {
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+	
+	.Site-aliases {
+		padding: 0 @space-xs;
 	}
 }
 

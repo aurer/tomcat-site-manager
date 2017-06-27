@@ -270,6 +270,9 @@ a:hover {
 .Section {
   margin: 0 auto;
 }
+.Sites {
+  overflow: hidden;
+}
 .Sites .Sites-header {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -281,12 +284,25 @@ a:hover {
 .Sites .Sites-header:first-child {
   padding-left: 2em;
 }
+.Sites .Sites-body {
+  overflow-y: auto;
+  max-height: 330px;
+  margin-right: -17px;
+}
 .Site {
   display: grid;
   grid-template-columns: 2em repeat(3, 1fr);
   padding: 6px;
   position: relative;
   overflow: hidden;
+}
+.Site.is-inactive .Site-name,
+.Site.is-inactive .Site-aliases,
+.Site.is-inactive .Site-root {
+  opacity: .3;
+}
+.Site.over {
+  border-top: 1px dashed #dd82ff;
 }
 .Site .Site-actions {
   position: absolute;
@@ -301,6 +317,16 @@ a:hover {
 .Site:hover .Site-actions {
   transform: translateX(0);
   opacity: 1;
+}
+.Site .Site-name,
+.Site .Site-root,
+.Site .Site-aliases {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.Site .Site-aliases {
+  padding: 0 6px;
 }
 .Nav {
   display: flex;
@@ -330,7 +356,7 @@ a:hover {
   width: 100%;
   left: 0;
   background-color: #bb02ff;
-  background: linear-gradient(to right, #7702fa, #bb02ff);
+  background: linear-gradient(to right, #bb02ff, #7702fa);
   transition-property: left, width;
   transition-duration: .4s;
   transition-timing-function: cubic-bezier(0.22, 0.02, 0.04, 1);

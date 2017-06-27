@@ -77,12 +77,13 @@ class Site extends React.Component {
 	}
 
 	onDragEnd(e) {
-		console.log(e.dataTransfer.getData('text/html'));
+		e.preventDefault();
 	}
 
 	onDrop(e) {
-		// e.stopPropagation();
-		console.log(e);
+		e.stopPropagation();
+		e.preventDefault();
+		console.log(e.dataTransfer.getData('text/html'));
 	}
 
 	handleEditSite(e) {
