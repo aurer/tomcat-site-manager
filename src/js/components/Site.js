@@ -6,6 +6,7 @@ import { svgPath } from '../helpers';
 class Site extends React.Component {
 	constructor(props) {
 		super(props);
+		this.dragCounter = 0;
 		this.state = {
 			over: false
 		};
@@ -20,7 +21,8 @@ class Site extends React.Component {
 		var rootTitle = settings.root + site.root;
 		var checked = site.active ? 'checked' : '';
 		var siteClassName = 'Site ' + (site.active ? 'is-active' : 'is-inactive');
-		siteClassName += (this.state.over ? ' over' : '');
+		siteClassName += (this.state.over ? ' is-over' : '');
+		siteClassName += (this.state.dragging ? ' is-dragging' : '');
 
 		return (
 			<div
@@ -28,6 +30,7 @@ class Site extends React.Component {
 				draggable
 				onDragStart={this.onDragStart.bind(this)}
 				onDragOver={this.onDragOver.bind(this)}
+				onDragEnd={this.onDragEnd.bind(this)}
 				onDrop={this.onDrop.bind(this)}
 			>
 				<div className="Site-status">
@@ -57,17 +60,33 @@ class Site extends React.Component {
 	onDragStart(e) {
 		e.dataTransfer.setData("text", this.props.index);
 		e.dataTransfer.effectAllowed = "move";
+		this.setState({
+			dragging: true,
+			over: false
+		});
 	}
 
 	onDragOver(e) {
 		e.preventDefault();
 	}
 
+	onDragEnd(e) {
+		e.preventDefault();
+		this.setState({
+			dragging: false,
+			over: false
+		});	
+	}
+
 	onDrop(e) {
+		e.preventDefault();
 		var from = e.dataTransfer.getData("text");
 		var to = this.props.index;
-		e.preventDefault();
-		this.props.onReorder(from, to);
+		this.props.onReorder(from, to, true);
+		this.setState({
+			over: false,
+			dragging: false
+		});
 	}
 
 	handleEditSite(e) {

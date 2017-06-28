@@ -302,8 +302,8 @@ a:hover {
 .Site.is-inactive .Site-root {
   opacity: .3;
 }
-.Site.over {
-  border-top: 1px dashed #dd82ff;
+.Site.is-dragging {
+  opacity: .4;
 }
 .Site .Site-actions {
   position: absolute;

@@ -84,7 +84,7 @@ class Sites extends React.Component {
 		)
 	}
 
-	onReorder(from, to) {
+	onReorder(from, to, save=false) {
 		var sites = this.state.sites;
 
 		// Re-arrange sites
@@ -95,7 +95,10 @@ class Sites extends React.Component {
 
 		// Save changes
 		this.setState({sites});
-		Store.save('sites', sites);
+
+		if (save) {
+			Store.save('sites', sites);
+		}
 	}
 
 	openSiteForm() {
