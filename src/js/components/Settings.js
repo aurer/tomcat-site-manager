@@ -37,13 +37,6 @@ class Settings extends React.Component {
 						</select>
 					</div>
 				</div>
-				<div className="Form-field">
-					<label>Hostmanager login</label>
-					<div className="Form-inputs">
-						<input type="text" name="manager_username" defaultValue={this.state.manager_username} placeholder="Username" autoComplete="off" />
-						<input type="password" name="manager_password" defaultValue={this.state.manager_password} placeholder="Password" autoComplete="off" />
-					</div>
-				</div>
 				<input type="submit" value="Save"/>
 			</form>
 		)
@@ -56,9 +49,7 @@ class Settings extends React.Component {
 		let newState = Object.assign({}, this.state, {
 			domain: 					this.sanitiseDomainValue(form.domain.value),
 			root: 						this.sanitiseRootValue(form.root.value, form.os.value),
-			os: 							form.os.value,
-			manager_username: form.manager_username.value,
-			manager_password: form.manager_password.value
+			os: 							form.os.value
 		});
 
 		form.domain.value = newState.domain;

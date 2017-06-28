@@ -263,9 +263,10 @@ a:hover {
   z-index: 10;
 }
 .Notifications .Notification {
-  background-color: rgba(83, 1, 174, 0.8);
+  background-color: #5301ae;
   padding: 12px;
   margin-bottom: 1px;
+  transition: all .3s;
 }
 .Section {
   margin: 0 auto;

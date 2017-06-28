@@ -9,7 +9,7 @@ class Sites extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			sites: Store.load('sites'),
+			sites: [],
 			activeSite: null,
 			form: false,
 			showSiteForm: false,
@@ -84,8 +84,18 @@ class Sites extends React.Component {
 		)
 	}
 
-	onReorder() {
-		console.log('Did re-order');
+	onReorder(from, to) {
+		var sites = this.state.sites;
+
+		// Re-arrange sites
+		sites.splice(to, 0, sites.splice(from, 1)[0]);
+
+		// Re-set pos based on index
+		sites.map((site, index) => site.pos = index+1);
+
+		// Save changes
+		this.setState({sites});
+		Store.save('sites', sites);
 	}
 
 	openSiteForm() {
@@ -118,13 +128,16 @@ class Sites extends React.Component {
 		e.preventDefault();
 		let form = e.target;
 		let sites = this.state.sites;
+		sites = sites.sort((a, b) => a.pos > b.pos);
+
+		let pos = sites.length ? sites[sites.length-1].pos + 1 : 1;
 
 		let siteData = {
-			active: true,
-			name:  	form.name.value.toLowerCase(),
-			aliases: form.aliases.value,
-			root: 	form.root.value,
-			pos: 0
+			active: 	true,
+			name:  		form.name.value.toLowerCase(),
+			aliases: 	form.aliases.value,
+			root: 		form.root.value,
+			pos: 			pos
 		}
 
 		// Update existing site

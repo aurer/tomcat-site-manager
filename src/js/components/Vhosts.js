@@ -21,7 +21,7 @@ class Vhosts extends React.Component {
 	componentWillMount() {
 		let sites = Store.load('sites').filter(site => site.active);
 		let settings = Store.load('settings');
-		this.loginToHostManager();
+		this.connectToHostManager();
 		this.setState({sites, settings});
 	}
 
@@ -39,7 +39,7 @@ class Vhosts extends React.Component {
 			return (
 				<div className="App-error">
 					<p>Could not connect to Tomcat</p>
-					<p>Please check Tomcat is running and that the username and password you supplied are correct</p>
+					<p>Please check Tomcat is running</p>
 				</div>
 			)
 		}
@@ -89,12 +89,9 @@ class Vhosts extends React.Component {
 		notify(error, 'negative');
 	}
 
-	loginToHostManager() {
+	connectToHostManager() {
 		let url = `http://localhost:8080/host-manager/html/`;
-		qwest.get(url, null, {
-			user: this.state.settings.manager_username,
-			password: this.state.settings.manager_password
-		})
+		qwest.get(url)
 		.then((xhr, res) => {
 			this.setState({ canSeeTomcatManager: true });
 			this.updateManagerInfo(res);
