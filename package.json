@@ -1,6 +1,6 @@
 {
   "name": "tomcat-site-manager",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "Tomcat virtual host manager",
   "main": "build/index.html",
   "author": "Phil Maurer",
