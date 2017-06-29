@@ -13,7 +13,7 @@ gulp.task('less', function() {
 	return gulp.src(['./src/less/app.less'])
 		.pipe(plumber())
 		.pipe(less())
-		.pipe(gulp.dest('./build/css'))
+		.pipe(gulp.dest('./build/extension/css'))
 		.pipe(server.stream());
 });
 
@@ -24,26 +24,26 @@ gulp.task('js', function() {
 		.pipe(browserify({
 			transform: ["babelify"]
 		}))
-		.pipe(gulp.dest('./build/js'))
+		.pipe(gulp.dest('./build/extension/js'))
 		.pipe(server.stream());
 });
 
 gulp.task('uglify', function() {
-	return gulp.src('./build/js/*.js')
+	return gulp.src('./build/extension/js/*.js')
 		.pipe(uglify())
-		.pipe(gulp.dest('./build/js'));
+		.pipe(gulp.dest('./build/extension/js'));
 });
 
 // Copy html and manifest files
 gulp.task('copy', function() {
-	gulp.src('src/img/*').pipe(gulp.dest('build/img'));
-	gulp.src('src/manifest.json').pipe(gulp.dest('build/'));
-	gulp.src('src/html/index.html').pipe(gulp.dest('build'));
+	gulp.src('src/img/*').pipe(gulp.dest('./build/extension/img'));
+	gulp.src('src/manifest.json').pipe(gulp.dest('./build/extension'));
+	gulp.src('src/html/index.html').pipe(gulp.dest('./build/extension'));
 });
 
 // Clean the build folder
 gulp.task('clean', function() {
-	return del('build/*');
+	return del('./build/*');
 });
 
 // Watch for changes
@@ -57,7 +57,7 @@ gulp.task('watch', function() {
 gulp.task('serve', function() {
 	server.init({
 		server: {
-			baseDir: './build'
+			baseDir: './build/extension'
 		}
 	});
 });
@@ -77,11 +77,11 @@ gulp.task('zip', function() {
 	var manifest = fs.readFileSync('./src/manifest.json');
 	var version = JSON.parse(manifest).version;
 
-	return gulp.src('./build/*')
+	return gulp.src('./build/extension/*')
 		.pipe(zip('tomcat-site-manager-' + version + '.zip'))
-		.pipe(gulp.dest('./'));
+		.pipe(gulp.dest('./build'));
 })
 
 gulp.task('build', function() {
-	runSequence('apply-production', 'clean', 'copy', 'less', 'js', 'uglify');
+	runSequence('apply-production', 'clean', 'copy', 'less', 'js', 'uglify', 'zip');
 });
