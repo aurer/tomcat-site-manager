@@ -172,7 +172,7 @@ class Sites extends React.Component {
 	}
 
 	handleExportForm() {
-		this.setState({showExportForm: false});
+		this.setState({form: false});
 	}
 
 	handleImportForm(data, overwrite) {
@@ -182,7 +182,7 @@ class Sites extends React.Component {
 		sites = this.removeDuplicateSites(sites);
 
 		Store.save('sites', sites);
-		this.setState({sites, showImportForm: false});
+		this.setState({sites, form: false});
 		notify(`Imported ${data.sites.length} sites`, 'positive');
 	}
 
