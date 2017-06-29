@@ -1,22 +1,20 @@
 var gulp = require('gulp'),
 	less = require('gulp-less'),
-	babel = require('gulp-babel'),
-	babelify = require('babelify'),
 	browserify = require('gulp-browserify'),
 	server = require('browser-sync'),
 	plumber = require('gulp-plumber'),
 	del = require('del'),
 	runSequence = require('run-sequence'),
 	uglify = require('gulp-uglify'),
-	rename = require('gulp-rename');
+	zip = require('gulp-zip');
 
 // Compile less
 gulp.task('less', function() {
 	return gulp.src(['./src/less/app.less'])
-	.pipe(plumber())
-	.pipe(less())
-	.pipe(gulp.dest('./build/css'))
-	.pipe(server.stream());
+		.pipe(plumber())
+		.pipe(less())
+		.pipe(gulp.dest('./build/css'))
+		.pipe(server.stream());
 });
 
 // Compile JS
@@ -40,9 +38,7 @@ gulp.task('uglify', function() {
 gulp.task('copy', function() {
 	gulp.src('src/img/*').pipe(gulp.dest('build/img'));
 	gulp.src('src/manifest.json').pipe(gulp.dest('build/'));
-	gulp.src('src/html/index.html').pipe(gulp.dest('build'))
-		.pipe(rename('sites.html')).pipe(gulp.dest('build'))
-		.pipe(rename('settings.html')).pipe(gulp.dest('build'));
+	gulp.src('src/html/index.html').pipe(gulp.dest('build'));
 });
 
 // Clean the build folder
@@ -74,12 +70,17 @@ gulp.task('dev', ['default', 'watch', 'serve']);
 
 gulp.task('apply-production', function() {
 	process.env.NODE_ENV = 'production';
-	if (process.env.NODE_ENV != 'production') {
-    throw new Error("Failed to set NODE_ENV to production!!!!");
-  } else {
-  	console.log('Succesfully applied production environment');
-  }
 });
+
+gulp.task('zip', function() {
+	const fs = require('fs');
+	var manifest = fs.readFileSync('./src/manifest.json');
+	var version = JSON.parse(manifest).version;
+
+	return gulp.src('./build/*')
+		.pipe(zip('tomcat-site-manager-' + version + '.zip'))
+		.pipe(gulp.dest('./'));
+})
 
 gulp.task('build', function() {
 	runSequence('apply-production', 'clean', 'copy', 'less', 'js', 'uglify');
