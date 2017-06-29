@@ -5,6 +5,16 @@
 	box-shadow: 0 1px 6px fade(#000, 30%);
 	position: relative;
 
+	&:before {
+		content: '';
+		position: absolute;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		height: 5px;
+		background: linear-gradient(to right, @color-primary, @color-secondary);
+	}
+
 	.Nav-item {
 		flex: 1;
 		padding: 1em;
@@ -12,42 +22,40 @@
 		outline: none;
 		cursor: pointer;
 		transition: background-color .2s;
-		border-bottom: 4px solid transparent;
-		background-color: fade(@color-neutral-darkest, 80%);
+		background-color: @color-neutral-darkest;
 		color: @color-neutral-lightest;
-
-		&.is-active {
-			border-bottom-color: @color-primary-light;
-		}
 	}
 
 	.Nav-indicator {
 		position: absolute;
-		bottom: 0;
+		bottom: 1px;
 		height: 4px;
 		width: 100%;
 		left: 0;
-		background-color: @color-primary;
-		background: linear-gradient(to right, @color-primary, @color-secondary);
+		background: transparent;
 		transition-property: left, width;
 		transition-duration: .4s;
 		transition-timing-function: cubic-bezier(.22,.02,.04,1);
-	}
-}
+		z-index: 10;
 
-.Nav--base {
-	margin-bottom: 0;
-	box-shadow: 0 1px 6px fade(#000, 10%);
-	position: absolute;
-	bottom: 0;
-	left: 0;
-	right: 0;;
+		&:before,
+		&:after { 
+			content: '';
+			position: absolute;
+			top: 0;
+			bottom: 0;
+			width: 450px;
+			background-color: @color-neutral-darkest;
+		}
 
-	.Nav-item {
-		border: none;
-		background-color: @color-neutral-darker;
-		color: @color-neutral-lighter;
-		font-weight: bold;
-		padding: .5em;
+		&:before {
+			right: 100%;
+			transform: skew(-45deg);
+		}
+
+		&:after {
+			left: 100%;
+			transform: skew(45deg);
+		}
 	}
 }

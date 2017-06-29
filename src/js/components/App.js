@@ -23,8 +23,8 @@ class App extends React.Component {
 				{this.state.view == "Sites" && <Sites />}
 				{this.state.view == "Settings" && <Settings />}
 				<Notifications />
-				<nav className="Nav Nav--base">
-					<a className="Nav-item" onClick={this.openManager.bind(this)}>Open Host Manager</a>
+				<nav className="Footer">
+					<a onClick={this.openManager.bind(this)}>Open Host Manager</a>
 				</nav>
 			</div>
 		)

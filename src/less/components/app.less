@@ -10,7 +10,8 @@
 	&-error {
 		text-align: center;
 		font-weight: bold;
-		margin-top: 40%;
+		position: relative;
+		top: 40%;
 	}
 }
 
@@ -31,5 +32,25 @@
 
 	&--settings {
 
+	}
+}
+
+.Footer {
+	margin-bottom: 0;
+	box-shadow: 0 1px 6px fade(#000, 10%);
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	text-align: center;
+
+	a {
+		display: block;
+		border: none;
+		background-color: @color-neutral-darker;
+		color: @color-neutral-lighter;
+		font-weight: bold;
+		padding: .5em;
+		cursor: pointer;
 	}
 }

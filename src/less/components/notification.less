@@ -1,16 +1,28 @@
 .Notifications {
 	position: absolute;
 	bottom: 0;
-	width: 100%;
+	left: 0;
+	right: -17px;
 	max-height: 43 * 3px;
 	overflow-y: scroll;
 	text-align: center;
 	z-index: 10;
 
 	.Notification {
-		background-color: @color-secondary-dark;
+		background-color: @color-neutral-darkest;
 		padding: @space-sm;
-		margin-bottom: 1px;
 		transition: all .3s;
+		position: relative;
+		margin-top: 1px;
+
+		&:before {
+			content: '';
+			position: absolute;
+			top: 0;
+			left: 0;
+			right: 0;
+			height: 1px;
+			background: linear-gradient(to right, @color-primary, @color-secondary);
+		}
 	}
 }
