@@ -15,9 +15,7 @@ if (settings.domain.length < 1 || settings.root.length < 1) {
 	defaultView = "Settings";
 }
 
-/*
 ReactDom.render(
 	<App view={defaultView} />,
 	document.querySelector('.App')
 );
-*/
