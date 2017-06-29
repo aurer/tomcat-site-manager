@@ -12,13 +12,12 @@ import App from './components/App';
 let defaultView = "Vhosts";
 let settings = Store.load('settings');
 if (settings.domain.length < 1 || settings.root.length < 1) {
-	if (nextState.location.pathname != 'settings.html') {
-		defaultView = "Settings";
-	}
+	defaultView = "Settings";
 }
 
-
+/*
 ReactDom.render(
 	<App view={defaultView} />,
 	document.querySelector('.App')
 );
+*/
