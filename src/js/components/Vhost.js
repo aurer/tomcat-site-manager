@@ -1,6 +1,5 @@
 import React from 'react';
 import qwest from 'qwest';
-import Isvg from 'react-inlinesvg';
 import * as Store from '../store';
 import {
 	managerAddSite,
@@ -9,6 +8,7 @@ import {
 	managerRemoveSite,
 	svgPath,
 	openTab } from '../helpers';
+import { PowerIcon, LoopIcon, StopIcon, PauseIcon } from './Icons';
 
 class Vhost extends React.Component {
 	constructor(props) {
@@ -95,13 +95,13 @@ class Vhost extends React.Component {
 
 				<span className="Vhost-actions">
 					{this.state.active || <button className="IconButton Vhost-actions-start" onClick={this.handleStart.bind(this)} title="Start">
-						<Isvg src={svgPath('power.svg')} />
+						<PowerIcon />
 					</button> }
 					{this.state.active && <button className="IconButton Vhost-actions-restart" onClick={this.handleRestart.bind(this)} title="Restart">
-						<Isvg src={svgPath('loop.svg')} />
+						<LoopIcon />
 					</button> }
 					{this.state.active && <button className="IconButton Vhost-actions-stop" onClick={this.handleStop.bind(this)} title="Stop">
-						<Isvg src={svgPath('stop.svg')} />
+						<StopIcon />
 					</button> }
 				</span>
 			</div>

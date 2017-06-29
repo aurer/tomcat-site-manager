@@ -1,7 +1,8 @@
 import React from 'react';
 import * as Store from '../store';
-import Isvg from 'react-inlinesvg';
+// import Isvg from 'react-inlinesvg';
 import { svgPath } from '../helpers';
+import { EditIcon, RemoveIcon } from './Icons';
 
 class Site extends React.Component {
 	constructor(props) {
@@ -47,10 +48,10 @@ class Site extends React.Component {
 				</div>
 				<div className="Site-actions">
 					<button className="IconButton Site-actions-edit" onClick={this.handleEditSite.bind(this)} title="Edit">
-						<Isvg src={svgPath('edit.svg')} />
+						<EditIcon />
 					</button>
 					<button className="IconButton Site-actions-remove" onClick={this.handleRemoveSite.bind(this)} title="Remove">
-						<Isvg src={svgPath('remove.svg')} />
+						<RemoveIcon />
 					</button>
 				</div>
 			</div>

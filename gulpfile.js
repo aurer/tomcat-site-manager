@@ -1,14 +1,14 @@
 var gulp = require('gulp'),
-less = require('gulp-less'),
-babel = require('gulp-babel'),
-babelify = require('babelify'),
-browserify = require('gulp-browserify'),
-server = require('browser-sync'),
-plumber = require('gulp-plumber'),
-del = require('del'),
-runSequence = require('run-sequence'),
-uglify = require('gulp-uglify'),
-rename = require('gulp-rename');
+	less = require('gulp-less'),
+	babel = require('gulp-babel'),
+	babelify = require('babelify'),
+	browserify = require('gulp-browserify'),
+	server = require('browser-sync'),
+	plumber = require('gulp-plumber'),
+	del = require('del'),
+	runSequence = require('run-sequence'),
+	uglify = require('gulp-uglify'),
+	rename = require('gulp-rename');
 
 // Compile less
 gulp.task('less', function() {
@@ -30,14 +30,10 @@ gulp.task('js', function() {
 		.pipe(server.stream());
 });
 
-gulp.task('compress', function() {
+gulp.task('uglify', function() {
 	return gulp.src('./build/js/*.js')
 		.pipe(uglify())
 		.pipe(gulp.dest('./build/js'));
-});
-
-gulp.task('apply-production', function() {
-  process.env.NODE_ENV = 'production';
 });
 
 // Copy html and manifest files
@@ -76,6 +72,15 @@ gulp.task('default', function(callback) {
 
 gulp.task('dev', ['default', 'watch', 'serve']);
 
-gulp.task('build', () => {
-	runSequence('apply-production', 'default', 'compress');
+gulp.task('apply-production', function() {
+	process.env.NODE_ENV = 'production';
+	if (process.env.NODE_ENV != 'production') {
+    throw new Error("Failed to set NODE_ENV to production!!!!");
+  } else {
+  	console.log('Succesfully applied production environment');
+  }
+});
+
+gulp.task('build', function() {
+	runSequence('apply-production', 'clean', 'copy', 'less', 'js', 'uglify');
 });
