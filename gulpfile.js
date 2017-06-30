@@ -36,7 +36,7 @@ gulp.task('uglify', function() {
 
 // Copy html and manifest files
 gulp.task('copy', function() {
-	gulp.src('src/img/*').pipe(gulp.dest('./build/extension/img'));
+	gulp.src('src/gfx/*').pipe(gulp.dest('./build/extension/gfx'));
 	gulp.src('src/manifest.json').pipe(gulp.dest('./build/extension'));
 	gulp.src('src/html/index.html').pipe(gulp.dest('./build/extension'));
 });
@@ -50,7 +50,7 @@ gulp.task('clean', function() {
 gulp.task('watch', function() {
 	gulp.watch('src/less/**/*.less', ['less']);
 	gulp.watch('src/js/**/*.js', ['js']);
-	gulp.watch(['src/html/*.html', 'src/img/*', 'src/manifest.json'], ['copy']);
+	gulp.watch(['src/html/*.html', 'src/gfx/*', 'src/manifest.json'], ['copy']);
 });
 
 // Setup local server with injection
@@ -77,7 +77,7 @@ gulp.task('zip', function() {
 	var manifest = fs.readFileSync('./src/manifest.json');
 	var version = JSON.parse(manifest).version;
 
-	return gulp.src('./build/extension/*')
+	return gulp.src('./build/extension/**/*')
 		.pipe(zip('tomcat-site-manager-' + version + '.zip'))
 		.pipe(gulp.dest('./build'));
 })
