@@ -29,10 +29,15 @@ export function findManagerSite(html) {
 	return managerSites;
 }
 
-export function compileAliasString(name, aliases) {
+export function compileAliasString(name, aliasString) {
+	if (!aliasString.length) {
+		return '';
+	}
+
 	var settings = Store.load('settings');
-	return aliases.split(',').map(alias => {
-		return alias.replace(/\s/g, '') + '.' + name + '.' + settings.domain
+	var aliases = aliasString.replace(/\s/g, '').split(',');
+	return aliases.map(alias => {
+		return alias + '.' + name + '.' + settings.domain
 	}).join(', ');
 }
 
@@ -48,6 +53,7 @@ export function managerAddSite(site) {
 		unpackWARs: 'on',
 		'org.apache.catalina.filters.CSRF_NONCE': window.csrfToken
 	};
+	console.info(`Adding '${site.name}':`, data);
 	return qwest.post('http://localhost:8080/host-manager/html/add', data);
 }
 
@@ -59,14 +65,17 @@ function managerControlSite(action, site) {
 }
 
 export function managerStopSite(site) {
+	console.info(`Stopping ${site}`);
 	return managerControlSite('stop', site);
 }
 
 export function managerStartSite(site) {
+	console.info(`Starting ${site}`);
 	return managerControlSite('start', site);
 }
 
 export function managerRemoveSite(site) {
+	console.info(`Removing ${site}`);
 	return managerControlSite('remove', site);
 }
 
