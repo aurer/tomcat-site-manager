@@ -7,11 +7,21 @@ var gulp = require('gulp'),
 	runSequence = require('run-sequence'),
 	uglify = require('gulp-uglify'),
 	zip = require('gulp-zip');
+	notifier = require('node-notifier')
+
+function handleError(err) {
+	console.error(err.toString());
+	notifier.notify({
+		'title': `'${err.callExtract}' error in plugin '${err.plugin}'`,
+		'message': err.message.replace(__dirname, '')
+	});
+  this.emit('end');
+}
 
 // Compile less
 gulp.task('less', function() {
 	return gulp.src(['./src/less/app.less'])
-		.pipe(plumber())
+		.pipe(plumber({errorHandler: handleError}))
 		.pipe(less())
 		.pipe(gulp.dest('./build/extension/css'))
 		.pipe(server.stream());
@@ -20,7 +30,7 @@ gulp.task('less', function() {
 // Compile JS
 gulp.task('js', function() {
 	return gulp.src('./src/js/main.js')
-		.pipe(plumber())
+		.pipe(plumber({errorHandler: handleError}))
 		.pipe(browserify({
 			transform: ["babelify"]
 		}))
@@ -80,7 +90,7 @@ gulp.task('zip', function() {
 	return gulp.src('./build/extension/**/*')
 		.pipe(zip('tomcat-site-manager-' + version + '.zip'))
 		.pipe(gulp.dest('./build'));
-})
+});
 
 gulp.task('build', function() {
 	runSequence('apply-production', 'clean', 'copy', 'less', 'js', 'uglify', 'zip');
