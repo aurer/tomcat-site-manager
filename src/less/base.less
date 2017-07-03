@@ -25,3 +25,20 @@ a {
 		color: @color-primary-lighter;
 	}
 }
+
+.simpleScrollBars() {
+	&::-webkit-scrollbar {
+	  width: 6px;
+	  height: 6px;
+	}
+
+	&::-webkit-scrollbar-track {
+	  border-radius: 6px;
+	  background: fade(#000, 20%);
+	}
+
+	&::-webkit-scrollbar-thumb{
+	  border-radius: 6px;
+	  background: fade(#fff, 8%);
+	}
+}
