@@ -6,16 +6,21 @@ class NavItem extends React.Component {
 	}
 
 	render() {
+		var className = "Nav-item" + (this.props.active ? ' is-active' : ' is-inactive');
 		return (
-			<span onClick={this.handleClick.bind(this)} className="Nav-item">{this.props.children}</span>
+			<span onClick={this.handleClick.bind(this)} className={className}>{this.props.children}</span>
 		)
 	}
 
 	handleClick() {
-		this.props.onClick({
-			title: this.props.children,
-			view: this.props.view
-		});
+		if (this.props.active) {
+			this.props.onClick({
+				title: this.props.children,
+				view: this.props.view
+			});
+		} else {
+			notify('Please fill in all settings');
+		}
 	}
 }
 

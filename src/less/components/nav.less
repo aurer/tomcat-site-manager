@@ -24,6 +24,11 @@
 		transition: background-color .2s;
 		background-color: @color-neutral-darkest;
 		color: @color-neutral-lightest;
+
+		&.is-inactive {
+			opacity: .5;
+			cursor: default;
+		}
 	}
 
 	.Nav-indicator {
@@ -39,7 +44,7 @@
 		z-index: 10;
 
 		&:before,
-		&:after { 
+		&:after {
 			content: '';
 			position: absolute;
 			top: 0;
