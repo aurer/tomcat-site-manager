@@ -17,12 +17,6 @@ class Notification extends React.Component {
 		}, 10);
 	}
 
-	componentWillUnmount() {
-		this.setState({
-			top: 100
-		});
-	}
-
 	render() {
 		var style = {transform: "translateY(" + this.state.top + "%)"};
 

@@ -31,13 +31,15 @@ class Notifications extends React.Component {
 			messages: newMessages
 		});
 
-		var self = this;
-		setTimeout(function(){
-			newMessages.pop();
-			self.setState({
-				messages: newMessages
-			});
-		}, 2000);
+		setTimeout(this.removeNotification.bind(this), 2000);
+	}
+
+	removeNotification() {
+		var newMessages = this.state.messages;
+		newMessages.pop();
+		this.setState({
+			messages: newMessages
+		});
 	}
 }
 
