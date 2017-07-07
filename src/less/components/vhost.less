@@ -12,7 +12,7 @@
 	position: relative;
 
 	&-siteLinks {
-		width: 50%;
+		width: 70%;
 		margin: 0 .5em;
 		position: relative;
 	}
@@ -21,38 +21,58 @@
 		display: flex;
 		flex-direction: column;
 		position: absolute;
-		pointer-events: none;
-		opacity: 0;
 		transition-property: transform, opacity;
 		transition-duration: .3s;
-		transform-origin: top;
-		transform: scaleY(.9);
 		z-index: 100;
-		margin-top: 3px;
+		background-color: @color-neutral-darkest;
+		border: 1px solid @color-primary;
+		padding: 1px 2px 2px;
+		border-radius: 5px;
+		opacity: 0;
+		pointer-events: none;
 
 		a {
-			background-color: @color-primary-darker;
 			margin-top: 1px;
-		}
-	}
-
-	&-siteLinks:hover {
-		a.Vhost-name {
-			background-color: @color-primary-darker;
-
+			
 			&:hover {
 				background-color: @color-primary;
 			}
 		}
+	}
 
+	&-siteLinks.is-active {
 		.Vhost-aliases {
-			pointer-events: all;
 			opacity: 1;
-			transform: scaleY(1);
+			pointer-events: all;
+		}
 
-			a:hover {
-				background-color: @color-primary;
-			}
+		.Vhost-aliasToggle {
+			background-color: @color-primary;
+			color: @color-neutral-lightest !important;
+		}
+	}
+
+	a.Vhost-name {
+		&:hover {
+			background-color: @color-primary;
+		}
+	}
+
+	.Vhost-aliasToggle {
+		background: @color-neutral-darkest;
+		color: @color-neutral-lightest;
+		border: none;
+		outline: none;
+		width: 22px;
+		height: 22px;
+		padding-bottom: 5px;
+		display: inline-block;
+		border-radius: 2px 2px 0 0;
+		font-size: .8em;
+		vertical-align: middle;
+
+		&:hover {
+			color: @color-primary;
 		}
 	}
 
@@ -152,9 +172,9 @@
 
 	&.is-active {
 		.Vhost-indicator {
-			background-color: @color-primary-light;
-			border-color: @color-primary-light;
-			box-shadow: 0 0 10px @color-primary-dark;
+			background-color: @color-secondary;
+			border-color: @color-secondary;
+			box-shadow: 0 0 10px @color-secondary-dark;
 		}
 
 		.Vhost-siteLinks {

@@ -9,6 +9,7 @@ import {
 	svgPath,
 	openTab } from '../helpers';
 import { PowerIcon, LoopIcon, StopIcon, PauseIcon } from './Icons';
+import VhostLinks from './VhostLinks';
 
 class Vhost extends React.Component {
 	constructor(props) {
@@ -89,10 +90,7 @@ class Vhost extends React.Component {
 		return (
 			<div className={className}>
 				<i className="Vhost-indicator"></i>
-				{this.state.active && this.siteLinks() }
-
-				{this.state.active || <span className="Vhost-siteLinks"><span className="Vhost-name">{site.name}</span></span> }
-
+				<VhostLinks site={site} active={this.state.active} />
 				<span className="Vhost-actions">
 					{this.state.active || <button className="IconButton Vhost-actions-start" onClick={this.handleStart.bind(this)} title="Start">
 						<PowerIcon />
@@ -193,10 +191,7 @@ class Vhost extends React.Component {
 		})
 	}
 
-	launchSite(url) {
-		var fullUrl = 'http://' + url + '.' + this.props.settings.domain + ':8080';
-		openTab(fullUrl);
-	}
+	
 }
 
 export default Vhost;
