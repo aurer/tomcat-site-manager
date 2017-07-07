@@ -49,18 +49,20 @@ export function managerAddSite(site) {
 		appBase: settings.root + site.root,
 		autoDeploy: 'on',
 		deployOnStartup: 'on',
-		deployXml: 'on',
-		unpackWARs: 'on',
-		'org.apache.catalina.filters.CSRF_NONCE': window.csrfToken
+		deployXML: 'on',
+		unpackWARs: 'on'
 	};
+	var managerUrl = 'http://localhost:8080/host-manager/html/add';
+	var token = 'org.apache.catalina.filters.CSRF_NONCE=' + window.csrfToken;
 	console.info(`Adding '${site.name}':`, data);
-	return qwest.post('http://localhost:8080/host-manager/html/add', data);
+	return qwest.post(`${managerUrl}?${token}`, data);
 }
 
 function managerControlSite(action, site) {
-	return qwest.post('http://localhost:8080/host-manager/html/' + action, {
+	var managerUrl = 'http://localhost:8080/host-manager/html/' + action;
+	var token = 'org.apache.catalina.filters.CSRF_NONCE=' + window.csrfToken
+	return qwest.post(`${managerUrl}?${token}`, {
 		name: site,
-		'org.apache.catalina.filters.CSRF_NONCE': window.csrfToken
 	});
 }
 
