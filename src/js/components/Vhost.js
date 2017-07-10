@@ -1,5 +1,4 @@
 import React from 'react';
-import qwest from 'qwest';
 import * as Store from '../store';
 import {
 	managerAddSite,
@@ -98,7 +97,7 @@ class Vhost extends React.Component {
 					{this.state.active && <button className="IconButton Vhost-actions-restart" onClick={this.handleRestart.bind(this)} title="Restart">
 						<LoopIcon />
 					</button> }
-					{this.state.active && <button className="IconButton Vhost-actions-stop" onClick={this.handleStop.bind(this)} title="Stop">
+					{this.state.active && <button className="IconButton Vhost-actions-stop" onClick={this.handleRemove.bind(this)} title="Stop">
 						<StopIcon />
 					</button> }
 				</span>
@@ -109,17 +108,15 @@ class Vhost extends React.Component {
 	handleStart() {
 		this.setState({fetching: true, action: 'start'})
 		managerAddSite(this.props.site, window.csrfToken)
-			.then((xhr, res) => {
+			.then(res => res.text()).then(body => {
 				this.props.onChange({
 					type: 'start',
 					site: this.props.site,
-					response: res
+					response: body
 				});
-			})
-			.catch((error, xhr) => {
-				console.error(error, xhr);
-				this.props.onError(`Failed to add '${this.props.site.name}'`);
+			}).catch(error => {
 				this.setState({fetching: false, action: null});
+				notify(`Failed to add '${this.props.site.name}'`, 'negative');
 			});
 	}
 
@@ -127,42 +124,37 @@ class Vhost extends React.Component {
 		this.setState({fetching: true, action: 'restart'})
 
 		managerStopSite(this.siteName(), window.csrfToken)
-			.then((xhr, res) => {
+			.then(stopRes => {
 				managerStartSite(this.siteName(), window.csrfToken)
-				.then((xhr, res) => {
+				.then(res => res.text())
+				.then(body => {
 					this.props.onChange({
 						type: 'restart',
 						site: this.props.site,
-						response: res
+						response: body
 					});
-				})
-				.catch((error, xhr) => {
-					console.error(error, xhr);
-					this.props.onError(`Failed to restart '${this.props.site.name}'`);
+				}).catch(error => {
 					this.setState({fetching: false, action: null});
-				});
-			})
-			.catch((error, xhr) => {
-				console.error(error, xhr);
-				this.props.onError(`Failed to pause '${this.props.site.name}'`);
+					notify(`Failed to start '${this.props.site.name}'`)
+				})
+			}).catch(error => {
 				this.setState({fetching: false, action: null});
+				notify(`Failed to stop '${this.props.site.name}'`)
 			});
 	}
 
-	handleStop() {
+	handleRemove() {
 		this.setState({fetching: true, action: 'stop'})
 		managerRemoveSite(this.siteName(), window.csrfToken)
-			.then((xhr, res) => {
+			.then(res => res.text()).then(body => {
 				this.props.onChange({
 					type: 'stop',
 					site: this.props.site,
-					response: res
+					response: body
 				});
-			})
-			.catch((error, xhr) => {
-				console.error(error, xhr);
-				this.props.onError(`Failed to stop '${this.props.site.name}'`);
+			}).catch(error => {
 				this.setState({fetching: false, action: null});
+				notify(`Failed to stop '${this.props.site.name}'`, 'negative');
 			});
 	}
 
@@ -175,23 +167,8 @@ class Vhost extends React.Component {
 				return isActive = true;
 			}
 		});
-		this.setState({active: isActive})
+		this.setState({active: isActive});
 	}
-
-	checkSiteStatus() {
-		let url = this.siteUrl();
-		this.setState({fetching: true});
-		qwest.get(url)
-		.then((xhr, res) => {
-			this.setState({active: true, fetching: false});
-		})
-		.catch((error, xhr) => {
-			console.error(error, xhr);
-			this.setState({fetching: false});
-		})
-	}
-
-	
 }
 
 export default Vhost;

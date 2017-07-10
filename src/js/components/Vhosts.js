@@ -1,5 +1,4 @@
 import React from 'react';
-import qwest from 'qwest';
 import { Link } from 'react-router';
 import Vhost from './Vhost';
 import * as Store from '../store';
@@ -19,8 +18,8 @@ class Vhosts extends React.Component {
 	}
 
 	componentWillMount() {
-		let sites = Store.load('sites').filter(site => site.active);
-		let settings = Store.load('settings');
+		var sites = Store.load('sites').filter(site => site.active);
+		var settings = Store.load('settings');
 		this.connectToHostManager();
 		this.setState({sites, settings});
 	}
@@ -60,14 +59,14 @@ class Vhosts extends React.Component {
 					settings={this.state.settings}
 					index={i}
 					managerSites={this.state.managerSites}
-					onChange={this.handleVhostChange.bind(this)}
-					onError={this.handleVhostError.bind(this) }/> )}
+					onChange={this.handleVhostChange.bind(this)} />
+				)}
 			</div>
 		)
 	}
 
 	handleVhostChange(action) {
-		let message = '';
+		var message = '';
 		switch (action.type) {
 			case 'start':
 				message = `Started '${action.site.name}'`;
@@ -85,27 +84,25 @@ class Vhosts extends React.Component {
 		this.updateManagerInfo(action.response);
 	}
 
-	handleVhostError(error) {
-		notify(error, 'negative');
-	}
-
 	connectToHostManager() {
-		let url = `http://localhost:8080/host-manager/html/`;
-		qwest.get(url)
-		.then((xhr, res) => {
-			this.setState({ canSeeTomcatManager: true });
-			this.updateManagerInfo(res);
-		})
-		.catch((error, xhr) => {
-			console.log(error, xhr);
-			this.setState({ canSeeTomcatManager: false });
-		})
+		var url = 'http://localhost:8080/host-manager/html/';
+		fetch(url, { credentials: 'include' })
+			.then(res => {
+				if (res.ok) {
+					this.setState({ canSeeTomcatManager: true })
+					return res.text();
+				} else {
+					this.setState({ canSeeTomcatManager: false })
+					throw new Error(res.statusText)
+				}
+			})
+			.then(this.updateManagerInfo.bind(this))
 	}
 
 	updateManagerInfo(response) {
-		let html = parseHTML(response);
-		let managerSites = findManagerSite(html);
-		let csrfToken = findCsrfToken(html);
+		var html = parseHTML(response);
+		var managerSites = findManagerSite(html);
+		var csrfToken = findCsrfToken(html);
 		window.csrfToken = csrfToken;
 		this.setState({ managerSites });
 	}

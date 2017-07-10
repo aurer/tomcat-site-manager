@@ -1,4 +1,3 @@
-import qwest from 'qwest';
 import * as Store from './store';
 
 export function parseHTML(string) {
@@ -43,41 +42,51 @@ export function compileAliasString(name, aliasString) {
 
 export function managerAddSite(site) {
 	var settings = Store.load('settings');
-	var data = {
-		name: `${site.name}.${settings.domain}`,
-		aliases: compileAliasString(site.name, site.aliases),
-		appBase: settings.root + site.root,
-		autoDeploy: 'on',
-		deployOnStartup: 'on',
-		deployXML: 'on',
-		unpackWARs: 'on'
-	};
+
+	var formParams = new URLSearchParams();
+	formParams.set('name', `${site.name}.${settings.domain}`);
+	formParams.set('aliases', compileAliasString(site.name, site.aliases));
+	formParams.set('appBase', settings.root + site.root);
+	formParams.set('autoDeploy', 'on');
+	formParams.set('deployOnStartup', 'on');
+	formParams.set('deployXML', 'on');
+	formParams.set('unpackWARs', 'on');
+	formParams.set('org_apache_catalina_filters_CSRF_NONCE', window.csrfToken);
+
 	var managerUrl = 'http://localhost:8080/host-manager/html/add';
 	var token = 'org.apache.catalina.filters.CSRF_NONCE=' + window.csrfToken;
-	console.info(`Adding '${site.name}':`, data);
-	return qwest.post(`${managerUrl}?${token}`, data);
+
+	return fetch(`${managerUrl}?${token}`, {
+		credentials: 'include',
+		method: 'POST',
+		headers: {
+    	'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+  	},
+		body: formParams
+	});
 }
 
 function managerControlSite(action, site) {
 	var managerUrl = 'http://localhost:8080/host-manager/html/' + action;
 	var token = 'org.apache.catalina.filters.CSRF_NONCE=' + window.csrfToken
-	return qwest.post(`${managerUrl}?${token}`, {
-		name: site,
+
+	console.info(action, site);
+
+	return fetch(`${managerUrl}?${token}&name=${site}`, {
+		credentials: 'include',
+		method: 'POST',
 	});
 }
 
 export function managerStopSite(site) {
-	console.info(`Stopping ${site}`);
 	return managerControlSite('stop', site);
 }
 
 export function managerStartSite(site) {
-	console.info(`Starting ${site}`);
 	return managerControlSite('start', site);
 }
 
 export function managerRemoveSite(site) {
-	console.info(`Removing ${site}`);
 	return managerControlSite('remove', site);
 }
 
