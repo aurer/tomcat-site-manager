@@ -16,19 +16,19 @@ class Settings extends React.Component {
 		return (
 			<form method="post" className="Form" onSubmit={this.handleSubmit.bind(this)}>
 				<div className="Form-field">
-					<label>Local domain name</label>
+					<label>Local domain</label>
 					<div className="Form-inputs">
 						<input type="text" name="domain" defaultValue={this.state.domain} placeholder="yourname.netxtra.local" autoComplete="off" />
 					</div>
 				</div>
 				<div className="Form-field">
-					<label>Web root directory</label>
+					<label>Web root</label>
 					<div className="Form-inputs">
 						<input type="text" name="root" defaultValue={this.state.root} placeholder={rootPlacerholder} autoComplete="off" />
 					</div>
 				</div>
 				<div className="Form-field">
-					<label>Operating System</label>
+					<label>OS</label>
 					<div className="Form-inputs">
 						<select name="os" defaultValue={this.state.os} onChange={this.handleOsChange.bind(this)}>
 							<option value="win">Windows</option>
