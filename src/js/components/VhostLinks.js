@@ -1,6 +1,7 @@
 import React from 'React';
 import { openTab } from '../helpers';
 import * as Store from '../store';
+import { OpenIcon } from './Icons';
 
 class VhostLinks extends React.Component {
 	constructor(props) {
@@ -28,7 +29,9 @@ class VhostLinks extends React.Component {
 		return (
 			<span className={className} onMouseLeave={this.onMouseLeave.bind(this)}>
 				<a className="Vhost-name" onClick={this.launchSite.bind(this, this.props.site.name)}>{this.props.site.name}</a>
-				{aliases.length > 0 && <button className="Vhost-aliasToggle" onClick={this.toggleAliasLinks.bind(this)}>&#11206;</button>}
+				{aliases.length > 0 && <button className="Vhost-aliasToggle" onClick={this.toggleAliasLinks.bind(this)}>
+					<OpenIcon />
+				</button>}
 				<span className="Vhost-aliases">
 					{aliases.map(url => <a key={url} className="Vhost-name" onClick={this.launchSite.bind(this, url)}>{url}</a>)}
 				</span>
