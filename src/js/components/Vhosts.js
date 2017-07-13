@@ -1,7 +1,7 @@
 import React from 'react';
 import Vhost from './Vhost';
 import * as Store from '../store';
-import { parseHTML, findCsrfToken, findManagerSite } from '../helpers';
+import { parseHTML, findCsrfToken, findManagerSite, openTab } from '../helpers';
 
 class Vhosts extends React.Component {
 	constructor(props) {
@@ -37,7 +37,7 @@ class Vhosts extends React.Component {
 			return (
 				<div className="App-error">
 					<p>Could not connect to Tomcat</p>
-					<p>Please check Tomcat is running</p>
+					<p>Please <a onClick={this.openManager.bind(this)}>check Tomcat is running</a></p>
 				</div>
 			)
 		}
@@ -83,19 +83,25 @@ class Vhosts extends React.Component {
 		this.updateManagerInfo(action.response);
 	}
 
+	openManager() {
+		openTab('http://localhost:8080/host-manager/html/');
+	}
+
 	connectToHostManager() {
 		var url = 'http://localhost:8080/host-manager/html/';
 		fetch(url, { credentials: 'include' })
 			.then(res => {
 				if (res.ok) {
-					this.setState({ canSeeTomcatManager: true })
+					this.setState({ canSeeTomcatManager: true });
 					return res.text();
 				} else {
-					this.setState({ canSeeTomcatManager: false })
-					throw new Error(res.statusText)
+					this.setState({ canSeeTomcatManager: false });
 				}
 			})
 			.then(this.updateManagerInfo.bind(this))
+			.catch(error => {
+				this.setState({ canSeeTomcatManager: false });
+			});
 	}
 
 	updateManagerInfo(response) {
