@@ -136,10 +136,10 @@ class Sites extends React.Component {
 		let pos = sites.length ? sites[sites.length-1].pos + 1 : 1;
 
 		let siteData = {
-			active: 	true,
 			name:  		form.name.value.toLowerCase(),
 			aliases: 	form.aliases.value,
 			root: 		form.root.value,
+			active: 	true,
 			pos: 			pos
 		}
 

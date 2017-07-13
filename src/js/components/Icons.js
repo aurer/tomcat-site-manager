@@ -48,7 +48,7 @@ export const StopIcon = function() {
 export const OpenIcon = function() {
 	return (
 		<svg width="12" height="8" viewBox="0 0 12 8" xmlns="http://www.w3.org/2000/svg">
-			<path stroke="#fff" fill="none" stroke-width="2" d="M1 1 L6 6 L11 1"></path>
+			<path stroke="#fff" fill="none" strokeWidth="2" d="M1 1 L6 6 L11 1"></path>
 		</svg>
 	)
 }

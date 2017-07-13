@@ -6,6 +6,7 @@ import Settings from './components/Settings';
 import * as Store from './store';
 
 import App from './components/App';
+import style from '../less/app.less';
 
 // Try to exsure settings are filled in
 let defaultView = "Vhosts";
