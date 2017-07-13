@@ -37,7 +37,7 @@ class Vhosts extends React.Component {
 			return (
 				<div className="App-error">
 					<p>Could not connect to Tomcat</p>
-					<p>Please <a onClick={this.openManager.bind(this)}>check Tomcat is running</a></p>
+					<p><a onClick={this.openManager.bind(this)}>Check Tomcat is running</a></p>
 				</div>
 			)
 		}
