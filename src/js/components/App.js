@@ -1,4 +1,4 @@
-import React from 'React';
+import React from 'react';
 import Vhosts from './Vhosts';
 import Sites from './Sites';
 import Settings from './Settings';

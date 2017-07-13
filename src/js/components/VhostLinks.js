@@ -1,4 +1,4 @@
-import React from 'React';
+import React from 'react';
 import { openTab } from '../helpers';
 import * as Store from '../store';
 import { OpenIcon } from './Icons';

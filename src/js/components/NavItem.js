@@ -1,4 +1,4 @@
-import React from 'React';
+import React from 'react';
 
 class NavItem extends React.Component {
 	constructor(props) {

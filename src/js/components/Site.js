@@ -76,7 +76,7 @@ class Site extends React.Component {
 		this.setState({
 			dragging: false,
 			over: false
-		});	
+		});
 	}
 
 	onDrop(e) {

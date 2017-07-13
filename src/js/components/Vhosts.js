@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router';
 import Vhost from './Vhost';
 import * as Store from '../store';
 import { parseHTML, findCsrfToken, findManagerSite } from '../helpers';

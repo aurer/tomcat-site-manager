@@ -1,6 +1,5 @@
 import React from 'react';
 import ReactDom from 'react-dom';
-import { Router, Route, Redirect, browserHistory} from 'react-router';
 import Vhosts from './components/Vhosts';
 import Sites from './components/Sites';
 import Settings from './components/Settings';

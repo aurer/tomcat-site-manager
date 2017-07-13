@@ -44,13 +44,13 @@ class Sites extends React.Component {
 							<div className="Site-root" colSpan="2">Root</div>
 						</div>
 						<div className="Sites-body">
-							{this.state.sites.map((site, i) => 
-								<Site 
-									key={site.id} 
-									site={site} 
-									index={i} 
-									onReorder={this.onReorder.bind(this)} 
-									onChange={this.handleChangeSite.bind(this)} 
+							{this.state.sites.map((site, i) =>
+								<Site
+									key={site.id}
+									site={site}
+									index={i}
+									onReorder={this.onReorder.bind(this)}
+									onChange={this.handleChangeSite.bind(this)}
 								/>
 							)}
 						</div>

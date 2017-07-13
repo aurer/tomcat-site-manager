@@ -1,4 +1,4 @@
-import React from 'React';
+import React from 'react';
 import NavItem from './NavItem';
 import * as Store from '../store';
 
