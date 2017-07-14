@@ -90,14 +90,6 @@ export function managerRemoveSite(site) {
 	return managerControlSite('remove', site);
 }
 
-export function svgPath(svg) {
-	var svgPath = '../';
-	if (typeof safari !== 'undefined') {
-		svgPath = safari.extension.baseURI;
-	}
-	return svgPath + 'img/' + svg;
-}
-
 export function openTab(url) {
 	// Open from Chrome
 	if (typeof chrome != 'undefined') {

@@ -1,7 +1,5 @@
 import React from 'react';
 import * as Store from '../store';
-// import Isvg from 'react-inlinesvg';
-import { svgPath } from '../helpers';
 import { EditIcon, RemoveIcon } from './Icons';
 
 class Site extends React.Component {

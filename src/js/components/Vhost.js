@@ -1,12 +1,6 @@
 import React from 'react';
 import * as Store from '../store';
-import {
-	managerAddSite,
-	managerStopSite,
-	managerStartSite,
-	managerRemoveSite,
-	svgPath,
-	openTab } from '../helpers';
+import { managerAddSite,	managerStopSite, managerStartSite, managerRemoveSite, openTab } from '../helpers';
 import { PowerIcon, LoopIcon, StopIcon, PauseIcon } from './Icons';
 import VhostLinks from './VhostLinks';
 
@@ -25,30 +19,15 @@ class Vhost extends React.Component {
 		return this.props.site.name + '.' + this.props.settings.domain;
 	}
 
-	siteNames() {
-		var baseName = this.props.site.name;
-		let names = [baseName];
-		if (this.props.site.aliases != '') {
-			this.props.site.aliases.split(',').forEach(alias => {
-				names.push(alias.replace(/\s/g, '') + '.' + baseName);
-			});
-		}
-		return names;
-	}
-
 	siteAliases() {
 		var baseName = this.props.site.name;
-		let aliases = [];
+		var aliases = [];
 		if (this.props.site.aliases != '') {
 			this.props.site.aliases.split(',').forEach(alias => {
 				aliases.push(alias.replace(/\s/g, '') + '.' + baseName);
 			});
 		}
 		return aliases;
-	}
-
-	siteUrl() {
-		return 'http://' + this.siteName() + ':8080';
 	}
 
 	siteLinks() {
@@ -68,23 +47,12 @@ class Vhost extends React.Component {
 	}
 
 	render() {
-		let site = this.props.site;
-		let index = this.props.index;
-		let className = "Vhost";
+		var site = this.props.site;
+		var index = this.props.index;
+		var className = "Vhost";
 
 		className += (this.state.fetching) ? ' is-fetching' : (this.state.active) ? ' is-active' : '';
-
-		switch (this.state.action) {
-			case 'start':
-				className += ' is-starting';
-			break;
-			case 'restart':
-				className += ' is-restarting';
-			break;
-			case 'stop':
-				className += ' is-stopping';
-			break;
-		}
+		className += this.state.action + 'ing';
 
 		return (
 			<div className={className}>
@@ -159,9 +127,9 @@ class Vhost extends React.Component {
 	}
 
 	checkSiteInManager() {
-		this.setState({fetching: false, action: null});
 		var isActive = false;
 		var siteName = this.siteName();
+		this.setState({fetching: false, action: null});
 		this.props.managerSites.forEach(site => {
 			if (site.name == siteName) {
 				return isActive = true;
