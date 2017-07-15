@@ -36,6 +36,7 @@ class Notifications extends React.Component {
 
 	removeNotification() {
 		var newMessages = this.state.messages;
+
 		newMessages.pop();
 		this.setState({
 			messages: newMessages
