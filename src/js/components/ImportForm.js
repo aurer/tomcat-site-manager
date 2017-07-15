@@ -62,9 +62,9 @@ class ImportForm extends React.Component {
 		var newData = {sites:[]};
 		data.forEach((site,i) => {
 			newData.sites.push({
-				name: site.name,
-				aliases: site.aliases,
-				root: site.path ? site.path : site.root,
+				name: site.name.toLowerCase(),
+				aliases: site.aliases.toLowerCase(),
+				root: site.path ? site.path.toLowerCase() : site.root.toLowerCase(),
 				id: +new Date + i
 			});
 		});
