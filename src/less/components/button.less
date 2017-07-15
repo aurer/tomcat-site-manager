@@ -17,8 +17,8 @@
 	outline: none;
 	cursor: pointer;
 
-	&:hover {
-		background: @color-secondary;
+	&:hover, &:focus{
+		background: @color-tertiary;
 		color: @color-neutral-lightest;
 	}
 
@@ -76,6 +76,18 @@
 	&:hover {
 		path, polygon {
 			fill: @color-secondary;
+		}
+	}
+
+	.is-active & {
+		path, polygon {
+			fill: @color-secondary;
+		}
+
+		&:hover {
+			path, polygon {
+				fill: @color-primary;
+			}
 		}
 	}
 }

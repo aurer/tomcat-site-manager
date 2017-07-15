@@ -34,9 +34,10 @@
 				font-size: inherit;
 				outline: none;
 				transition: border-color .2s;
+				tab-size: 2;
 
 				&:focus {
-					border-color: @color-secondary-dark;
+					border-color: @color-tertiary;
 				}
 			}
 
@@ -46,6 +47,10 @@
 				margin: .6em 0;
 				border: none;
 				padding: 0;
+
+				&:focus ~ label {
+					color: @color-tertiary;
+				}
 			}
 
 			select {
@@ -60,6 +65,10 @@
 				margin-bottom: .5em;
 				padding: .5em;
 				height: 2.4em;
+
+				&:focus {
+					border-color: @color-tertiary;
+				}
 			}
 		}
 
