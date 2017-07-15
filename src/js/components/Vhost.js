@@ -52,7 +52,6 @@ class Vhost extends React.Component {
 		var className = "Vhost";
 
 		className += (this.state.fetching) ? ' is-fetching' : (this.state.active) ? ' is-active' : '';
-		className += this.state.action + 'ing';
 
 		return (
 			<div className={className}>
