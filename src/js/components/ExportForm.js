@@ -7,7 +7,7 @@ class ExportForm extends React.Component {
 	}
 
 	render() {
-		var data = JSON.stringify(Store.load('sites'));
+		var data = JSON.stringify(Store.load('sites'), null, '\t');
 		return(
 			<form method="post" className="Form" onSubmit={this.handleSubmit.bind(this)}>
 				<div className="Form-field">
