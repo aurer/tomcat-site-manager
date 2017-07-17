@@ -130,6 +130,7 @@ class Vhost extends React.Component {
 		var siteName = this.siteName();
 		this.setState({fetching: false, action: null});
 		this.props.managerSites.forEach(site => {
+
 			if (site.name == siteName) {
 				return isActive = true;
 			}

@@ -21,8 +21,8 @@ export function findManagerSite(html) {
 		var link = siteLinks.item(i);
 		managerSites.push({
 			link: link.href,
-			name: link.outerText
-		})
+			name: link.innerText
+		});
 	}
 
 	return managerSites;
@@ -103,7 +103,7 @@ export function openTab(url) {
 
 			// Look for empty tabs and load site in it if one is found, otherwise create a new one.
 			chrome.tabs.query({url: "chrome://*/"}, tab => {
-				if( tab.length > 0 ){
+				if (tab.length > 0){
 					return chrome.tabs.update( tab[0].id, { url: url, active: true} );
 				}
 
