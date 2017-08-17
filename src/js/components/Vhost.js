@@ -87,7 +87,7 @@ class Vhost extends React.Component {
 				});
 			}).catch(error => {
 				this.setState({action: null});
-				notify(`Failed to add '${this.props.site.name}'`, 'negative');
+				notify(`Failed to add ${this.props.site.name}`, 'negative');
 			});
 	}
 
@@ -110,11 +110,11 @@ class Vhost extends React.Component {
 					});
 				}).catch(error => {
 					this.setState({action: null});
-					notify(`Failed to start '${this.props.site.name}'`)
+					notify(`Failed to start ${this.props.site.name}`)
 				})
 			}).catch(error => {
 				this.setState({action: null});
-				notify(`Failed to stop '${this.props.site.name}'`)
+				notify(`Failed to stop ${this.props.site.name}`)
 			});
 	}
 
@@ -134,7 +134,7 @@ class Vhost extends React.Component {
 				});
 			}).catch(error => {
 				this.setState({action: null});
-				notify(`Failed to stop '${this.props.site.name}'`, 'negative');
+				notify(`Failed to stop ${this.props.site.name}`, 'negative');
 			});
 	}
 

@@ -35,7 +35,7 @@ class LoadingScreen extends React.Component {
 				message = 'Stopping ' + this.props.site.name
 				break;
 			case 'restart':
-				message = 'Re-starting ' + this.props.site.name
+				message = 'Restarting ' + this.props.site.name
 				break;
 			default:
 				message = 'Loading'

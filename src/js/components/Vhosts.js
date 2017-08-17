@@ -80,15 +80,15 @@ class Vhosts extends React.Component {
 				});
 			break;
 			case 'start':
-				notify(`Started '${action.site.name}'`, 'positive');
+				notify(`Started ${action.site.name}`, 'positive');
 				this.updateManagerInfo(action.response);
 			break;
 			case 'restart':
-				notify(`Restarted '${action.site.name}'`, 'positive');
+				notify(`Restarted ${action.site.name}`, 'positive');
 				this.updateManagerInfo(action.response);
 			break;
 			case 'stop':
-				notify(`Stopped '${action.site.name}'`, 'positive');
+				notify(`Stopped ${action.site.name}`, 'positive');
 				this.updateManagerInfo(action.response);
 			break;
 		}
