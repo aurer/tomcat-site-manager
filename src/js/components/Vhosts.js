@@ -2,6 +2,7 @@ import React from 'react';
 import Vhost from './Vhost';
 import * as Store from '../store';
 import { parseHTML, findCsrfToken, findManagerSite, openTab } from '../helpers';
+import LoadingScreen from './LoadingScreen';
 
 class Vhosts extends React.Component {
 	constructor(props) {
@@ -10,6 +11,7 @@ class Vhosts extends React.Component {
 		this.state = {
 			canSeeTomcatManager: null,
 			loading: false,
+			loadAction: null,
 			sites: [],
 			settings: {},
 			managerSites: []
@@ -50,16 +52,20 @@ class Vhosts extends React.Component {
 			)
 		}
 
+		let vHostsClassName = "VhostWrapper" + (this.state.loading ? ' is-loading' : '');
 		return (
-			<div className="Vhosts">
-				{this.state.sites.map((site, i) => <Vhost
-					key={site.id}
-					site={site}
-					settings={this.state.settings}
-					index={i}
-					managerSites={this.state.managerSites}
-					onChange={this.handleVhostChange.bind(this)} />
-				)}
+			<div className={vHostsClassName}>
+				{this.state.loading && <LoadingScreen site={this.state.loading} action={this.state.loadAction} />}
+				<div className="Vhosts">
+					{this.state.sites.map((site, i) => <Vhost
+						key={site.id}
+						site={site}
+						settings={this.state.settings}
+						index={i}
+						managerSites={this.state.managerSites}
+						onChange={this.handleVhostChange.bind(this)} />
+					)}
+				</div>
 			</div>
 		)
 	}
@@ -67,20 +73,25 @@ class Vhosts extends React.Component {
 	handleVhostChange(action) {
 		var message = '';
 		switch (action.type) {
+			case 'load':
+				this.setState({
+					loading: action.site,
+					loadAction: action.action
+				});
+			break;
 			case 'start':
-				message = `Started '${action.site.name}'`;
+				notify(`Started '${action.site.name}'`, 'positive');
+				this.updateManagerInfo(action.response);
 			break;
 			case 'restart':
-				message = `Restarted '${action.site.name}'`;
+				notify(`Restarted '${action.site.name}'`, 'positive');
+				this.updateManagerInfo(action.response);
 			break;
 			case 'stop':
-				message = `Stopped '${action.site.name}'`;
+				notify(`Stopped '${action.site.name}'`, 'positive');
+				this.updateManagerInfo(action.response);
 			break;
 		}
-		notify(message, 'positive');
-
-		// Update vhost props with new manager info
-		this.updateManagerInfo(action.response);
 	}
 
 	openManager() {
@@ -109,7 +120,7 @@ class Vhosts extends React.Component {
 		var managerSites = findManagerSite(html);
 		var csrfToken = findCsrfToken(html);
 		window.csrfToken = csrfToken;
-		this.setState({ managerSites });
+		this.setState({ managerSites, loading: false });
 	}
 }
 

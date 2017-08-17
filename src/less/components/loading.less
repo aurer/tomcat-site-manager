@@ -1,0 +1,33 @@
+@keyframes fadeIn {
+	from {
+		opacity: 0;
+	}
+
+	to {
+		opacity: 1;
+	}
+}
+
+.Loading {
+	position: absolute;
+	top: 46px;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	display: flex;
+	background-color: fade(#000, 40%);
+	z-index: 1;
+	animation: fadeIn .3s;
+
+	span {
+		margin: auto;
+		color: @color-neutral-lightest;
+		text-align: center;
+		transform: translateY(-50%);
+	}
+
+	svg #loading-bar,
+	svg #loading-circle {
+		transform-origin: 60px 60px;
+	}
+}

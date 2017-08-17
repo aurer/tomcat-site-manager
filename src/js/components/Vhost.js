@@ -10,7 +10,6 @@ class Vhost extends React.Component {
 
 		this.state = {
 			active: false,
-			fetching: false,
 			action: null
 		};
 	}
@@ -51,7 +50,7 @@ class Vhost extends React.Component {
 		var index = this.props.index;
 		var className = "Vhost";
 
-		className += (this.state.fetching) ? ' is-fetching' : (this.state.active) ? ' is-active' : '';
+		className += (this.state.active) ? ' is-active' : '';
 
 		return (
 			<div className={className}>
@@ -64,7 +63,7 @@ class Vhost extends React.Component {
 					{this.state.active && <button className="IconButton Vhost-actions-restart" onClick={this.handleRestart.bind(this)} title="Restart">
 						<LoopIcon />
 					</button> }
-					{this.state.active && <button className="IconButton Vhost-actions-stop" onClick={this.handleRemove.bind(this)} title="Stop">
+					{this.state.active && <button className="IconButton Vhost-actions-stop" onClick={this.handleStop.bind(this)} title="Stop">
 						<StopIcon />
 					</button> }
 				</span>
@@ -73,7 +72,12 @@ class Vhost extends React.Component {
 	}
 
 	handleStart() {
-		this.setState({fetching: true, action: 'start'})
+		this.setState({action: 'start'})
+		this.props.onChange({
+			type: 'load',
+			site: this.props.site,
+			action: 'start'
+		});
 		managerAddSite(this.props.site, window.csrfToken)
 			.then(res => res.text()).then(body => {
 				this.props.onChange({
@@ -82,14 +86,18 @@ class Vhost extends React.Component {
 					response: body
 				});
 			}).catch(error => {
-				this.setState({fetching: false, action: null});
+				this.setState({action: null});
 				notify(`Failed to add '${this.props.site.name}'`, 'negative');
 			});
 	}
 
 	handleRestart() {
-		this.setState({fetching: true, action: 'restart'})
-
+		this.setState({action: 'restart'})
+		this.props.onChange({
+			type: 'load',
+			site: this.props.site,
+			action: 'restart'
+		});
 		managerStopSite(this.siteName(), window.csrfToken)
 			.then(stopRes => {
 				managerStartSite(this.siteName(), window.csrfToken)
@@ -101,17 +109,22 @@ class Vhost extends React.Component {
 						response: body
 					});
 				}).catch(error => {
-					this.setState({fetching: false, action: null});
+					this.setState({action: null});
 					notify(`Failed to start '${this.props.site.name}'`)
 				})
 			}).catch(error => {
-				this.setState({fetching: false, action: null});
+				this.setState({action: null});
 				notify(`Failed to stop '${this.props.site.name}'`)
 			});
 	}
 
-	handleRemove() {
-		this.setState({fetching: true, action: 'stop'})
+	handleStop() {
+		this.setState({action: 'stop'})
+		this.props.onChange({
+			type: 'load',
+			site: this.props.site,
+			action: 'stop'
+		});
 		managerRemoveSite(this.siteName(), window.csrfToken)
 			.then(res => res.text()).then(body => {
 				this.props.onChange({
@@ -120,7 +133,7 @@ class Vhost extends React.Component {
 					response: body
 				});
 			}).catch(error => {
-				this.setState({fetching: false, action: null});
+				this.setState({action: null});
 				notify(`Failed to stop '${this.props.site.name}'`, 'negative');
 			});
 	}
@@ -128,7 +141,7 @@ class Vhost extends React.Component {
 	checkSiteInManager() {
 		var isActive = false;
 		var siteName = this.siteName();
-		this.setState({fetching: false, action: null});
+		this.setState({action: null});
 		this.props.managerSites.forEach(site => {
 
 			if (site.name == siteName) {
