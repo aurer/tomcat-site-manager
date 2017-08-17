@@ -9,7 +9,7 @@
     "esversion": 6
   },
   "scripts": {
-    "dev": "rm -rf dist/* && webpack --progress --watch",
+    "start": "rm -rf dist/* && webpack --progress --watch",
     "build": "rm -rf dist/* && webpack --progress -p"
   },
   "dependencies": {
