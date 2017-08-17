@@ -31,14 +31,33 @@
 	left: 0;
 	right: 0;
 	text-align: center;
+	background: linear-gradient(to right, @color-primary, @color-secondary);
 
 	a {
 		display: block;
 		border: none;
-		background-color: @color-neutral-darker;
 		color: @color-neutral-lighter;
-		font-weight: bold;
-		padding: .5em;
+		background-color: @color-neutral-darkest;
+		font-size: .8em;
+		text-transform: uppercase;
+		padding: @space-sm;
 		cursor: pointer;
+		position: relative;
+		z-index: 2;
+		transition: background .3s;
+
+		&:before {
+			content: '';
+			position: absolute;
+			top: 0;
+			left: 0;
+			right: 0;
+			height: 1px;
+			background: linear-gradient(to right, @color-primary, @color-secondary);
+		}
+
+		&:hover {
+			background-color: fade(@color-neutral-darkest, 10%);
+		}
 	}
 }
