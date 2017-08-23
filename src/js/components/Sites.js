@@ -60,7 +60,7 @@ class Sites extends React.Component {
 				{this.state.form == 'site' &&
 					<SiteForm
 						site={this.state.activeSite}
-						onSubmit={this.handleNewSiteForm.bind(this)}
+						onSubmit={this.handleSiteForm.bind(this)}
 						closeForm={this.closeForm.bind(this)}
 					/>
 				}
@@ -130,20 +130,15 @@ class Sites extends React.Component {
 		notify(error.toString(), 'negative');
 	}
 
-	handleNewSiteForm(e) {
+	handleSiteForm(e) {
 		e.preventDefault();
 		let form = e.target;
 		let sites = this.state.sites;
-		sites = sites.sort((a, b) => a.pos > b.pos);
-
-		let pos = sites.length ? sites[sites.length-1].pos + 1 : 1;
 
 		let siteData = {
 			name:  		form.name.value.toLowerCase(),
 			aliases: 	form.aliases.value,
-			root: 		form.root.value,
-			active: 	true,
-			pos: 			pos
+			root: 		form.root.value
 		}
 
 		// Update existing site
@@ -156,15 +151,14 @@ class Sites extends React.Component {
 				return site;
 			});
 		} else {
+			siteData.active = true;
+			siteData.pos = sites.length ? sites[sites.length-1].pos + 1 : 1;
 			siteData.id = +new Date;
 			sites.push(siteData);
 		}
 
 		let newState = Object.assign({}, this.state, { sites }, {form: false});
 		this.setState(newState);
-		form.name.value = '';
-		form.aliases.value = '';
-		form.root.value = '';
 		Store.save('sites', sites);
 
 		if (form.siteId) {
