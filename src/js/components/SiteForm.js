@@ -14,17 +14,26 @@ class SiteForm extends React.Component {
 			aliasesHelper: '',
 			rootHelper: '',
 			siteId: null,
-			error: null
+			error: null,
+			shouldAutoCompleteRoot: true,
 		}
 	}
 
 	componentDidMount() {
 		this.settings = Store.load('settings');
 		this.handleUpdateInputs(this.props);
+
+		if (this.props.site) {
+			this.setState({
+				shouldAutoCompleteRoot: false
+			})
+		}
 	}
 
 	componentWillUnmount() {
-		this.setState({error: null});
+		this.setState({
+			error: null,
+		});
 	}
 
 	render() {
@@ -80,13 +89,18 @@ class SiteForm extends React.Component {
 		let input = e.target;
 		let nameValue = this.sanitise(input.value);
 		let nameHelper = this.buildNameHelper(nameValue);
-		let rootHelper = this.buildRootHelper(nameValue);
-		this.setState({
-			rootValue: nameValue,
+
+		let newState = {
 			nameValue,
-			nameHelper,
-			rootHelper
-		})
+			nameHelper
+		}
+
+		if (this.state.shouldAutoCompleteRoot) {
+			newState.rootValue = nameValue,
+			newState.rootHelper = this.buildRootHelper(nameValue)
+		}
+
+		this.setState(newState)
 	}
 
 	handleAliasesValue(e) {
@@ -106,7 +120,8 @@ class SiteForm extends React.Component {
 		let helper = this.buildRootHelper(rootValue);
 		this.setState({
 			rootValue,
-			rootHelper: helper
+			rootHelper: helper,
+			shouldAutoCompleteRoot: false
 		})
 	}
 
@@ -139,7 +154,6 @@ class SiteForm extends React.Component {
 
 	sanitise(value) {
 		return value.toLowerCase()
-			.replace('.', '')
 			.replace(/[\s]+/g, '-');
 	}
 

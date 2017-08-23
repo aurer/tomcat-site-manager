@@ -120,7 +120,10 @@ class Sites extends React.Component {
 	}
 
 	closeForm() {
-		this.setState({form: false});
+		this.setState({
+			form: false,
+			activeSite: null
+		});
 	}
 
 	handleImportError(error) {
