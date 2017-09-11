@@ -37,6 +37,18 @@ class Settings extends React.Component {
 						</select>
 					</div>
 				</div>
+				<div className="Form-field">
+					<label>Username</label>
+					<div className="Form-inputs">
+						<input type="text" name="username" defaultValue={this.state.username} autoComplete="off" />
+					</div>
+				</div>
+				<div className="Form-field">
+					<label>Password</label>
+					<div className="Form-inputs">
+						<input type="password" name="password" defaultValue={this.state.password} autoComplete="off" />
+					</div>
+				</div>
 				<input type="submit" value="Save"/>
 			</form>
 		)
@@ -49,7 +61,9 @@ class Settings extends React.Component {
 		let newState = Object.assign({}, this.state, {
 			domain: 					this.sanitiseDomainValue(form.domain.value),
 			root: 						this.sanitiseRootValue(form.root.value, form.os.value),
-			os: 							form.os.value
+			os: 							form.os.value,
+			username: 				form.username.value,
+			password: 				form.password.value
 		});
 
 		form.domain.value = newState.domain;

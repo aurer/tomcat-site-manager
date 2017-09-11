@@ -1,4 +1,5 @@
 import React from 'react';
+import base64 from 'base-64';
 import Vhost from './Vhost';
 import * as Store from '../store';
 import { parseHTML, findCsrfToken, findManagerSite, openTab } from '../helpers';
@@ -39,7 +40,8 @@ class Vhosts extends React.Component {
 			return (
 				<div className="App-error">
 					<p>Could not connect to Tomcat</p>
-					<p><a onClick={this.openManager.bind(this)}>Check Tomcat is running</a></p>
+					{this.state.tomcatStatusCode == 401 && <p>Check your username and password</p>}
+					{this.state.tomcatStatusCode == 401 || <p><a onClick={this.openManager.bind(this)}>Check Tomcat is running</a></p>}
 				</div>
 			)
 		}
@@ -99,20 +101,27 @@ class Vhosts extends React.Component {
 	}
 
 	connectToHostManager() {
-		var url = 'http://localhost:8080/host-manager/html/';
-		fetch(url, { credentials: 'include' })
+		let url = 'http://localhost:8080/host-manager/html/';
+		let settings = Store.load('settings')
+		let headers = new Headers();
+		headers.append('Authorization', 'Basic ' + base64.encode(`${settings.username}:${settings.password}`))
+		fetch(url, { credentials: 'include', headers: headers })
 			.then(res => {
 				if (res.ok) {
 					this.setState({ canSeeTomcatManager: true });
 					return res.text();
 				} else {
-					this.setState({ canSeeTomcatManager: false });
+					notify('Hostmanager login failed: ' + res.status)
+					this.setState({
+						canSeeTomcatManager: false,
+						tomcatStatusCode: res.status
+					});
 				}
 			})
 			.then(this.updateManagerInfo.bind(this))
 			.catch(error => {
 				this.setState({ canSeeTomcatManager: false });
-			});
+			})
 	}
 
 	updateManagerInfo(response) {

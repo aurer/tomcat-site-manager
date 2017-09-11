@@ -2,7 +2,9 @@ let defaultValues = {
 	settings: {
 		domain: '',
 		root: '',
-		os: 'windows'
+		os: 'windows',
+		username: '',
+		password: ''
 	},
 	sites: []
 }

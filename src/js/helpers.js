@@ -1,4 +1,5 @@
 import * as Store from './store';
+import base64 from 'base-64';
 
 export function parseHTML(string) {
 	var parser = new DOMParser();
@@ -9,7 +10,10 @@ export function parseHTML(string) {
 
 export function findCsrfToken(html) {
 	var form = html.querySelector('form');
-	return form.getAttribute('action').match(/CSRF_NONCE=([\w]+)/)[1];
+	if (form) {
+		return form.getAttribute('action').match(/CSRF_NONCE=([\w]+)/)[1];
+	}
+	return false;
 }
 
 export function findManagerSite(html) {
@@ -56,25 +60,32 @@ export function managerAddSite(site) {
 	var managerUrl = 'http://localhost:8080/host-manager/html/add';
 	var token = 'org.apache.catalina.filters.CSRF_NONCE=' + window.csrfToken;
 
+	let headers = new Headers();
+	headers.append('Content-Type', 'application/x-www-form-urlencoded;charset=UTF-8');
+	headers.append('Authorization', 'Basic ' + base64.encode(`${settings.username}:${settings.password}`));
+
 	return fetch(`${managerUrl}?${token}`, {
 		credentials: 'include',
 		method: 'POST',
-		headers: {
-    	'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
-  	},
+		headers: headers,
 		body: formParams
 	});
 }
 
 function managerControlSite(action, site) {
+	var settings = Store.load('settings');
 	var managerUrl = 'http://localhost:8080/host-manager/html/' + action;
 	var token = 'org.apache.catalina.filters.CSRF_NONCE=' + window.csrfToken
 
 	console.info(action, site);
 
+	let headers = new Headers();
+	headers.append('Authorization', 'Basic ' + base64.encode(`${settings.username}:${settings.password}`));
+
 	return fetch(`${managerUrl}?${token}&name=${site}`, {
 		credentials: 'include',
 		method: 'POST',
+		headers: headers
 	});
 }
 
