@@ -21,6 +21,31 @@
 	}
 }
 
+.Sites-filter {
+	display: flex;
+	position: absolute;
+	width: 100%;
+	left: 0;
+
+	input {
+		flex: 1;
+		margin: 2px 10px;
+		background-color: @color-neutral-darker;
+		color: @color-neutral-lightest;
+		border: 1px solid @color-tertiary;
+		outline: none;
+		padding: .5rem;
+		opacity: 0;
+		transition: opacity .2s;
+		box-shadow: 0 0 0 5px @color-neutral-darkest;
+
+		&:hover, 
+		&:focus {
+			opacity: 1;
+		}
+	}
+}
+
 .Site {
 	display: grid;
 	grid-template-columns: 2em repeat(3, 1fr);

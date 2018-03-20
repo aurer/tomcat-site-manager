@@ -10,6 +10,7 @@ class Sites extends React.Component {
 		super(props);
 		this.state = {
 			sites: [],
+			filter: '',
 			activeSite: null,
 			form: false,
 			showSiteForm: false,
@@ -35,7 +36,9 @@ class Sites extends React.Component {
 					<a className="Button" onClick={this.openImportForm.bind(this)}>Import sites</a>
 					<a className="Button" onClick={this.openExportForm.bind(this)}>Export sites</a>
 				</div>
-
+				<div className="Sites-filter">
+					<input type="search" onChange={this.setFilter.bind(this)} placeholder="Filter..." />
+				</div>
 				{this.state.form == false &&
 					<div className="Sites">
 						<div className="Sites-header">
@@ -44,7 +47,7 @@ class Sites extends React.Component {
 							<div className="Site-root" colSpan="2">Root</div>
 						</div>
 						<div className="Sites-body">
-							{this.state.sites.map((site, i) =>
+							{this.state.sites.filter(this.applyFilter.bind(this)).map((site, i) =>
 								<Site
 									key={site.id}
 									site={site}
@@ -79,9 +82,19 @@ class Sites extends React.Component {
 						onError={this.closeForm.bind(this)}
 					/>
 				}
-
 			</section>
 		)
+	}
+
+	applyFilter(item) {
+		if (!this.state.filter.length) return true;
+		let regex = new RegExp(this.state.filter, "ig");
+		return item.name.match(regex)
+	}
+
+	setFilter(e) {
+		this.setState({filter:e.target.value});
+		let search = e.target.value;
 	}
 
 	onReorder(from, to, save=false) {
