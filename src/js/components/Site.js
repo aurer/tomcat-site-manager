@@ -29,8 +29,10 @@ class Site extends React.Component {
 				draggable
 				onDragStart={this.onDragStart.bind(this)}
 				onDragOver={this.onDragOver.bind(this)}
+				onDragLeave={this.onDragLeave.bind(this)}
 				onDragEnd={this.onDragEnd.bind(this)}
 				onDrop={this.onDrop.bind(this)}
+				id={id}
 			>
 				<div className="Site-status">
 					<input type="checkbox" id={id} value="true" checked={checked} onChange={this.toggleSite.bind(this)} />
@@ -91,21 +93,21 @@ class Site extends React.Component {
 	handleEditSite(e) {
 		this.props.onChange({
 			action: 'edit',
-			index: this.props.index
+			id: this.props.id
 		});
 	}
 
 	handleRemoveSite(e) {
 		this.props.onChange({
 			action: 'remove',
-			index: this.props.index
+			id: this.props.id
 		});
 	}
 
 	toggleSite(e) {
 		this.props.onChange({
 			action: e.target.checked ? 'activate' : 'deactivate',
-			index: this.props.index
+			id: this.props.id
 		});
 	}
 }

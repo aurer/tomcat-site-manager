@@ -36,9 +36,11 @@ class Sites extends React.Component {
 					<a className="Button" onClick={this.openImportForm.bind(this)}>Import sites</a>
 					<a className="Button" onClick={this.openExportForm.bind(this)}>Export sites</a>
 				</div>
-				<div className="Sites-filter">
-					<input type="search" onChange={this.setFilter.bind(this)} placeholder="Filter..." />
-				</div>
+				{this.state.form == false &&
+					<div className="Sites-filter">
+						<input type="search" onChange={this.setFilter.bind(this)} placeholder="Filter..." value={this.state.filter} />
+					</div>
+				}
 				{this.state.form == false &&
 					<div className="Sites">
 						<div className="Sites-header">
@@ -52,6 +54,7 @@ class Sites extends React.Component {
 									key={site.id}
 									site={site}
 									index={i}
+									id={site.id}
 									onReorder={this.onReorder.bind(this)}
 									onChange={this.handleChangeSite.bind(this)}
 								/>
@@ -212,8 +215,8 @@ class Sites extends React.Component {
 	}
 
 	handleChangeSite(action) {
-		let site = this.state.sites.find((_, i) => i == action.index);
-		let otherSites = this.state.sites.filter((_, i) => i != action.index);
+		let site = this.state.sites.find(site => site.id == action.id);
+		let otherSites = this.state.sites.filter(site => site.id != action.id);
 
 		switch (action.action) {
 			case 'edit':
@@ -231,7 +234,7 @@ class Sites extends React.Component {
 			break;
 			case 'activate':
 				var newState = this.state.sites.map((site, i) => {
-					if (i == action.index) {
+					if (site.id == action.id) {
 						site.active = true
 					}
 					return site
@@ -243,7 +246,7 @@ class Sites extends React.Component {
 			break;
 			case 'deactivate':
 				var newState = this.state.sites.map((site, i) => {
-					if (i == action.index) {
+					if (site.id == action.id) {
 						site.active = false
 					}
 					return site
