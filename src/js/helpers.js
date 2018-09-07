@@ -135,3 +135,14 @@ export function openTab(url) {
 	// Default open from browser
 	window.open(url);
 }
+
+// Return the correct directory separator for the OS
+export function getOSSlash(pathValue) {
+	return (navigator.platform.indexOf('Win') != -1) ? '\\' : '/';
+}
+
+// Correct any slashes in a path with the correct version for the OS
+export function correctSlashes(pathValue) {
+	const slash = getOSSlash();
+	return pathValue.replace(/[\/\\]/g, slash);
+}

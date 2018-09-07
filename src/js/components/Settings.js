@@ -1,5 +1,6 @@
 import React from 'react';
 import * as Store from '../store';
+import {getOSSlash} from '../helpers';
 
 class Settings extends React.Component {
 	constructor(props) {
@@ -28,16 +29,6 @@ class Settings extends React.Component {
 					</div>
 				</div>
 				<div className="Form-field">
-					<label>OS</label>
-					<div className="Form-inputs">
-						<select name="os" defaultValue={this.state.os} onChange={this.handleOsChange.bind(this)}>
-							<option value="win">Windows</option>
-							<option value="mac">Mac</option>
-							<option value="lin">Linux</option>
-						</select>
-					</div>
-				</div>
-				<div className="Form-field">
 					<label>Username</label>
 					<div className="Form-inputs">
 						<input type="text" name="username" defaultValue={this.state.username} autoComplete="off" />
@@ -60,8 +51,7 @@ class Settings extends React.Component {
 
 		let newState = Object.assign({}, this.state, {
 			domain: 					this.sanitiseDomainValue(form.domain.value),
-			root: 						this.sanitiseRootValue(form.root.value, form.os.value),
-			os: 							form.os.value,
+			root: 						this.sanitiseRootValue(form.root.value),
 			username: 				form.username.value,
 			password: 				form.password.value
 		});
@@ -79,7 +69,7 @@ class Settings extends React.Component {
 	}
 
 	sanitiseRootValue(value, os) {
-		let ds = os == 'win' ? '\\' : '/';
+		let ds = getOSSlash();
 		return value
 			.replace(/\s+/g, '')
 			.replace(/[\/\\]/g, ds)

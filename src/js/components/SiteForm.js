@@ -1,6 +1,7 @@
 import React from 'react';
 import * as Store from '../store';
 import Site from './Site';
+import {correctSlashes} from '../helpers';
 
 class SiteForm extends React.Component {
 	constructor(props) {
@@ -114,12 +115,10 @@ class SiteForm extends React.Component {
 	}
 
 	handleRootValue(e) {
-		let ds = this.settings.os == 'win' ? '\\' : '/';
 		let input = e.target;
-		let rootValue = input.value.replace(/[\/\\]/g, ds);
-		let helper = this.buildRootHelper(rootValue);
+		let helper = this.buildRootHelper(input.value);
 		this.setState({
-			rootValue,
+			rootValue: input.value,
 			rootHelper: helper,
 			shouldAutoCompleteRoot: false
 		})
@@ -147,6 +146,7 @@ class SiteForm extends React.Component {
 	buildRootHelper(value) {
 		let helper = '';
 		if (value.length) {
+			value = correctSlashes(value);
 			helper = (<div className="Form-helper Form-helper--root"><span>{this.settings.root}</span>{value}</div>);
 		}
 		return helper;
@@ -170,6 +170,9 @@ class SiteForm extends React.Component {
 			form.root.focus();
 			return this.setState({error: 'Please specify a "Site root"'});
 		}
+
+		// Enforce correct slashes for root value
+		form.root.value = correctSlashes(form.root.value)
 
 		this.props.onSubmit(e);
 	}
