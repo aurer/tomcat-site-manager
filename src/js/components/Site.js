@@ -12,14 +12,14 @@ class Site extends React.Component {
 	}
 
 	render() {
-		var site = this.props.site;
-		var id = this.props.index + site.name;
-		var settings = Store.load('settings');
-		var nameTitle = site.name + '.' + settings.domain;
-		var aliasesTitle = site.aliases.split(',').map(a => `${a}.${site.name}.${settings.domain}`).join(', ');
-		var rootTitle = settings.root + site.root;
-		var checked = site.active ? 'checked' : '';
-		var siteClassName = 'Site ' + (site.active ? 'is-active' : 'is-inactive');
+		const site = this.props.site;
+		const id = this.props.id;
+		const settings = Store.load('settings');
+		const nameTitle = site.name + '.' + settings.domain;
+		const aliasesTitle = site.aliases.split(',').map(a => `${a}.${site.name}.${settings.domain}`).join(', ');
+		const rootTitle = settings.root + site.root;
+		let checked = site.active ? 'checked' : '';
+		let siteClassName = 'Site ' + (site.active ? 'is-active' : 'is-inactive');
 		siteClassName += (this.state.over ? ' is-over' : '');
 		siteClassName += (this.state.dragging ? ' is-dragging' : '');
 
@@ -69,10 +69,23 @@ class Site extends React.Component {
 
 	onDragOver(e) {
 		e.preventDefault();
+		e.stopPropagation();
+		this.setState({
+			over: true
+		})
+	}
+
+	onDragLeave(e) {
+		e.preventDefault();
+		e.stopPropagation();
+		this.setState({
+			over: false
+		})
 	}
 
 	onDragEnd(e) {
 		e.preventDefault();
+		e.stopPropagation();
 		this.setState({
 			dragging: false,
 			over: false

@@ -43,6 +43,10 @@
 		&:focus {
 			opacity: 1;
 		}
+
+		&:not([value=""]) {
+			opacity: 1;
+		}
 	}
 }
 
@@ -58,15 +62,16 @@
 	}
 
 	&.is-inactive {
-		.Site-name,
-		.Site-aliases,
-		.Site-root {
-			opacity: .3;
-		}
+		color: @color-neutral-dark;
 	}
 
 	&.is-dragging {
 		opacity: .4;
+	}
+
+	&.is-over {
+		background-color: fade(@color-tertiary, 20%);
+		box-shadow: inset 0 0 0 1px @color-tertiary;
 	}
 
 	.Site-actions {
