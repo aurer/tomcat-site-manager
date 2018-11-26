@@ -5,6 +5,7 @@ import Settings from './Settings';
 import Nav from './Nav';
 import Notifications from './Notifications';
 import { openTab } from '../helpers';
+import { ExternalLink } from './Icons';
 
 class App extends React.Component {
 	constructor(props) {
@@ -24,7 +25,10 @@ class App extends React.Component {
 				{this.state.view == "Settings" && <Settings />}
 				<Notifications />
 				<nav className="Footer">
-					<a onClick={this.openManager.bind(this)}>Open Host Manager</a>
+					<a onClick={this.openManager.bind(this)}>
+						Open Host Manager
+						<ExternalLink />
+					</a>
 				</nav>
 			</div>
 		)
