@@ -1,7 +1,6 @@
 .Nav {
 	display: flex;
 	text-align: center;
-	margin-bottom: .5em;
 	box-shadow: 0 1px 6px fade(#000, 30%);
 	position: relative;
 	overflow: hidden;
@@ -13,7 +12,7 @@
 		left: 0;
 		right: 0;
 		height: 5px;
-		background: linear-gradient(to right, @color-primary, @color-secondary, @color-tertiary);
+		background: linear-gradient(to right, @color-primary, @color-secondary);
 	}
 
 	.Nav-item {
@@ -35,12 +34,12 @@
 	.Nav-indicator {
 		position: absolute;
 		bottom: 1px;
-		height: 4px;
+		height: 5px;
 		width: 100%;
 		left: 0;
 		background: transparent;
 		transition-property: left, width;
-		transition-duration: .4s;
+		transition-duration: .2s;
 		transition-timing-function: cubic-bezier(.22,.02,.04,1);
 		z-index: 10;
 
@@ -56,12 +55,10 @@
 
 		&:before {
 			right: 100%;
-			transform: skew(-45deg);
 		}
 
 		&:after {
 			left: 100%;
-			transform: skew(45deg);
 		}
 	}
 }

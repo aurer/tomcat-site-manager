@@ -1,6 +1,6 @@
 .App {
 	width: 450px;
-	height: 520px;
+	height: 540px;
 	margin: 0 auto;
 	position: relative;
 	background-color: @color-neutral-darkest;
@@ -17,21 +17,31 @@
 
 .View {
 	transition: background-color .4s;
-	width: 450px;
-	height: 520px;
-	margin: 0 auto;
-	position: relative;
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+
+	.View-main {
+		flex: 1;
+		overflow: auto;
+		.simpleScrollBars();
+		
+		.Section {
+			min-height: 100%;
+		}
+	}
+
+	&.View--Settings .View-main {
+		position: relative;
+	}
 }
 
 .Footer {
 	margin-bottom: 0;
 	box-shadow: 0 1px 6px fade(#000, 10%);
-	position: absolute;
-	bottom: 0;
-	left: 0;
-	right: 0;
 	text-align: center;
-	background: linear-gradient(to right, @color-primary, @color-secondary);
+	background-color: @color-primary;
+	background-image: linear-gradient(to right, @color-primary, @color-secondary);
 
 	a {
 		display: block;
@@ -40,6 +50,7 @@
 		background-color: @color-neutral-darkest;
 		font-size: .8em;
 		text-transform: uppercase;
+		font-weight: bold;
 		padding: @space-sm;
 		cursor: pointer;
 		position: relative;
@@ -58,6 +69,15 @@
 
 		&:hover {
 			background-color: fade(@color-neutral-darkest, 10%);
+		}
+	}
+
+	svg {
+		margin-left: @space-xs;
+		vertical-align: sub;
+		
+		path {
+			fill: #fff;
 		}
 	}
 }

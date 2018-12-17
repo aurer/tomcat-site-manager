@@ -1,11 +1,7 @@
 .Form {
 	display: block;
-	margin: @space-sm;
+	padding: @space-sm;
 	overflow: hidden;
-	padding: 1em;
-	background-color: @color-neutral-darker;
-	border: 1px solid @color-secondary;
-	border-radius: 3px;
 
 	.Form-field {
 		margin: .5em 0;
@@ -37,7 +33,7 @@
 				tab-size: 2;
 
 				&:focus {
-					border-color: @color-tertiary;
+					border-color: @color-secondary;
 				}
 			}
 
@@ -47,9 +43,10 @@
 				margin: .6em 0;
 				border: none;
 				padding: 0;
+				vertical-align: middle;
 
 				&:focus ~ label {
-					color: @color-tertiary;
+					color: @color-primary;
 				}
 			}
 
@@ -67,7 +64,7 @@
 				height: 2.4em;
 
 				&:focus {
-					border-color: @color-tertiary;
+					border-color: @color-primary;
 				}
 			}
 		}
