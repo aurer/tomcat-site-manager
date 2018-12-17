@@ -59,21 +59,16 @@ export const LoadingRing = function() {
 		<svg width="60" height="60" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
 		  <defs>
 		    <linearGradient id="circleGradient" x1="0" x2="0" y1="0%" y2="100%">
-		      <stop offset="10%" stopColor="#7702fa" />
-		      <stop offset="95%" stopColor="#FD630F"/>
-		    </linearGradient>
-		    <linearGradient id="bgGradient" x1="0" x2="0" y1="0%" y2="100%">
-		      <stop offset="10%" stopColor="rgba(119,2,250, 0.3)" />
-		      <stop offset="95%" stopColor="rgba(253,99,15, 0.4)"/>
+		      <stop offset="10%" stopColor="#681de2" />
+		      <stop offset="95%" stopColor="#c22039"/>
 		    </linearGradient>
 				<mask id="middle">
 					<circle cx="60" cy="60" r="40" fill="#000" strokeWidth="10" stroke="#fff"></circle>
 				</mask>
 				<clipPath id="bar">
-					<rect id="loading-bar" x="40" y="60" width="40" height="50"></rect>
+					<rect id="loading-bar" x="45" y="0" width="30" height="120"></rect>
 				</clipPath>
 		  </defs>
-			<circle cx="60" cy="60" r="40" fill="none" strokeWidth="10" stroke="rgba(255, 255, 255, 0.1)" />
 			<g clipPath="url(#bar)">
 		  	<circle id="loading-circle" fill="url(#circleGradient)" cx="60" cy="60" r="50" mask="url(#middle)"/>
 			</g>

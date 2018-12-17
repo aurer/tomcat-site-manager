@@ -1,6 +1,7 @@
 import React from 'react';
 import * as Store from '../store';
 import { EditIcon, RemoveIcon } from './Icons';
+import * as Stats from './Stats';
 
 class Site extends React.Component {
 	constructor(props) {
@@ -115,6 +116,7 @@ class Site extends React.Component {
 			action: 'remove',
 			id: this.props.id
 		});
+		Stats.remove(this.props.site.name);
 	}
 
 	toggleSite(e) {

@@ -3,6 +3,7 @@ import * as Store from '../store';
 import { managerAddSite,	managerStopSite, managerStartSite, managerRemoveSite, openTab } from '../helpers';
 import { PowerIcon, LoopIcon, StopIcon, PauseIcon } from './Icons';
 import VhostLinks from './VhostLinks';
+import * as Stats from './Stats';
 
 class Vhost extends React.Component {
 	constructor(props) {
@@ -148,6 +149,11 @@ class Vhost extends React.Component {
 			}
 		});
 		this.setState({active: isActive});
+		this.props.onChange({
+			type: 'loadeStateChanged',
+			site: this.props.site,
+			action: isActive ? 'loaded' : 'unloaded'
+		})
 	}
 }
 

@@ -20,9 +20,11 @@ class App extends React.Component {
 		return (
 			<div className={viewClass}>
 				<Nav onNavigate={this.loadView.bind(this)} default={this.state.view} />
-				{this.state.view == "Vhosts" && <Vhosts />}
-				{this.state.view == "Sites" && <Sites />}
-				{this.state.view == "Settings" && <Settings />}
+				<main className="View-main">
+					{this.state.view == "Vhosts" && <Vhosts />}
+					{this.state.view == "Sites" && <Sites />}
+					{this.state.view == "Settings" && <Settings />}
+				</main>
 				<Notifications />
 				<nav className="Footer">
 					<a onClick={this.openManager.bind(this)}>

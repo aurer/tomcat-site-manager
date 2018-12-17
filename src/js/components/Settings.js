@@ -15,33 +15,36 @@ class Settings extends React.Component {
 	render() {
 		let rootPlacerholder = 'c:\\www\\';
 		return (
-			<form method="post" className="Form" onSubmit={this.handleSubmit.bind(this)}>
-				<div className="Form-field">
-					<label>Local domain</label>
-					<div className="Form-inputs">
-						<input type="text" name="domain" defaultValue={this.state.domain} placeholder="yourname.netxtra.local" autoComplete="off" />
+			<section className="Section Section--settings">
+				<form method="post" className="Form" onSubmit={this.handleSubmit.bind(this)}>
+					<div className="Form-field">
+						<label>Local domain</label>
+						<div className="Form-inputs">
+							<input type="text" name="domain" defaultValue={this.state.domain} placeholder="yourname.netxtra.local" autoComplete="off" />
+						</div>
 					</div>
-				</div>
-				<div className="Form-field">
-					<label>Web root</label>
-					<div className="Form-inputs">
-						<input type="text" name="root" defaultValue={this.state.root} placeholder={rootPlacerholder} autoComplete="off" />
+					<div className="Form-field">
+						<label>Web root</label>
+						<div className="Form-inputs">
+							<input type="text" name="root" defaultValue={this.state.root} placeholder={rootPlacerholder} autoComplete="off" />
+						</div>
 					</div>
-				</div>
-				<div className="Form-field">
-					<label>Username</label>
-					<div className="Form-inputs">
-						<input type="text" name="username" defaultValue={this.state.username} autoComplete="off" />
+					<div className="Form-field">
+						<label>Username</label>
+						<div className="Form-inputs">
+							<input type="text" name="username" defaultValue={this.state.username} autoComplete="off" />
+						</div>
 					</div>
-				</div>
-				<div className="Form-field">
-					<label>Password</label>
-					<div className="Form-inputs">
-						<input type="password" name="password" defaultValue={this.state.password} autoComplete="off" />
+					<div className="Form-field">
+						<label>Password</label>
+						<div className="Form-inputs">
+							<input type="password" name="password" defaultValue={this.state.password} autoComplete="off" />
+						</div>
 					</div>
-				</div>
-				<input type="submit" value="Save"/>
-			</form>
+					<input type="submit" value="Save"/>
+				</form>
+				<p className="ReportLink"><a target="_blank" href="https://github.com/aurer/tomcat-site-manager/issues">Report an issue</a></p>
+			</section>
 		)
 	}
 
@@ -68,22 +71,12 @@ class Settings extends React.Component {
 		return value.replace(/\s+/g, '').replace(':8080', '');
 	}
 
-	sanitiseRootValue(value, os) {
+	sanitiseRootValue(value) {
 		let ds = getOSSlash();
 		return value
 			.replace(/\s+/g, '')
 			.replace(/[\/\\]/g, ds)
 			.replace(/[\/\\]$/g, '') + ds;
-	}
-
-	handleOsChange(e) {
-		let os = e.target.value;
-		let form = e.target.form;
-		this.setState({os});
-		let root = form.root;
-		let rootValue = this.sanitiseRootValue(root.value, os);
-		root.value = rootValue;
-		this.setState({root, rootValue});
 	}
 }
 

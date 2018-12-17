@@ -20,7 +20,7 @@ class LoadingScreen extends React.Component {
 			  spin, { duration: 500, iterations: Infinity }
 			);
 			loadingCircle.animate(
-			  spin, { duration: 1000, iterations: Infinity }
+			  spin, { duration: 600, iterations: Infinity }
 			);
 		}
 	}

@@ -4,6 +4,7 @@ import Vhost from './Vhost';
 import * as Store from '../store';
 import { parseHTML, findCsrfToken, findManagerSite, openTab } from '../helpers';
 import LoadingScreen from './LoadingScreen';
+import * as Stats from './Stats';
 
 class Vhosts extends React.Component {
 	constructor(props) {
@@ -14,16 +15,31 @@ class Vhosts extends React.Component {
 			loading: false,
 			loadAction: null,
 			sites: [],
+			recentSites: [],
 			settings: {},
 			managerSites: []
 		};
 	}
 
 	componentWillMount() {
-		var sites = Store.load('sites').filter(site => site.active);
-		var settings = Store.load('settings');
+		this.setState({settings: Store.load('settings')});
+		this.populateSites();
+	}
+
+	populateSites() {
+		const allSites = Store.load('sites').filter(site => site.active).sort(site => site.active);
+		const recentSiteNames = Stats.getRecent(5);
+		let sites = [];
+		let recentSites = [];
+		allSites.forEach(site => {
+			if (recentSiteNames.includes(site.name)) {
+				recentSites.push(site);
+			} else {
+				sites.push(site);
+			}
+		})
 		this.connectToHostManager();
-		this.setState({sites, settings});
+		this.setState({sites, recentSites});
 	}
 
 	render() {
@@ -54,11 +70,21 @@ class Vhosts extends React.Component {
 			)
 		}
 
-		let vHostsClassName = "VhostWrapper" + (this.state.loading ? ' is-loading' : '');
+		let vHostsClassName = "Section Section--vhosts" + (this.state.loading ? ' is-loading' : '');
 		return (
-			<div className={vHostsClassName}>
+			<section className={vHostsClassName}>
 				{this.state.loading && <LoadingScreen site={this.state.loading} action={this.state.loadAction} />}
 				<div className="Vhosts">
+					<h2>Recently used</h2>
+					{this.state.recentSites.map((site, i) => <Vhost
+						key={site.id}
+						site={site}
+						settings={this.state.settings}
+						index={i}
+						managerSites={this.state.managerSites}
+						onChange={this.handleVhostChange.bind(this)} />
+					)}
+					<h2>Others</h2>
 					{this.state.sites.map((site, i) => <Vhost
 						key={site.id}
 						site={site}
@@ -68,12 +94,12 @@ class Vhosts extends React.Component {
 						onChange={this.handleVhostChange.bind(this)} />
 					)}
 				</div>
-			</div>
+			</section>
 		)
 	}
 
 	handleVhostChange(action) {
-		var message = '';
+		let message = '';
 		switch (action.type) {
 			case 'load':
 				this.setState({
@@ -83,10 +109,12 @@ class Vhosts extends React.Component {
 			break;
 			case 'start':
 				notify(`Started ${action.site.name}`, 'positive');
+				Stats.record(action.site, 'started');
 				this.updateManagerInfo(action.response);
 			break;
 			case 'restart':
 				notify(`Restarted ${action.site.name}`, 'positive');
+				Stats.record(action.site, 'restarted');
 				this.updateManagerInfo(action.response);
 			break;
 			case 'stop':

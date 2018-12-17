@@ -4,12 +4,14 @@ import Site from './Site';
 import SiteForm from './SiteForm';
 import ImportForm from './ImportForm';
 import ExportForm from './ExportForm';
+import * as Stats from './Stats';
 
 class Sites extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
 			sites: [],
+			recentSites: [],
 			filter: '',
 			activeSite: null,
 			form: false,
@@ -20,11 +22,11 @@ class Sites extends React.Component {
 	}
 
 	componentWillMount() {
-		var sites = Store.load('sites');
+		const sites = Store.load('sites');
 		if (!sites.length) {
 			this.setState({form: 'site'});
 		} else {
-			this.setState({sites:sites});
+			this.setState({sites});
 		}
 	}
 
@@ -37,13 +39,13 @@ class Sites extends React.Component {
 					<a className="Button" onClick={this.openExportForm.bind(this)}>Export sites</a>
 				</div>
 				{this.state.form == false &&
-					<div className="Sites-filter">
-						<input type="search" onChange={this.setFilter.bind(this)} placeholder="Filter..." value={this.state.filter} />
-					</div>
-				}
-				{this.state.form == false &&
 					<div className="Sites">
 						<div className="Sites-header">
+							{this.state.form == false &&
+								<div className="Sites-filter">
+									<input type="search" onChange={this.setFilter.bind(this)} placeholder="Filter..." value={this.state.filter} />
+								</div>
+							}
 							<div className="Site-name" rowSpan="2">Name</div>
 							<div className="Site-aliases">Aliases</div>
 							<div className="Site-root" colSpan="2">Root</div>
@@ -179,8 +181,10 @@ class Sites extends React.Component {
 
 		if (form.siteId) {
 			notify(`Updated '${siteData.name}' details`, 'positive');
+			Stats.record(siteData.name, 'updated');
 		} else {
 			notify(`Added '${siteData.name}' to sites`, 'positive');
+			Stats.record(siteData.name, 'added');
 		}
 	}
 

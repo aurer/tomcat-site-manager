@@ -14,7 +14,7 @@ const extractLess = new ExtractTextPlugin({
 const copyFiles = new CopyWebpackPlugin([
 	{from: 'src/manifest.json'},
 	{from: 'src/gfx'},
-	{from: 'src/html'},
+	{from: 'src/html'}
 ]);
 
 const manifest = fs.readFileSync('./src/manifest.json');
