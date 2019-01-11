@@ -40,33 +40,34 @@ class SiteForm extends React.Component {
 	render() {
 		return (
 			<form className="Form" onSubmit={this.handleSubmit.bind(this)}>
-				<div className="Form-field">
-					<label>Site name</label>
-					<div className="Form-inputs">
-						<input type="text" name="name" autoComplete="off" onChange={this.handleNameValue.bind(this)} value={this.state.nameValue} autoFocus/>
-						{this.state.nameHelper}
+				<fieldset>
+					<legend>Add a site</legend>
+					<div className="Form-field">
+						<label>Site name</label>
+						<div className="Form-inputs">
+							<input type="text" name="name" autoComplete="off" onChange={this.handleNameValue.bind(this)} value={this.state.nameValue} required autoFocus/>
+							{this.state.nameHelper}
+						</div>
 					</div>
-				</div>
-				<div className="Form-field">
-					<label>Site aliases</label>
-					<div className="Form-inputs">
-						<input type="text" name="aliases" autoComplete="off" onChange={this.handleAliasesValue.bind(this)} value={this.state.aliasesValue}/>
-						{this.state.aliasesHelper}
+					<div className="Form-field">
+						<label>Site aliases</label>
+						<div className="Form-inputs">
+							<input type="text" name="aliases" autoComplete="off" onChange={this.handleAliasesValue.bind(this)} value={this.state.aliasesValue}/>
+							{this.state.aliasesHelper}
+						</div>
 					</div>
-				</div>
-				<div className="Form-field">
-					<label>Site root</label>
-					<div className="Form-inputs">
-						<input type="text" name="root" onChange={this.handleRootValue.bind(this)} value={this.state.rootValue}/>
-						{this.state.rootHelper}
+					<div className="Form-field">
+						<label>Site root</label>
+						<div className="Form-inputs">
+							<input type="text" name="root" onChange={this.handleRootValue.bind(this)} value={this.state.rootValue} required/>
+							{this.state.rootHelper}
+						</div>
 					</div>
-				</div>
-				<div className="Form-field">
-					{ this.state.siteId && <input type="hidden" name="siteId" value={this.state.siteId}/> }
-					{ this.state.error && <div className="Form-error">{this.state.error}</div> }
-					<input type="submit" className="Button" value="Save"/>
-					<button className="Button Button--secondary" onClick={this.props.closeForm}>Cancel</button>
-				</div>
+				</fieldset>
+				{ this.state.siteId && <input type="hidden" name="siteId" value={this.state.siteId}/> }
+				{ this.state.error && <div className="Form-error">{this.state.error}</div> }
+				<input type="submit" className="Button" value="Save"/>
+				<button className="Button Button--secondary" onClick={this.props.closeForm}>Cancel</button>
 			</form>
 		)
 	}
@@ -160,16 +161,6 @@ class SiteForm extends React.Component {
 	handleSubmit(e) {
 		e.preventDefault();
 		let form = e.target;
-
-		if (form.name.value == '') {
-			form.name.focus();
-			return this.setState({error: 'Please specify a "Site name"'});
-		}
-
-		if (form.root.value == '') {
-			form.root.focus();
-			return this.setState({error: 'Please specify a "Site root"'});
-		}
 
 		// Enforce correct slashes for root value
 		form.root.value = correctSlashes(form.root.value)

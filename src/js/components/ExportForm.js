@@ -10,17 +10,21 @@ class ExportForm extends React.Component {
 		var data = JSON.stringify(Store.load('sites'), null, '\t');
 		return(
 			<form method="post" className="Form" onSubmit={this.handleSubmit.bind(this)}>
-				<div className="Form-field">
-					<div className="Form-inputs">
-						<textarea
-							name="data"
-							cols="30"
-							rows="10"
-							defaultValue={data}
-							ref={(textarea) => {this.textArea = textarea}}
-							onKeyUp={this.handleKeys.bind(this)}></textarea>
+				<fieldset>
+					<legend>Export sites</legend>
+					<div className="Form-field Form-field--wide">
+						<label>JSON Config</label>
+						<div className="Form-inputs">
+							<textarea
+								name="data"
+								cols="30"
+								rows="10"
+								defaultValue={data}
+								ref={(textarea) => {this.textArea = textarea}}
+								onKeyUp={this.handleKeys.bind(this)}></textarea>
+						</div>
 					</div>
-				</div>
+				</fieldset>
 				<input type="submit" value="Done"/>
 			</form>
 		)
