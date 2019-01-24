@@ -3,7 +3,7 @@
 
 	"name": "Tomcat site manager",
 	"description": "Create, reload and remove Tomcat virtual hosts",
-	"version": "3.2.2",
+	"version": "3.3.0",
 
 	"browser_action": {
 		"default_title": "Manage virtual hosts",
